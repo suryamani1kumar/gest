@@ -36,3 +36,30 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #737373;
 }
+
+
+.swiper {
+  width: 100%;
+  height: 100vh;
+}
+
+.swiper-slide {
+  width: 100%;
+  height: 100vh;
+}
+
+.swiper-pagination {
+  bottom: 40px !important;
+}
+
+.swiper-pagination-bullet {
+  width: 12px;
+  height: 12px;
+  background: white;
+  opacity: 0.5;
+}
+
+.swiper-pagination-bullet-active {
+  background: #d4af37;
+  opacity: 1;
+}

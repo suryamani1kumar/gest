@@ -27,8 +27,8 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-serif uppercase tracking-widest text-sm mb-6">Assistance</h4>
           <ul className="space-y-4 text-sm">
-            <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
-            <li><Link href="/terms" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
+            <li><Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link></li>
+            <li><Link href="/terms-and-conditions" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
             <li><Link href="/care-guide" className="hover:text-white transition-colors">Care Guide</Link></li>
             <li><Link href="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
           </ul>
@@ -53,8 +53,10 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-neutral-900 text-xs text-neutral-500 flex flex-col md:flex-row justify-between items-center">
         <p>&copy; {new Date().getFullYear()} Aura & Gem. All rights reserved.</p>
         <div className="flex space-x-6 mt-4 md:mt-0">
-          <Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          <Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link>
+          <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+          <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
+           <Link href="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
+          
         </div>
       </div>
     </footer>
