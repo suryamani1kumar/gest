@@ -116,8 +116,8 @@ const categories: Category[] = [
     ],
   },
   {
-    name: "Earrings",
-    href: "/collections/earrings",
+    name: "Healing Crystals",
+    href: "/collections/Healing Crystals",
     icon: <Circle size={18} />,
     submenu: [
       {
@@ -166,8 +166,8 @@ const categories: Category[] = [
     ],
   },
   {
-    name: "Daily Wear",
-    href: "/collections/daily-wear",
+    name: "Mala",
+    href: "/collections/mala",
     icon: <Heart size={18} />,
     submenu: [
       {
@@ -212,8 +212,8 @@ const categories: Category[] = [
     ],
   },
   {
-    name: "Wedding",
-    href: "/collections/wedding",
+    name: "Rudraksha",
+    href: "/collections/Rudraksha",
     icon: <Diamond size={18} />,
     submenu: [
       {
@@ -260,28 +260,7 @@ const categories: Category[] = [
       "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
       "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
     ],
-  },
-  {
-    name: "More",
-    href: "#",
-    icon: <Menu size={18} />,
-    submenu: [
-      {
-        title: "Explore More",
-        links: ["Silver Jewellery", "Platinum Jewellery", "Coins & Bars", "Accessories"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=400&q=80",
-    imageLabel: "More Collections",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Discover More",
-    promoSub: "Explore Our Full Range.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
-      "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=80&q=80",
-    ],
-  },
+  }
 ];
 
 const BottomNav = () => {

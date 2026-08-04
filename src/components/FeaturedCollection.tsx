@@ -11,14 +11,14 @@ const collections = [
     name: 'Sapphire Radiance',
     category: 'Rings',
     image: '/images/ring.png',
-    link: '#',
+    link: '/collections',
   },
   {
     id: 2,
     name: 'Diamond Cascade',
     category: 'Earrings',
     image: '/images/earrings.png',
-    link: '#',
+    link: '/collections',
   },
 ];
 

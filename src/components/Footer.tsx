@@ -1,62 +1,191 @@
-import React from 'react';
-import Link from 'next/link';
+import Link from "next/link";
+import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-neutral-950 text-neutral-300 py-16 border-t border-neutral-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12">
-        <div className="col-span-1 md:col-span-1">
-          <Link href="/" className="font-serif text-2xl tracking-widest uppercase font-bold text-white mb-6 block">
-            Aura & Gem
-          </Link>
-          <p className="text-sm leading-relaxed text-neutral-400">
-            Crafting timeless elegance. Our jewelry is designed for the modern individual, combining classic craftsmanship with contemporary aesthetics.
+    <footer className="bg-neutral-950 text-neutral-300 border-t border-neutral-900">
+      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
+        {/* Top */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {/* Logo */}
+          <div>
+            <h4 className="text-white uppercase tracking-[0.2em] text-sm mb-5">
+              Contact Us
+            </h4>
+
+            <div className="space-y-4 text-sm">
+              <div className="flex items-start gap-3">
+                <Phone size={18} className="text-amber-400 mt-0.5" />
+                <div>
+                  <p>+91 98765 43210</p>
+                  <p>+91 98765 43211</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Mail size={18} className="text-amber-400 mt-0.5" />
+                <p>info@auraandgem.com</p>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <MapPin size={18} className="text-amber-400 mt-0.5" />
+                <p>
+                  Shop No. 12, MG Road,
+                  <br />
+                  Jaipur, Rajasthan,
+                  <br />
+                  India - 302001
+                </p>
+              </div>
+
+              <div className="flex items-start gap-3">
+                <Clock size={18} className="text-amber-400 mt-0.5" />
+                <p>
+                  Mon - Sat
+                  <br />
+                  10:00 AM - 8:00 PM
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Explore */}
+          <div>
+            <h4 className="text-white font-serif uppercase tracking-[0.2em] text-sm mb-6">
+              Explore
+            </h4>
+
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/collections"
+                  className="hover:text-amber-400 transition"
+                >
+                  All Collections
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/collections"
+                  className="hover:text-amber-400 transition"
+                >
+                  New Arrivals
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/bespoke"
+                  className="hover:text-amber-400 transition"
+                >
+                  Bespoke Design
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/gemstones"
+                  className="hover:text-amber-400 transition"
+                >
+                  Gemstones
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Assistance */}
+          <div>
+            <h4 className="text-white font-serif uppercase tracking-[0.2em] text-sm mb-6">
+              Assistance
+            </h4>
+
+            <ul className="space-y-4 text-sm">
+              <li>
+                <Link
+                  href="/contact-us"
+                  className="hover:text-amber-400 transition"
+                >
+                  Contact Us
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/terms-and-conditions"
+                  className="hover:text-amber-400 transition"
+                >
+                  Shipping & Returns
+                </Link>
+              </li>
+
+              <li>
+                <Link
+                  href="/care-guide"
+                  className="hover:text-amber-400 transition"
+                >
+                  Care Guide
+                </Link>
+              </li>
+
+              <li>
+                <Link href="/faq" className="hover:text-amber-400 transition">
+                  FAQ
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Store Map */}
+          <div>
+            <h4 className="text-white font-serif uppercase tracking-[0.2em] text-sm mb-6">
+              Visit Our Store
+            </h4>
+
+            <div className="overflow-hidden rounded-lg border border-neutral-800">
+              <iframe
+                src="https://www.google.com/maps?q=Jaipur,Rajasthan&output=embed"
+                width="100%"
+                height="240"
+                loading="lazy"
+                allowFullScreen
+                className="w-full h-60"
+              />
+            </div>
+
+            <p className="text-sm text-neutral-400 mt-4">
+              Visit our showroom to experience our handcrafted jewellery
+              collection in person.
+            </p>
+          </div>
+        </div>
+
+        {/* Bottom */}
+
+        <div className="mt-14 border-t border-neutral-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
+          <p className="text-xs text-neutral-500">
+            © {new Date().getFullYear()} Aura & Gem. All Rights Reserved.
           </p>
-        </div>
-        
-        <div>
-          <h4 className="text-white font-serif uppercase tracking-widest text-sm mb-6">Explore</h4>
-          <ul className="space-y-4 text-sm">
-            <li><Link href="/collections" className="hover:text-white transition-colors">All Collections</Link></li>
-            <li><Link href="/collections" className="hover:text-white transition-colors">New Arrivals</Link></li>
-            <li><Link href="/bespoke" className="hover:text-white transition-colors">Bespoke Design</Link></li>
-            <li><Link href="/collections" className="hover:text-white transition-colors">Gift Guide</Link></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 className="text-white font-serif uppercase tracking-widest text-sm mb-6">Assistance</h4>
-          <ul className="space-y-4 text-sm">
-            <li><Link href="/contact-us" className="hover:text-white transition-colors">Contact Us</Link></li>
-            <li><Link href="/terms-and-conditions" className="hover:text-white transition-colors">Shipping & Returns</Link></li>
-            <li><Link href="/care-guide" className="hover:text-white transition-colors">Care Guide</Link></li>
-            <li><Link href="/faq" className="hover:text-white transition-colors">FAQ</Link></li>
-          </ul>
-        </div>
-        
-        <div>
-          <h4 className="text-white font-serif uppercase tracking-widest text-sm mb-6">Newsletter</h4>
-          <p className="text-sm text-neutral-400 mb-4">Subscribe to receive updates, access to exclusive deals, and more.</p>
-          <form className="flex gap-2">
-            <input 
-              type="email" 
-              placeholder="Enter your email address" 
-              className="bg-neutral-900 border border-neutral-800 text-white px-4 py-2 w-full text-sm focus:outline-none focus:border-neutral-600 transition-colors"
-            />
-            <button className="bg-white text-neutral-950 px-4 py-2 text-sm uppercase tracking-wider font-medium hover:bg-neutral-200 transition-colors">
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
-      
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-16 pt-8 border-t border-neutral-900 text-xs text-neutral-500 flex flex-col md:flex-row justify-between items-center">
-        <p>&copy; {new Date().getFullYear()} Aura & Gem. All rights reserved.</p>
-        <div className="flex space-x-6 mt-4 md:mt-0">
-          <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-          <Link href="/terms-and-conditions" className="hover:text-white transition-colors">Terms & Conditions</Link>
-           <Link href="/disclaimer" className="hover:text-white transition-colors">Disclaimer</Link>
-          
+
+          <div className="flex flex-wrap gap-6 text-xs">
+            <Link
+              href="/privacy-policy"
+              className="hover:text-white transition"
+            >
+              Privacy Policy
+            </Link>
+
+            <Link
+              href="/terms-and-conditions"
+              className="hover:text-white transition"
+            >
+              Terms & Conditions
+            </Link>
+
+            <Link href="/disclaimer" className="hover:text-white transition">
+              Disclaimer
+            </Link>
+          </div>
         </div>
       </div>
     </footer>
