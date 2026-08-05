@@ -3,7 +3,6 @@ import FeaturedCollection from "@/components/FeaturedCollection";
 import Craftsmanship from "@/components/Craftsmanship";
 import FAQ from "@/components/Faq/FAQ";
 import { Award, Gem, PackageCheck, Shield } from "lucide-react";
-
 import Link from "next/link";
 import { PhoneCall, ArrowRight } from "lucide-react";
 import Image from "next/image";
@@ -83,8 +82,8 @@ const products = [
 
 export default function Home() {
   return (
-    <div className="flex flex-col min-h-screen">
-      <Hero />
+    <div className="flex flex-col">
+      <Hero /> 
       <section className="border-y border-[#e9d9c4] bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 divide-y divide-[#ece5da] md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
