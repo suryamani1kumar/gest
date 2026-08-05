@@ -4,12 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  Autoplay,
-  Pagination,
-  Navigation,
-  EffectFade,
-} from "swiper/modules";
+import { Autoplay, Pagination, Navigation, EffectFade } from "swiper/modules";
 
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
@@ -20,7 +15,7 @@ import "swiper/css/effect-fade";
 
 const slides = [
   {
-    image: "/images/hero.png",
+    image: "/images/banner1.jpg",
     subtitle: "The High Jewelry Collection",
     title: "Elegance Forged in",
     italic: "Precious Time",
@@ -28,7 +23,7 @@ const slides = [
       "Discover exceptional craftsmanship and rare gemstones curated for those who appreciate extraordinary luxury.",
   },
   {
-    image: "/images/ring.png",
+    image: "/images/banner2.jpg",
     subtitle: "Luxury Diamonds",
     title: "Timeless",
     italic: "Brilliance",
@@ -36,7 +31,15 @@ const slides = [
       "Exclusive diamond jewellery designed with perfection and elegance.",
   },
   {
-    image: "/images/hero.png",
+    image: "/images/banner3.jpg",
+    subtitle: "Natural Gemstones",
+    title: "Rare",
+    italic: "Treasures",
+    description:
+      "Explore premium emeralds, rubies, sapphires, and exceptional gemstones.",
+  },
+  {
+    image: "/images/banner4.jpg",
     subtitle: "Natural Gemstones",
     title: "Rare",
     italic: "Treasures",
@@ -99,9 +102,7 @@ export default function Hero() {
                   >
                     {slide.title}
                     <br />
-                    <span className="italic font-light">
-                      {slide.italic}
-                    </span>
+                    <span className="italic font-light">{slide.italic}</span>
                   </motion.h1>
 
                   <motion.p
@@ -134,16 +135,12 @@ export default function Hero() {
       </Swiper>
 
       {/* Previous Button */}
-      <button
-        className="hero-prev absolute  cursor-pointer left-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black"
-      >
+      <button className="hero-prev absolute  cursor-pointer left-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black">
         <ChevronLeft size={28} />
       </button>
 
       {/* Next Button */}
-      <button
-        className="hero-next absolute cursor-pointer right-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black"
-      >
+      <button className="hero-next absolute cursor-pointer right-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-white/40 bg-black/40 text-white backdrop-blur-md transition-all duration-300 hover:bg-white hover:text-black">
         <ChevronRight size={28} />
       </button>
     </section>

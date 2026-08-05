@@ -173,21 +173,6 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
           </button>
         </div>
 
-        {/* Search */}
-        <div className="px-5 py-3 border-b border-gray-100">
-          <div className="relative">
-            <Search
-              size={16}
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"
-            />
-            <input
-              type="text"
-              placeholder="Search jewellery…"
-              className="w-full border border-gray-200 rounded-full py-2.5 pl-9 pr-4 text-sm outline-none focus:border-red-700"
-            />
-          </div>
-        </div>
-
         {/* Nav Accordion — scrollable */}
         <div className="flex-1 overflow-y-auto">
           {mobileCategories.map((cat) => (

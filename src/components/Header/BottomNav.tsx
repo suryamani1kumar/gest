@@ -33,56 +33,7 @@ type Category = {
 };
 
 const categories: Category[] = [
-  {
-    name: "All Jewellery",
-    href: "/collections/all",
-    icon: <Sparkles size={18} />,
-    submenu: [
-      {
-        title: "Shop By Category",
-        links: ["Necklaces", "Chains", "Pendants", "Bracelets", "Bangles", "Mangalsutra"],
-      },
-      {
-        title: "Collections",
-        links: ["New Arrival", "Office Wear", "Temple Jewellery", "Minimal", "Traditional"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=400&q=80",
-    imageLabel: "All Jewellery",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Jewellery for Every Sparkle",
-    promoSub: "Discover 6500+ Exquisite Designs.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
-      "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=80&q=80",
-    ],
-  },
-  {
-    name: "Gold",
-    href: "/collections/gold",
-    icon: <Gem size={18} />,
-    submenu: [
-      {
-        title: "Gold Jewellery",
-        links: ["Gold Rings", "Gold Chains", "Gold Earrings", "Gold Pendants", "Gold Bangles"],
-      },
-      {
-        title: "By Occasion",
-        links: ["Bridal Gold", "Daily Wear Gold", "Office Gold", "Party Gold"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=400&q=80",
-    imageLabel: "Pure Gold",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Gold for Every Occasion",
-    promoSub: "Discover 3000+ Gold Designs.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?w=80&q=80",
-      "https://images.unsplash.com/photo-1609609789754-3ffc0b8bb6da?w=80&q=80",
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=80&q=80",
-    ],
-  },
+
   {
     name: "Diamond",
     href: "/collections/diamond",
@@ -104,7 +55,8 @@ const categories: Category[] = [
         ],
       },
     ],
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
     imageLabel: "Natural Diamonds",
     imageSubLabel: "Explore Now",
     promoTitle: "Diamonds for Every Sparkle",
@@ -115,77 +67,60 @@ const categories: Category[] = [
       "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
     ],
   },
-  {
-    name: "Healing Crystals",
-    href: "/collections/Healing Crystals",
-    icon: <Circle size={18} />,
-    submenu: [
-      {
-        title: "Earring Styles",
-        links: ["Studs", "Hoops", "Jhumkas", "Drop Earrings", "Chandbalis"],
-      },
-      {
-        title: "By Material",
-        links: ["Gold Earrings", "Diamond Earrings", "Silver Earrings"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=400&q=80",
-    imageLabel: "Earrings",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Earrings for Every Mood",
-    promoSub: "Explore 2000+ Styles.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=80&q=80",
-      "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
-      "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
-    ],
-  },
-  {
-    name: "Rings",
-    href: "/collections/rings",
-    icon: <Circle size={18} />,
-    submenu: [
-      {
-        title: "Ring Types",
-        links: ["Engagement Rings", "Wedding Bands", "Statement Rings", "Stackable Rings"],
-      },
-      {
-        title: "By Material",
-        links: ["Gold Rings", "Diamond Rings", "Silver Rings"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
-    imageLabel: "Rings",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Rings for Every Moment",
-    promoSub: "Find Your Perfect Ring.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=80&q=80",
-      "https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=80&q=80",
-      "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=80&q=80",
-    ],
-  },
-  {
-    name: "Mala",
-    href: "/collections/mala",
-    icon: <Heart size={18} />,
-    submenu: [
-      {
-        title: "Daily Essentials",
-        links: ["Light Necklaces", "Simple Earrings", "Thin Bangles", "Delicate Rings"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80",
-    imageLabel: "Daily Wear",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Everyday Elegance",
-    promoSub: "Light & Wearable Designs.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
-      "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
-      "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
-    ],
-  },
+  // {
+  //   name: "Healing Crystals",
+  //   href: "/collections/Healing Crystals",
+  //   icon: <Circle size={18} />,
+  //   submenu: [
+  //     {
+  //       title: "Earring Styles",
+  //       links: ["Studs", "Hoops", "Jhumkas", "Drop Earrings", "Chandbalis"],
+  //     },
+  //     {
+  //       title: "By Material",
+  //       links: ["Gold Earrings", "Diamond Earrings", "Silver Earrings"],
+  //     },
+  //   ],
+  //   image:
+  //     "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=400&q=80",
+  //   imageLabel: "Earrings",
+  //   imageSubLabel: "Explore Now",
+  //   promoTitle: "Earrings for Every Mood",
+  //   promoSub: "Explore 2000+ Styles.",
+  //   promoImages: [
+  //     "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
+  //   ],
+  // },
+
+  // {
+  //   name: "Mala",
+  //   href: "/collections/mala",
+  //   icon: <Heart size={18} />,
+  //   submenu: [
+  //     {
+  //       title: "Daily Essentials",
+  //       links: [
+  //         "Light Necklaces",
+  //         "Simple Earrings",
+  //         "Thin Bangles",
+  //         "Delicate Rings",
+  //       ],
+  //     },
+  //   ],
+  //   image:
+  //     "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80",
+  //   imageLabel: "Daily Wear",
+  //   imageSubLabel: "Explore Now",
+  //   promoTitle: "Everyday Elegance",
+  //   promoSub: "Light & Wearable Designs.",
+  //   promoImages: [
+  //     "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
+  //   ],
+  // },
   {
     name: "Gemstone",
     href: "/collections/gemstone",
@@ -200,7 +135,8 @@ const categories: Category[] = [
         links: ["Gemstone Rings", "Gemstone Necklaces", "Gemstone Earrings"],
       },
     ],
-    image: "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&q=80",
     imageLabel: "Gemstones",
     imageSubLabel: "Explore Now",
     promoTitle: "Coloured Gemstone Magic",
@@ -218,14 +154,20 @@ const categories: Category[] = [
     submenu: [
       {
         title: "Bridal Sets",
-        links: ["Bridal Necklace Sets", "Bridal Earrings", "Bridal Bangles", "Bridal Maangtikka"],
+        links: [
+          "Bridal Necklace Sets",
+          "Bridal Earrings",
+          "Bridal Bangles",
+          "Bridal Maangtikka",
+        ],
       },
       {
         title: "Groom's Collection",
         links: ["Groom Rings", "Groom Chains", "Groom Bracelets"],
       },
     ],
-    image: "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=400&q=80",
+    image:
+      "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=400&q=80",
     imageLabel: "Wedding Collection",
     imageSubLabel: "Explore Now",
     promoTitle: "Dream Wedding Jewellery",
@@ -236,31 +178,6 @@ const categories: Category[] = [
       "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
     ],
   },
-  {
-    name: "Gifting",
-    href: "/collections/gifting",
-    icon: <Gift size={18} />,
-    submenu: [
-      {
-        title: "Gift By Occasion",
-        links: ["Birthday", "Anniversary", "Valentine's Day", "Festivals", "Baby Shower"],
-      },
-      {
-        title: "Gift By Budget",
-        links: ["Under ₹5,000", "₹5,000–₹15,000", "₹15,000+"],
-      },
-    ],
-    image: "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=400&q=80",
-    imageLabel: "Gift Someone Special",
-    imageSubLabel: "Explore Now",
-    promoTitle: "The Perfect Gift",
-    promoSub: "For Every Special Moment.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=80&q=80",
-      "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
-      "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
-    ],
-  }
 ];
 
 const BottomNav = () => {
@@ -342,7 +259,9 @@ const BottomNav = () => {
                   <p className="font-semibold text-sm text-gray-800 leading-tight">
                     {activeCategory.promoTitle}
                   </p>
-                  <p className="text-xs text-gray-500 mt-0.5">{activeCategory.promoSub}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">
+                    {activeCategory.promoSub}
+                  </p>
                 </div>
                 <Link
                   href={activeCategory.href}
@@ -361,7 +280,9 @@ const BottomNav = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <div className="absolute bottom-3 left-3 text-white">
-                  <p className="font-semibold text-sm leading-tight">{activeCategory.imageLabel}</p>
+                  <p className="font-semibold text-sm leading-tight">
+                    {activeCategory.imageLabel}
+                  </p>
                   <Link
                     href={activeCategory.href}
                     className="text-xs flex items-center gap-1 text-amber-300 hover:text-amber-200 transition-colors mt-0.5"
@@ -379,7 +300,7 @@ const BottomNav = () => {
       {/* ── Nav bar ── */}
       <div className="hidden md:block bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-between overflow-x-auto whitespace-nowrap py-3 text-gray-600 text-sm gap-1">
+          <div className="flex items-center justify-center overflow-x-auto whitespace-nowrap py-3 text-gray-600 text-sm gap-5">
             {categories.map((cat, index) => (
               <div
                 key={cat.name}
