@@ -16,11 +16,14 @@
 }
 
 body {
-  background-color: var(--background);
+  background: var(--background);
   color: var(--foreground);
+  overflow-x: hidden;
 }
 
-/* Custom scrollbar */
+/* ================================
+   Scrollbar
+================================ */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -30,35 +33,80 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #a3a3a3;
+  background: #9ca3af;
+  border-radius: 999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #737373;
+  background: #6b7280;
 }
+
+/* ================================
+   Swiper
+================================ */
 
 .swiper {
   width: 100%;
-  height: calc(100vh-116px);
+  height: calc(100vh - 116px);
 }
 
 .swiper-slide {
   width: 100%;
-  height: calc(100vh-116px);
+  height: calc(100vh - 116px);
 }
+
+@media (min-width: 768px) {
+  .swiper,
+  .swiper-slide {
+    height: calc(100vh - 130px);
+  }
+}
+
+/* Pagination */
 
 .swiper-pagination {
-  bottom: 40px !important;
+  bottom: 30px !important;
+  left: 50% !important;
+  transform: translateX(-50%);
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  z-index: 20;
 }
 
-.swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background: white;
-  opacity: 0.5;
+/* Hero Swiper Pagination */
+.heroSwiper .swiper-pagination {
+  position: absolute;
+  bottom: 30px !important;
+
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+
+  width: fit-content !important;
+
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  z-index: 20;
 }
 
-.swiper-pagination-bullet-active {
-  background: #d4af37;
-  opacity: 1;
+/* Bullet */
+.heroSwiper .swiper-pagination-bullet {
+  width: 10px !important;
+  height: 10px !important;
+  margin: 0 !important;
+  border-radius: 999px;
+  background: rgba(255,255,255,.45) !important;
+  opacity: 1 !important;
+  transition: all .35s ease;
+}
+
+/* Active Bullet */
+.heroSwiper .swiper-pagination-bullet-active {
+  width: 34px !important;
+  height: 10px !important;
+  background: #caa146 !important;
 }
