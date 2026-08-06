@@ -122,7 +122,7 @@ const slides = [
 
 export default function Hero() {
   return (
-    <section className="relative h-[calc(100vh-116px)] md:h-[calc(100vh-130px)] w-full overflow-hidden">
+    <section className="relative h-[380px] md:h-[calc(100vh-130px)] w-full overflow-hidden">
       <Swiper
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         effect="fade"
@@ -139,11 +139,11 @@ export default function Hero() {
           prevEl: ".hero-prev",
           nextEl: ".hero-next",
         }}
-        className="h-[calc(100vh-116px)] md:h-[calc(100vh-130px)] w-full heroSwiper"
+        className="h-[380px] md:h-[calc(100vh-130px)] w-full heroSwiper"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[calc(100vh-116px)] md:h-[calc(100vh-130px)] w-full">
+            <div className="relative h-[380px] md:h-[calc(100vh-130px)] w-full">
               {/* Background Image */}
               <Image
                 src={slide.image}
@@ -157,23 +157,23 @@ export default function Hero() {
               <div className="relative z-10 flex h-full items-center">
                 <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
                   <div className="max-w-2xl text-white">
-                    <span className="mb-2 block text-xs tracking-[3px] uppercase text-[#C9A227] sm:text-sm md:text-lg md:tracking-[5px]">
+                    <span className="mb-1.5 block text-xs tracking-[3px] uppercase text-[#C9A227] sm:text-sm md:text-lg md:tracking-[5px]">
                       {slide.subtitle}
                     </span>
 
-                    <h1 className="font-serif text-3xl font-bold text-[#C9A227] sm:text-5xl lg:text-6xl">
+                    <h1 className="font-serif text-2xl font-bold text-[#C9A227] sm:text-5xl lg:text-6xl">
                       {slide.title}
                     </h1>
 
-                    <div className="my-5 h-px w-40 bg-[#C9A227] sm:w-60" />
+                    <div className="my-3 md:my-5 h-px w-32 bg-[#C9A227] sm:w-60" />
 
-                    <p className="max-w-xl text-sm leading-7 text-neutral-200 sm:text-base md:leading-8">
+                    <p className="max-w-xl text-xs sm:text-sm leading-6 sm:leading-7 text-neutral-200 md:text-base md:leading-8 line-clamp-3 sm:line-clamp-none">
                       {slide.description}
                     </p>
 
-                    <div className="mt-8">
+                    <div className="mt-5 md:mt-8">
                       <Link href={slide.buttonLink}>
-                        <button className="rounded-lg bg-[#C9A227] px-5 py-3 text-base font-semibold text-[#1A1A1A] transition hover:bg-[#B8860B] hover:text-white sm:px-6 sm:text-lg">
+                        <button className="rounded-lg bg-[#C9A227] px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-semibold text-[#1A1A1A] transition hover:bg-[#B8860B] hover:text-white sm:text-lg cursor-pointer">
                           {slide.buttonText} →
                         </button>
                       </Link>
