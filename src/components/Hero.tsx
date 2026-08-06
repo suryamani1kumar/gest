@@ -154,52 +154,53 @@ export default function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
                 sizes="100vw"
               />
+              <div className="relative z-10 flex h-full items-center">
+                <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
+                  <div className="max-w-2xl text-white">
+                    <span className="mb-2 block text-xs tracking-[3px] uppercase text-[#ffd371] sm:text-sm md:text-lg md:tracking-[5px]">
+                      {slide.subtitle}
+                    </span>
 
-              {/* Content */}
-              <div className="relative flex z-10 max-w-7xl mx-auto h-full items-center">
-                <div className="flex flex-col justify-center text-white">
-                  <span className="mb-2 text-sm md:text-lg tracking-[5px] uppercase text-[#ffd371]">
-                    {slide.subtitle}
-                  </span>
+                    <h1 className="font-serif text-3xl font-bold text-[#ffd371] sm:text-5xl lg:text-6xl">
+                      {slide.title}
+                    </h1>
 
-                  <h1 className="font-serif text-3xl md:text-5xl font-bold text-[#ffd371]">
-                    {slide.title}
-                  </h1>
+                    <div className="my-5 h-px w-40 bg-amber-500 sm:w-60" />
 
-                  <div className="my-5 h-px w-60 bg-amber-500" />
+                    <p className="max-w-xl text-sm leading-7 text-neutral-200 sm:text-base md:leading-8">
+                      {slide.description}
+                    </p>
 
-                  <p className="max-w-xl text-base md:text-md leading-9 text-neutral-200">
-                    {slide.description}
-                  </p>
-                  {/* Button */}
-                  <div className="mt-8">
-                    <Link href={slide.buttonLink}>
-                      <button className="rounded-lg bg-[#caa146] px-6 py-3 cursor-pointer text-lg font-semibold text-black transition hover:bg-amber-300">
-                        {slide.buttonText} →
-                      </button>
-                    </Link>
-                  </div>
-                  {/* Features */}
-                  <div className="mt-10 hidden md:flex flex-wrap justify-start gap-6">
-                    {slide.features.map((item, index) => (
-                      <div
-                        key={index}
-                        className="flex flex-col items-center w-fit"
-                      >
-                        <Image
-                          src={item.icon}
-                          alt={item.title}
-                          width={65}
-                          height={65}
-                          className="object-contain"
-                        />
+                    <div className="mt-8">
+                      <Link href={slide.buttonLink}>
+                        <button className="rounded-lg bg-[#caa146] px-5 py-3 text-base font-semibold text-black transition hover:bg-amber-300 sm:px-6 sm:text-lg">
+                          {slide.buttonText} →
+                        </button>
+                      </Link>
+                    </div>
 
-                        <p
-                          className="mt-3 text-center text-xs font-medium uppercase tracking-wide text-white"
-                          dangerouslySetInnerHTML={{ __html: item.title }}
-                        />
-                      </div>
-                    ))}
+                    {/* Features */}
+                    <div className="mt-10 hidden md:flex md:flex-wrap md:justify-start md:gap-8">
+                      {slide.features.map((item, index) => (
+                        <div
+                          key={index}
+                          className="flex flex-col items-center w-fit"
+                        >
+                          <Image
+                            src={item.icon}
+                            alt={item.title}
+                            width={65}
+                            height={65}
+                            className="object-contain"
+                          />
+
+                          <p
+                            className="mt-3 text-center text-xs font-medium uppercase tracking-wide text-white"
+                            dangerouslySetInnerHTML={{ __html: item.title }}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -207,13 +208,12 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
-
-      <button className="hero-prev absolute  cursor-pointer left-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition-all duration-300 hover:bg-[#caa146] hover:text-black">
-        <ChevronLeft size={28} />
+      <button className="hero-prev absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition hover:bg-[#caa146] hover:text-black lg:flex">
+        <ChevronLeft size={24} />
       </button>
 
-      <button className="hero-next absolute cursor-pointer right-6 top-1/2 z-10 flex h-14 w-14 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition-all duration-300 hover:bg-[#caa146] hover:text-black">
-        <ChevronRight size={28} />
+      <button className="hero-next absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition hover:bg-[#caa146] hover:text-black lg:flex">
+        <ChevronRight size={24} />
       </button>
     </section>
   );
