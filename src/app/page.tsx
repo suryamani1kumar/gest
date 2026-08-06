@@ -193,7 +193,7 @@ export default function Home() {
                 key={product.id}
                 className="group relative block overflow-hidden border border-[#E5E7EB] pb-4 hover:shadow-md transition-all duration-300 rounded-xl bg-white"
               >
-                <Link href={`/collections/${product.id}`} className="block">
+                <Link href={`/collections/gemstones/${product.id}`} className="block">
                   <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
                     <Image
                       src={product.image}
