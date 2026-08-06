@@ -11,7 +11,7 @@ export const productCategories = [
     tagline: "Solitaires & Gemstones",
     count: "450+ Designs",
     image: "/images/ring.png",
-    link: "/collections/rings",
+    link: "/collections/gemstones",
   },
   {
     id: "earrings",
@@ -19,7 +19,7 @@ export const productCategories = [
     tagline: "Studs, Drops & Jhumkas",
     count: "620+ Designs",
     image: "/images/earrings.png",
-    link: "/collections/earrings",
+    link: "/collections/gemstones",
   },
   {
     id: "necklaces",
@@ -27,7 +27,7 @@ export const productCategories = [
     tagline: "Chains & Heritage Sets",
     count: "380+ Designs",
     image: "/images/hero.png",
-    link: "/collections/necklaces",
+    link: "/collections/gemstones",
   },
   {
     id: "gemstones",
@@ -35,7 +35,7 @@ export const productCategories = [
     tagline: "Certified Ruby, Sapphire & Emerald",
     count: "100% Certified",
     image: "/images/gemstones/manik.png",
-    link: "/gemstones",
+    link: "/collections/rudraksha",
   },
   {
     id: "rudraksha",
@@ -51,7 +51,7 @@ export const productCategories = [
     tagline: "Classic Gold & Diamond Kadas",
     count: "290+ Designs",
     image: "/images/banner2.jpg",
-    link: "/collections/bangles",
+    link: "/collections/gemstones",
   },
 ];
 
