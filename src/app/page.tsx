@@ -1,5 +1,5 @@
 import Hero from "@/components/Hero";
-import FeaturedCollection from "@/components/FeaturedCollection";
+import CategorySection from "@/components/CategorySection";
 import Craftsmanship from "@/components/Craftsmanship";
 import FAQ from "@/components/Faq/FAQ";
 import { Award, Gem, PackageCheck, Shield } from "lucide-react";
@@ -122,7 +122,7 @@ export default function Home() {
         </div>
       </section>
 
-      <FeaturedCollection />
+      <CategorySection />
 
       <section className="py-20">
         <div className="mx-auto max-w-7xl px-5">
@@ -173,14 +173,28 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-16">
+        </div>
+      </section>
+
+      <section className="py-16 bg-[#FFFDF8]">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center px-4 sm:px-6 lg:px-8">
+            <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
+              Curated Selection
+            </span>
+            <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">
+              Featured Collections
+            </h2>
+            <div className="w-24 h-px bg-[#C9A227] mx-auto"></div>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-16 max-w-7xl mx-auto">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group relative block overflow-hidden border border-[#E5E7EB] pb-6 hover:shadow-lg transition-shadow duration-300 rounded-xl bg-white"
+                className="group relative block overflow-hidden border border-[#E5E7EB] pb-4 hover:shadow-md transition-all duration-300 rounded-xl bg-white"
               >
                 <Link href={`/collections/${product.id}`} className="block">
-                  <div className="aspect-square overflow-hidden bg-neutral-100 relative mb-6">
+                  <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -189,20 +203,20 @@ export default function Home() {
                     />
                   </div>
 
-                  <div className="px-6 text-center">
-                    <span className="text-[#6B7280] uppercase tracking-widest text-xs font-semibold block mb-2">
+                  <div className="px-3 sm:px-4 text-center">
+                    <span className="text-[#6B7280] uppercase tracking-widest text-[10px] sm:text-xs font-semibold block mb-1">
                       {product.category}
                     </span>
-                    <h3 className="text-lg font-serif text-[#1A1A1A] mb-2">
+                    <h3 className="text-sm sm:text-base font-serif text-[#1A1A1A] mb-1 line-clamp-1">
                       {product.name}
                     </h3>
-                    <p className="text-[#7A1F1F] font-medium mb-4">
+                    <p className="text-[#7A1F1F] font-semibold text-sm sm:text-base mb-2">
                       {product.price}
                     </p>
                   </div>
                 </Link>
-                <div className="px-6 text-center">
-                  <button className="text-[#1A1A1A] border-b border-[#1A1A1A] pb-1 uppercase tracking-wider text-xs hover:text-[#B8860B] hover:border-[#B8860B] transition-colors font-medium relative z-10 cursor-pointer">
+                <div className="px-3 sm:px-4 text-center">
+                  <button className="text-[#1A1A1A] border-b border-[#1A1A1A] pb-0.5 uppercase tracking-wider text-[11px] hover:text-[#B8860B] hover:border-[#B8860B] transition-colors font-medium relative z-10 cursor-pointer">
                     Add to Cart
                   </button>
                 </div>
