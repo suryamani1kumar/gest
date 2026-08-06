@@ -17,7 +17,11 @@ import {
   Gift,
   Sparkles,
   ArrowUpRight,
+  PhoneCall,
+  MessageCircleMore,
 } from "lucide-react";
+import { Tfn1 } from "@/lib/data";
+import { useRouter } from "next/navigation";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
@@ -27,19 +31,43 @@ const mobileCategories = [
     name: "All Jewellery",
     icon: <Sparkles size={18} />,
     href: "/collections/all",
-    links: ["Necklaces", "Chains", "Pendants", "Bracelets", "Bangles", "Mangalsutra", "New Arrival", "Temple Jewellery"],
+    links: [
+      "Necklaces",
+      "Chains",
+      "Pendants",
+      "Bracelets",
+      "Bangles",
+      "Mangalsutra",
+      "New Arrival",
+      "Temple Jewellery",
+    ],
   },
   {
     name: "Gold",
     icon: <Gem size={18} />,
     href: "/collections/gold",
-    links: ["Gold Rings", "Gold Chains", "Gold Earrings", "Gold Pendants", "Gold Bangles", "Bridal Gold"],
+    links: [
+      "Gold Rings",
+      "Gold Chains",
+      "Gold Earrings",
+      "Gold Pendants",
+      "Gold Bangles",
+      "Bridal Gold",
+    ],
   },
   {
     name: "Diamond",
     icon: <Diamond size={18} />,
     href: "/collections/diamond",
-    links: ["All Diamond", "Diamond Bangles", "Diamond Bracelets", "Diamond Earrings", "Diamond Rings", "Diamond Necklaces", "Diamond Pendants"],
+    links: [
+      "All Diamond",
+      "Diamond Bangles",
+      "Diamond Bracelets",
+      "Diamond Earrings",
+      "Diamond Rings",
+      "Diamond Necklaces",
+      "Diamond Pendants",
+    ],
   },
   {
     name: "Earrings",
@@ -51,13 +79,23 @@ const mobileCategories = [
     name: "Rings",
     icon: <Circle size={18} />,
     href: "/collections/rings",
-    links: ["Engagement Rings", "Wedding Bands", "Statement Rings", "Stackable Rings"],
+    links: [
+      "Engagement Rings",
+      "Wedding Bands",
+      "Statement Rings",
+      "Stackable Rings",
+    ],
   },
   {
     name: "Daily Wear",
     icon: <Heart size={18} />,
     href: "/collections/daily-wear",
-    links: ["Light Necklaces", "Simple Earrings", "Thin Bangles", "Delicate Rings"],
+    links: [
+      "Light Necklaces",
+      "Simple Earrings",
+      "Thin Bangles",
+      "Delicate Rings",
+    ],
   },
   {
     name: "Gemstone",
@@ -69,19 +107,37 @@ const mobileCategories = [
     name: "Wedding",
     icon: <Diamond size={18} />,
     href: "/collections/wedding",
-    links: ["Bridal Necklace Sets", "Bridal Earrings", "Bridal Bangles", "Groom Rings", "Groom Chains"],
+    links: [
+      "Bridal Necklace Sets",
+      "Bridal Earrings",
+      "Bridal Bangles",
+      "Groom Rings",
+      "Groom Chains",
+    ],
   },
   {
     name: "Gifting",
     icon: <Gift size={18} />,
     href: "/collections/gifting",
-    links: ["Birthday", "Anniversary", "Valentine's Day", "Festivals", "Under ₹5,000", "₹5,000–₹15,000"],
+    links: [
+      "Birthday",
+      "Anniversary",
+      "Valentine's Day",
+      "Festivals",
+      "Under ₹5,000",
+      "₹5,000–₹15,000",
+    ],
   },
   {
     name: "More",
     icon: <Menu size={18} />,
     href: "#",
-    links: ["Silver Jewellery", "Platinum Jewellery", "Coins & Bars", "Accessories"],
+    links: [
+      "Silver Jewellery",
+      "Platinum Jewellery",
+      "Coins & Bars",
+      "Accessories",
+    ],
   },
 ];
 
@@ -179,39 +235,6 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
             <AccordionItem key={cat.name} cat={cat} onClose={onClose} />
           ))}
         </div>
-
-        {/* Bottom action bar */}
-        <div className="border-t border-gray-100 px-5 py-4 flex items-center justify-around text-gray-600">
-          <Link
-            href="/wishlist"
-            onClick={onClose}
-            className="flex flex-col items-center gap-1 text-xs hover:text-red-800 transition-colors"
-          >
-            <Heart size={20} />
-            <span>Wishlist</span>
-          </Link>
-          <Link
-            href="/account"
-            onClick={onClose}
-            className="flex flex-col items-center gap-1 text-xs hover:text-red-800 transition-colors"
-          >
-            <User size={20} />
-            <span>Account</span>
-          </Link>
-          <Link
-            href="/cart"
-            onClick={onClose}
-            className="flex flex-col items-center gap-1 text-xs hover:text-red-800 transition-colors relative"
-          >
-            <div className="relative">
-              <ShoppingBag size={20} />
-              <span className="absolute -top-2 -right-2 bg-red-800 text-white rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
-                0
-              </span>
-            </div>
-            <span>Cart</span>
-          </Link>
-        </div>
       </div>
 
       <style>{`
@@ -227,8 +250,16 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
 /* ─────────────────────────────────────────
    Main Navbar
 ───────────────────────────────────────── */
-export default function Navbar() {
+export default function Navbar({
+  accountOpen,
+  setAccountOpen,
+}: {
+  accountOpen: boolean;
+  setAccountOpen: (open: boolean) => void;
+}) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [showAccountMenu, setShowAccountMenu] = useState(false);
+  const router = useRouter();
 
   return (
     <>
@@ -240,13 +271,12 @@ export default function Navbar() {
               <h1 className="text-2xl md:text-3xl font-bold text-red-800 tracking-wide">
                 Aura
               </h1>
-              <p className="text-xs text-gray-500">Fine Jewellery</p>
             </div>
           </Link>
 
           {/* Desktop Search */}
           <div className="hidden md:flex flex-1 justify-center">
-            <div className="w-full max-w-xl relative">
+            <div className="w-full max-w-lg relative">
               <Search
                 className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
                 size={18}
@@ -254,29 +284,112 @@ export default function Navbar() {
               <input
                 type="text"
                 placeholder="Search for gold necklace"
-                className="w-full border rounded-full py-3 pl-12 pr-24 outline-none focus:border-red-700"
+                className="w-full border rounded-lg py-2 pl-12 pr-24 outline-none focus:border-red-700"
               />
             </div>
           </div>
 
           {/* Desktop Icons */}
-          <div className="hidden md:flex items-center gap-6 text-red-800">
-            <button aria-label="Wishlist">
+          <div className="hidden md:flex items-center gap-10 text-[#1c3b59]">
+            <button
+              onClick={() => router.push("/wishlist")}
+              className="cursor-pointer"
+            >
               <Heart size={22} />
             </button>
-            <button aria-label="Account">
-              <User size={22} />
-            </button>
-            <button className="relative" aria-label="Cart">
+            <div
+              className="relative "
+              onMouseEnter={() => setShowAccountMenu(true)}
+              onMouseLeave={() => setShowAccountMenu(false)}
+            >
+              <button
+                aria-label="Account"
+                className="hover:text-red-600 transition cursor-pointer"
+              >
+                <User size={22} />
+              </button>
+
+              {showAccountMenu && (
+                <div className="absolute left-1/2 top-8 z-50 w-72 overflow-hidden rounded-2xl bg-white shadow-2xl border border-gray-100">
+                  <button
+                    onClick={() => {
+                      setAccountOpen(true);
+                      setShowAccountMenu(false);
+                    }}
+                    className="flex w-full items-center gap-4 px-6 py-5 text-left hover:bg-red-50 transition"
+                  >
+                    <Gift className="text-red-800" size={24} />
+
+                    <div>
+                      <p className="text-xl font-serif text-gray-800">
+                        Log in / Sign up
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Access your account
+                      </p>
+                    </div>
+                  </button>
+
+                  <div className="border-t" />
+
+                  <Link
+                    href="/contact"
+                    className="flex items-center gap-4 px-6 py-5 hover:bg-red-50 transition"
+                  >
+                    <MessageCircleMore className="text-red-800" size={24} />
+
+                    <div>
+                      <p className="text-xl font-serif text-gray-800">
+                        Contact Us
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        We're here to help
+                      </p>
+                    </div>
+                  </Link>
+                </div>
+              )}
+            </div>
+
+            <button
+              className="relative cursor-pointer"
+              aria-label="Cart"
+              onClick={() => router.push("/cart")}
+            >
               <ShoppingBag size={22} />
-              <span className="absolute -top-2 -right-2 bg-red-800 text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+              <span className="absolute -top-2 -right-2 bg-[#1c3b59] text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
                 0
               </span>
             </button>
+            <Link
+              href={`tel:${Tfn1}`}
+              className="flex items-center gap-3 rounded-lg border border-[#1c3b59] px-5 py-2"
+            >
+              <div className="flex items-center justify-center rounded-full bg-white/20">
+                <PhoneCall size={18} />
+              </div>
+
+              <p className="text-base font-bold">{Tfn1}</p>
+            </Link>
           </div>
 
           {/* Mobile: cart + hamburger */}
           <div className="flex md:hidden items-center gap-3 text-red-800">
+            <button
+              aria-label="Account"
+              className="hover:text-red-600 transition cursor-pointer"
+              onClick={() => {
+                setAccountOpen(true);
+              }}
+            >
+              <User size={22} />
+            </button>
+            <button
+              onClick={() => router.push("/wishlist")}
+              className="cursor-pointer"
+            >
+              <Heart size={22} />
+            </button>
             <button className="relative" aria-label="Cart">
               <ShoppingBag size={20} />
               <span className="absolute -top-2 -right-2 bg-red-800 text-white rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
@@ -311,6 +424,54 @@ export default function Navbar() {
 
       {/* Mobile Drawer Modal */}
       {mobileOpen && <MobileMenuModal onClose={() => setMobileOpen(false)} />}
+      {accountOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
+          <div className="relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-[#fff8f2] shadow-2xl">
+            {/* Close */}
+            <button
+              onClick={() => setAccountOpen(false)}
+              className="absolute right-6 top-6 text-gray-600 hover:text-red-700"
+            >
+              ✕
+            </button>
+
+            {/* Left Side */}
+            <div className="hidden w-1/2 bg-gradient-to-br from-amber-50 to-orange-100 p-12 lg:flex flex-col justify-center items-center">
+              <img src="/images/login-offer.png" alt="" className="w-72" />
+            </div>
+
+            {/* Right Side */}
+            <div className="flex w-full flex-col justify-center p-12 lg:w-1/2">
+              <h2 className="text-5xl font-serif font-bold text-gray-800">
+                Welcome
+              </h2>
+
+              <p className="mt-3 text-gray-500">
+                Login or Signup to continue shopping
+              </p>
+
+              <div className="mt-10 flex overflow-hidden rounded-full border">
+                <div className="flex items-center gap-2 border-r px-5">
+                  🇮🇳 +91
+                </div>
+
+                <input
+                  placeholder="Enter mobile number"
+                  className="flex-1 px-5 outline-none"
+                />
+
+                <button className="bg-red-800 px-8 font-semibold text-white hover:bg-red-900">
+                  Request OTP
+                </button>
+              </div>
+
+              <p className="mt-8 text-center text-sm text-gray-500">
+                By continuing you agree to our Terms & Privacy Policy.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }

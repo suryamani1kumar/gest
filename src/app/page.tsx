@@ -83,7 +83,7 @@ const products = [
 export default function Home() {
   return (
     <div className="flex flex-col">
-      <Hero /> 
+      {/* <Hero />  */}
       <section className="border-y border-[#e9d9c4] bg-white">
         <div className="mx-auto max-w-7xl">
           <div className="grid grid-cols-1 divide-y divide-[#ece5da] md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">

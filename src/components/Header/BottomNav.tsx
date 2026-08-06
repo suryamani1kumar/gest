@@ -2,17 +2,9 @@
 
 import Link from "next/link";
 import { useState, useRef } from "react";
-import {
-  Gem,
-  Diamond,
-  Circle,
-  Gift,
-  Heart,
-  Menu,
-  Sparkles,
-  ChevronRight,
-  ArrowUpRight,
-} from "lucide-react";
+import { MdOutlineBrightnessHigh } from "react-icons/md";
+import { IoDiamondOutline } from "react-icons/io5";
+import { HiOutlineChevronRight,HiOutlineArrowUpRight  } from "react-icons/hi2";
 
 type SubGroup = {
   title: string;
@@ -33,40 +25,39 @@ type Category = {
 };
 
 const categories: Category[] = [
-
-  {
-    name: "Diamond",
-    href: "/collections/diamond",
-    icon: <Diamond size={18} />,
-    submenu: [
-      {
-        title: "Diamond Jewellery",
-        links: [
-          "All Diamond",
-          "Diamond Bangles",
-          "Diamond Bracelets",
-          "Diamond Earrings",
-          "Diamond Rings",
-          "Diamond Mangalsutra",
-          "Diamond Necklace Set",
-          "Diamond Necklaces",
-          "Diamond Nose Pins",
-          "Diamond Pendants",
-        ],
-      },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
-    imageLabel: "Natural Diamonds",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Diamonds for Every Sparkle",
-    promoSub: "Discover 6500+ Exquisite Designs.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=80&q=80",
-      "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=80&q=80",
-      "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
-    ],
-  },
+  // {
+  //   name: "Diamond",
+  //   href: "/collections/diamond",
+  //   icon: <Diamond size={18} />,
+  //   submenu: [
+  //     {
+  //       title: "Diamond Jewellery",
+  //       links: [
+  //         "All Diamond",
+  //         "Diamond Bangles",
+  //         "Diamond Bracelets",
+  //         "Diamond Earrings",
+  //         "Diamond Rings",
+  //         "Diamond Mangalsutra",
+  //         "Diamond Necklace Set",
+  //         "Diamond Necklaces",
+  //         "Diamond Nose Pins",
+  //         "Diamond Pendants",
+  //       ],
+  //     },
+  //   ],
+  //   image:
+  //     "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
+  //   imageLabel: "Natural Diamonds",
+  //   imageSubLabel: "Explore Now",
+  //   promoTitle: "Diamonds for Every Sparkle",
+  //   promoSub: "Discover 6500+ Exquisite Designs.",
+  //   promoImages: [
+  //     "https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=80&q=80",
+  //     "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
+  //   ],
+  // },
   // {
   //   name: "Healing Crystals",
   //   href: "/collections/Healing Crystals",
@@ -124,7 +115,7 @@ const categories: Category[] = [
   {
     name: "Gemstone",
     href: "/collections/gemstone",
-    icon: <Gem size={18} />,
+    icon: <IoDiamondOutline size={18} />,
     submenu: [
       {
         title: "By Gemstone",
@@ -150,7 +141,7 @@ const categories: Category[] = [
   {
     name: "Rudraksha",
     href: "/collections/Rudraksha",
-    icon: <Diamond size={18} />,
+    icon: <MdOutlineBrightnessHigh size={18} />,
     submenu: [
       {
         title: "Bridal Sets",
@@ -231,7 +222,7 @@ const BottomNav = () => {
                             className="text-sm text-gray-700 hover:text-red-800 transition-colors flex items-center gap-1 group/link"
                           >
                             <span>{link}</span>
-                            <ChevronRight
+                            <HiOutlineChevronRight
                               size={12}
                               className="opacity-0 group-hover/link:opacity-100 -translate-x-1 group-hover/link:translate-x-0 transition-all"
                             />
@@ -288,7 +279,7 @@ const BottomNav = () => {
                     className="text-xs flex items-center gap-1 text-amber-300 hover:text-amber-200 transition-colors mt-0.5"
                   >
                     {activeCategory.imageSubLabel}
-                    <ArrowUpRight size={12} />
+                    <HiOutlineArrowUpRight size={12} />
                   </Link>
                 </div>
               </div>
@@ -300,7 +291,7 @@ const BottomNav = () => {
       {/* ── Nav bar ── */}
       <div className="hidden md:block bg-white border-t border-gray-100">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-center overflow-x-auto whitespace-nowrap py-3 text-gray-600 text-sm gap-5">
+          <div className="flex items-center justify-center overflow-x-auto whitespace-nowrap py-2 text-gray-600 text-sm gap-5">
             {categories.map((cat, index) => (
               <div
                 key={cat.name}
