@@ -100,7 +100,7 @@ const mobileCategories = [
   {
     name: "Gemstone",
     icon: <Gem size={18} />,
-    href: "/collections/gemstone",
+    href: "/collections/gemstones",
     links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
   },
   {

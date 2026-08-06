@@ -122,7 +122,7 @@ const slides = [
 
 export default function Hero() {
   return (
-    <section className="relative h-[380px] md:h-[calc(100vh-130px)] w-full overflow-hidden">
+    <section className="relative h-[300px] md:h-[calc(100vh-180px)] w-full overflow-hidden">
       <Swiper
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         effect="fade"
@@ -139,11 +139,11 @@ export default function Hero() {
           prevEl: ".hero-prev",
           nextEl: ".hero-next",
         }}
-        className="h-[380px] md:h-[calc(100vh-130px)] w-full heroSwiper"
+        className="h-[300px] md:h-[calc(100vh-180px)] w-full heroSwiper"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[380px] md:h-[calc(100vh-130px)] w-full">
+            <div className="relative h-[300px] md:h-[calc(100vh-180px)] w-full">
               {/* Background Image */}
               <Image
                 src={slide.image}

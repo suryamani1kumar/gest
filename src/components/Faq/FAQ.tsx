@@ -61,11 +61,11 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-[#FFFDF8] py-20">
+    <section className="bg-[#FFFDF8] py-12">
       <div className="mx-auto max-w-7xl px-5">
         {/* Heading */}
 
-        <div className="mb-14 text-center">
+        <div className="mb-10 text-center">
           <h2 className="mt-3 text-4xl font-bold text-[#7A1F1F] md:text-5xl">
             Frequently Asked Questions
           </h2>

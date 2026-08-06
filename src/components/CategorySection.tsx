@@ -59,10 +59,10 @@ export default function CategorySection() {
   const [activeTab, setActiveTab] = useState("all");
 
   return (
-    <section className="py-16 bg-[#FFFDF8]">
+    <section className="py-10 bg-[#FFFDF8]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="text-center mb-12">
+        <div className="text-center mb-8">
           <span className="text-[#7A1F1F] uppercase tracking-[3px] text-xs font-semibold block mb-2">
             Explore By Category
           </span>

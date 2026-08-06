@@ -114,7 +114,7 @@ const categories: Category[] = [
   // },
   {
     name: "Gemstone",
-    href: "/collections/gemstone",
+    href: "/collections/gemstones",
     icon: <IoDiamondOutline size={18} />,
     submenu: [
       {
@@ -140,7 +140,7 @@ const categories: Category[] = [
   },
   {
     name: "Rudraksha",
-    href: "/collections/Rudraksha",
+    href: "/collections/rudraksha",
     icon: <MdOutlineBrightnessHigh size={18} />,
     submenu: [
       {

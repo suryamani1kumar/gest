@@ -124,7 +124,7 @@ export default function Home() {
 
       <CategorySection />
 
-      <section className="py-20">
+      <section className="py-12">
         <div className="mx-auto max-w-7xl px-5">
           <div
             className="relative overflow-hidden rounded-2xl bg-cover bg-center"
@@ -138,7 +138,7 @@ export default function Home() {
             {/* Decorative Blur */}
             <div className="absolute right-0 top-0 h-52 w-52 rounded-full bg-[#C9A227]/20 blur-3xl" />
 
-            <div className="relative z-10 flex flex-col items-center justify-center px-8 py-16 text-center lg:px-20">
+            <div className="relative z-10 flex flex-col items-center justify-center px-8 py-10 text-center lg:px-20">
               <h3 className="max-w-3xl text-2xl font-bold leading-tight text-white md:text-6xl">
                 Looking for the Perfect
                 <span className="block text-[#C9A227]">
@@ -176,7 +176,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-16 bg-[#FFFDF8]">
+      <section className="py-10 bg-[#FFFDF8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center px-4 sm:px-6 lg:px-8">
             <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
@@ -187,7 +187,7 @@ export default function Home() {
             </h2>
             <div className="w-24 h-px bg-[#C9A227] mx-auto"></div>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-16 max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6 mt-10 max-w-7xl mx-auto">
             {products.map((product) => (
               <div
                 key={product.id}
