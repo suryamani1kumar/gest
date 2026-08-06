@@ -1,23 +1,49 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-gold-300: #fde047;
-  --color-gold-400: #facc15;
-  --color-gold-500: #eab308;
-  --color-emerald-800: #065f46;
+  --color-primary: #7A1F1F;
+  --color-primary-hover: #5A1717;
+  --color-secondary: #C9A227;
+  --color-background: #FFFDF8;
+  --color-surface: #FFFFFF;
+  --color-text-main: #1A1A1A;
+  --color-text-muted: #6B7280;
+  --color-border-custom: #E5E7EB;
+  --color-hover: #B8860B;
+
+  /* Ruby Red spectrum matching primary #7A1F1F */
+  --color-ruby-900: #4B1313;
+  --color-ruby-800: #7A1F1F;
+  --color-ruby-700: #932525;
+  --color-ruby-600: #A82C2C;
+  --color-ruby-50: #FAF0F0;
+
+  /* Luxury Gold spectrum matching secondary #C9A227 & hover #B8860B */
+  --color-gold-700: #9E7409;
+  --color-gold-600: #B8860B;
+  --color-gold-500: #C9A227;
+  --color-gold-400: #DDAA34;
+  --color-gold-300: #EAD07C;
+  --color-gold-50: #FFFDF0;
 
   --font-serif: var(--font-playfair);
   --font-sans: var(--font-inter);
 }
 
 :root {
-  --background: #fdfdfc;
-  --foreground: #171717;
+  --primary: #7A1F1F;
+  --secondary: #C9A227;
+  --background: #FFFDF8;
+  --surface: #FFFFFF;
+  --text: #1A1A1A;
+  --muted-text: #6B7280;
+  --border: #E5E7EB;
+  --hover: #B8860B;
 }
 
 body {
   background: var(--background);
-  color: var(--foreground);
+  color: var(--text);
   overflow-x: hidden;
 }
 
@@ -108,5 +134,5 @@ body {
 .heroSwiper .swiper-pagination-bullet-active {
   width: 34px !important;
   height: 10px !important;
-  background: #caa146 !important;
+  background: #C9A227 !important;
 }

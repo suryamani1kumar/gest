@@ -61,16 +61,16 @@ export default function FAQ() {
   };
 
   return (
-    <section className="bg-neutral-50 py-20">
+    <section className="bg-[#FFFDF8] py-20">
       <div className="mx-auto max-w-7xl px-5">
         {/* Heading */}
 
         <div className="mb-14 text-center">
-          <h2 className="mt-3 text-4xl font-bold text-[#7c1f2a] md:text-5xl">
+          <h2 className="mt-3 text-4xl font-bold text-[#7A1F1F] md:text-5xl">
             Frequently Asked Questions
           </h2>
 
-          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[#b08a3c]" />
+          <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[#C9A227]" />
         </div>
 
         {/* Accordion */}
@@ -78,17 +78,17 @@ export default function FAQ() {
           {faqs.map((faq) => (
             <div
               key={faq.id}
-              className="self-start overflow-hidden rounded-2xl border border-[#eadfcd] bg-white shadow-sm transition-all duration-300"
+              className="self-start overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300"
             >
               <button
                 onClick={() => toggleFAQ(faq.id)}
                 className="flex w-full cursor-pointer items-center justify-between p-6 text-left"
               >
-                <span className="text-lg font-semibold text-[#7c1f2a]">
+                <span className="text-lg font-semibold text-[#7A1F1F]">
                   {faq.question}
                 </span>
 
-                <span className="text-3xl text-[#a61d2d]">
+                <span className="text-3xl text-[#7A1F1F]">
                   {open === faq.id ? <Minus /> : <Plus />}
                 </span>
               </button>
@@ -99,8 +99,8 @@ export default function FAQ() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <div className="border-t border-[#f1e7d7] px-6 pb-6 pt-4">
-                    <p className="leading-8 text-gray-600">{faq.answer}</p>
+                  <div className="border-t border-[#E5E7EB] px-6 pb-6 pt-4">
+                    <p className="leading-8 text-[#6B7280]">{faq.answer}</p>
                   </div>
                 </div>
               </div>

@@ -28,23 +28,23 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
   };
 
   return (
-    <div className="pt-32 pb-24 bg-white min-h-screen">
+    <div className="pt-32 pb-24 bg-[#FFFDF8] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Breadcrumbs */}
-        <div className="flex items-center text-xs text-gray-500 uppercase tracking-widest mb-10">
-          <Link href="/" className="hover:text-gray-900 transition-colors">Home</Link>
+        <div className="flex items-center text-xs text-[#6B7280] uppercase tracking-widest mb-10">
+          <Link href="/" className="hover:text-[#7A1F1F] transition-colors">Home</Link>
           <ChevronRight className="w-3 h-3 mx-2" />
-          <Link href="/collections" className="hover:text-gray-900 transition-colors">Collections</Link>
+          <Link href="/collections" className="hover:text-[#7A1F1F] transition-colors">Collections</Link>
           <ChevronRight className="w-3 h-3 mx-2" />
-          <span className="text-gray-900">{product.name}</span>
+          <span className="text-[#1A1A1A]">{product.name}</span>
         </div>
 
         <div className="flex flex-col md:flex-row gap-16">
           
           {/* Product Images */}
           <div className="md:w-1/2 space-y-6">
-            <div className="aspect-square relative bg-neutral-100 overflow-hidden">
+            <div className="aspect-square relative bg-neutral-100 overflow-hidden rounded-2xl">
               <Image 
                 src={product.images[0]} 
                 alt={product.name} 
@@ -54,10 +54,10 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
               />
             </div>
             <div className="grid grid-cols-2 gap-6">
-              <div className="aspect-square relative bg-neutral-100 overflow-hidden">
+              <div className="aspect-square relative bg-neutral-100 overflow-hidden rounded-xl">
                 <Image src={product.images[0]} alt={`${product.name} detail 1`} fill className="object-cover" />
               </div>
-              <div className="aspect-square relative bg-neutral-100 overflow-hidden">
+              <div className="aspect-square relative bg-neutral-100 overflow-hidden rounded-xl">
                 <Image src={product.images[1]} alt={`${product.name} detail 2`} fill className="object-cover" />
               </div>
             </div>
@@ -65,33 +65,33 @@ export default async function ProductDetailsPage({ params }: { params: Promise<{
 
           {/* Product Info */}
           <div className="md:w-1/2">
-            <span className="text-gray-500 uppercase tracking-widest text-xs font-semibold block mb-2">
+            <span className="text-[#6B7280] uppercase tracking-widest text-xs font-semibold block mb-2">
               {product.category}
             </span>
-            <h1 className="text-4xl font-serif text-gray-900 mb-4">{product.name}</h1>
-            <p className="text-2xl text-emerald-800 font-medium mb-8">${product.price.toLocaleString()}</p>
+            <h1 className="text-4xl font-serif text-[#1A1A1A] mb-4">{product.name}</h1>
+            <p className="text-2xl text-[#7A1F1F] font-medium mb-8">${product.price.toLocaleString()}</p>
             
-            <p className="text-gray-600 font-light leading-relaxed mb-8">
+            <p className="text-[#6B7280] font-light leading-relaxed mb-8">
               {product.description}
             </p>
 
             <div className="mb-8">
-              <h3 className="text-sm uppercase tracking-widest text-gray-900 mb-3 font-semibold">Ring Size</h3>
+              <h3 className="text-sm uppercase tracking-widest text-[#1A1A1A] mb-3 font-semibold">Ring Size</h3>
               <div className="grid grid-cols-4 gap-2">
                 {[5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5].map((size) => (
-                  <button key={size} className="border border-gray-300 py-2 text-sm text-gray-700 hover:border-gray-900 transition-colors">
+                  <button key={size} className="border border-[#E5E7EB] py-2 text-sm text-[#1A1A1A] hover:border-[#7A1F1F] hover:text-[#7A1F1F] transition-colors rounded-lg cursor-pointer">
                     {size}
                   </button>
                 ))}
               </div>
-              <Link href="#" className="text-xs text-gray-500 underline mt-2 inline-block hover:text-gray-900">Size Guide</Link>
+              <Link href="#" className="text-xs text-[#6B7280] underline mt-2 inline-block hover:text-[#7A1F1F]">Size Guide</Link>
             </div>
 
             <div className="flex gap-4 mb-12">
-              <Link href="/cart" className="flex-1 bg-gray-900 text-white text-center p-4 uppercase tracking-wider text-sm font-medium hover:bg-emerald-800 transition-colors">
+              <Link href="/cart" className="flex-1 bg-[#7A1F1F] text-white text-center p-4 uppercase tracking-wider text-sm font-medium hover:bg-[#B8860B] transition-colors rounded-lg">
                 Add to Cart
               </Link>
-              <button className="flex-none border border-gray-300 p-4 text-gray-900 hover:border-gray-900 transition-colors">
+              <button className="flex-none border border-[#E5E7EB] p-4 text-[#1A1A1A] hover:border-[#7A1F1F] hover:text-[#7A1F1F] transition-colors rounded-lg cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-heart"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>
               </button>
             </div>

@@ -160,7 +160,7 @@ function AccordionItem({
         className="w-full flex items-center justify-between px-5 py-4 text-left"
       >
         <span className="flex items-center gap-3 font-medium text-gray-800">
-          <span className="text-red-800">{cat.icon}</span>
+          <span className="text-[#7A1F1F]">{cat.icon}</span>
           {cat.name}
         </span>
         <ChevronDown
@@ -178,7 +178,7 @@ function AccordionItem({
               key={link}
               href={`${cat.href}/${link.toLowerCase().replace(/\s+/g, "-")}`}
               onClick={onClose}
-              className="text-sm text-gray-600 hover:text-red-800 flex items-center gap-1 transition-colors py-0.5"
+              className="text-sm text-gray-600 hover:text-[#B8860B] flex items-center gap-1 transition-colors py-0.5"
             >
               <ChevronRight size={11} className="text-gray-300" />
               {link}
@@ -187,7 +187,7 @@ function AccordionItem({
           <Link
             href={cat.href}
             onClick={onClose}
-            className="col-span-2 mt-2 text-xs font-semibold text-red-800 flex items-center gap-1 hover:underline"
+            className="col-span-2 mt-2 text-xs font-semibold text-[#7A1F1F] flex items-center gap-1 hover:underline"
           >
             View all {cat.name} <ArrowUpRight size={12} />
           </Link>
@@ -217,7 +217,7 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div>
-            <p className="text-xl font-bold text-red-800 tracking-wide">Aura</p>
+            <p className="text-xl font-bold text-[#7A1F1F] tracking-wide">Aura</p>
             <p className="text-xs text-gray-400">Fine Jewellery</p>
           </div>
           <button
@@ -268,7 +268,7 @@ export default function Navbar({
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-red-800 tracking-wide">
+              <h1 className="text-2xl md:text-3xl font-bold text-[#7A1F1F] tracking-wide">
                 Aura
               </h1>
             </div>
@@ -284,16 +284,16 @@ export default function Navbar({
               <input
                 type="text"
                 placeholder="Search for gold necklace"
-                className="w-full border rounded-lg py-2 pl-12 pr-24 outline-none focus:border-red-700"
+                className="w-full border rounded-lg py-2 pl-12 pr-24 outline-none focus:border-[#7A1F1F]"
               />
             </div>
           </div>
 
           {/* Desktop Icons */}
-          <div className="hidden md:flex items-center gap-10 text-[#1c3b59]">
+          <div className="hidden md:flex items-center gap-10 text-[#7A1F1F]">
             <button
               onClick={() => router.push("/wishlist")}
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-[#B8860B] transition-colors"
             >
               <Heart size={22} />
             </button>
@@ -304,7 +304,7 @@ export default function Navbar({
             >
               <button
                 aria-label="Account"
-                className="hover:text-red-600 transition cursor-pointer"
+                className="hover:text-[#B8860B] transition cursor-pointer"
               >
                 <User size={22} />
               </button>
@@ -316,9 +316,9 @@ export default function Navbar({
                       setAccountOpen(true);
                       setShowAccountMenu(false);
                     }}
-                    className="flex w-full items-center gap-4 px-6 py-5 text-left hover:bg-red-50 transition"
+                    className="flex w-full items-center gap-4 px-6 py-5 text-left hover:bg-[#FFFDF8] transition"
                   >
-                    <Gift className="text-red-800" size={24} />
+                    <Gift className="text-[#7A1F1F]" size={24} />
 
                     <div>
                       <p className="text-xl font-serif text-gray-800">
@@ -334,9 +334,9 @@ export default function Navbar({
 
                   <Link
                     href="/contact"
-                    className="flex items-center gap-4 px-6 py-5 hover:bg-red-50 transition"
+                    className="flex items-center gap-4 px-6 py-5 hover:bg-[#FFFDF8] transition"
                   >
-                    <MessageCircleMore className="text-red-800" size={24} />
+                    <MessageCircleMore className="text-[#7A1F1F]" size={24} />
 
                     <div>
                       <p className="text-xl font-serif text-gray-800">
@@ -352,18 +352,18 @@ export default function Navbar({
             </div>
 
             <button
-              className="relative cursor-pointer"
+              className="relative cursor-pointer hover:text-[#B8860B] transition-colors"
               aria-label="Cart"
               onClick={() => router.push("/cart")}
             >
               <ShoppingBag size={22} />
-              <span className="absolute -top-2 -right-2 bg-[#1c3b59] text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+              <span className="absolute -top-2 -right-2 bg-[#7A1F1F] text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
                 0
               </span>
             </button>
             <Link
               href={`tel:${Tfn1}`}
-              className="flex items-center gap-3 rounded-lg border border-[#1c3b59] px-5 py-2"
+              className="flex items-center gap-3 rounded-lg border border-[#7A1F1F] text-[#7A1F1F] hover:bg-[#7A1F1F] hover:text-white transition-all px-5 py-2"
             >
               <div className="flex items-center justify-center rounded-full bg-white/20">
                 <PhoneCall size={18} />
@@ -374,10 +374,10 @@ export default function Navbar({
           </div>
 
           {/* Mobile: cart + hamburger */}
-          <div className="flex md:hidden items-center gap-3 text-red-800">
+          <div className="flex md:hidden items-center gap-3 text-[#7A1F1F]">
             <button
               aria-label="Account"
-              className="hover:text-red-600 transition cursor-pointer"
+              className="hover:text-[#B8860B] transition cursor-pointer"
               onClick={() => {
                 setAccountOpen(true);
               }}
@@ -386,20 +386,20 @@ export default function Navbar({
             </button>
             <button
               onClick={() => router.push("/wishlist")}
-              className="cursor-pointer"
+              className="cursor-pointer hover:text-[#B8860B]"
             >
               <Heart size={22} />
             </button>
-            <button className="relative" aria-label="Cart">
+            <button className="relative hover:text-[#B8860B]" aria-label="Cart">
               <ShoppingBag size={20} />
-              <span className="absolute -top-2 -right-2 bg-red-800 text-white rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
+              <span className="absolute -top-2 -right-2 bg-[#7A1F1F] text-white rounded-full h-4 w-4 flex items-center justify-center text-[10px]">
                 0
               </span>
             </button>
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open menu"
-              className="p-1.5 rounded-md hover:bg-red-50 transition-colors text-gray-700"
+              className="p-1.5 rounded-md hover:bg-[#FFFDF8] transition-colors text-gray-700"
             >
               <Menu size={22} />
             </button>
@@ -416,7 +416,7 @@ export default function Navbar({
             <input
               type="text"
               placeholder="Search for gold necklace…"
-              className="w-full border border-gray-200 rounded-full py-2.5 pl-10 pr-4 text-sm outline-none focus:border-red-700 bg-gray-50"
+              className="w-full border border-gray-200 rounded-full py-2.5 pl-10 pr-4 text-sm outline-none focus:border-[#7A1F1F] bg-gray-50"
             />
           </div>
         </div>
@@ -426,17 +426,17 @@ export default function Navbar({
       {mobileOpen && <MobileMenuModal onClose={() => setMobileOpen(false)} />}
       {accountOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
-          <div className="relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-[#fff8f2] shadow-2xl">
+          <div className="relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-[#FFFDF8] shadow-2xl">
             {/* Close */}
             <button
               onClick={() => setAccountOpen(false)}
-              className="absolute right-6 top-6 text-gray-600 hover:text-red-700"
+              className="absolute right-6 top-6 text-gray-600 hover:text-[#7A1F1F]"
             >
               ✕
             </button>
 
             {/* Left Side */}
-            <div className="hidden w-1/2 bg-gradient-to-br from-amber-50 to-orange-100 p-12 lg:flex flex-col justify-center items-center">
+            <div className="hidden w-1/2 bg-gradient-to-br from-[#FFFDF8] to-[#FFFDF0] p-12 lg:flex flex-col justify-center items-center">
               <img src="/images/login-offer.png" alt="" className="w-72" />
             </div>
 
@@ -450,7 +450,7 @@ export default function Navbar({
                 Login or Signup to continue shopping
               </p>
 
-              <div className="mt-10 flex overflow-hidden rounded-full border">
+              <div className="mt-10 flex overflow-hidden rounded-full border border-gray-200">
                 <div className="flex items-center gap-2 border-r px-5">
                   🇮🇳 +91
                 </div>
@@ -460,7 +460,7 @@ export default function Navbar({
                   className="flex-1 px-5 outline-none"
                 />
 
-                <button className="bg-red-800 px-8 font-semibold text-white hover:bg-red-900">
+                <button className="bg-[#7A1F1F] px-8 font-semibold text-white hover:bg-[#B8860B] transition-colors">
                   Request OTP
                 </button>
               </div>

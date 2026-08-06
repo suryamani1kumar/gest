@@ -2,17 +2,17 @@ import React from 'react';
 
 export default function CareGuidePage() {
   return (
-    <div className="pt-32 pb-24 bg-neutral-50 min-h-screen">
+    <div className="pt-32 pb-24 bg-[#FFFDF8] min-h-screen">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">Care Guide</h1>
-          <p className="text-gray-600 font-light leading-relaxed">
+          <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-6">Care Guide</h1>
+          <p className="text-[#6B7280] font-light leading-relaxed">
             Fine jewelry is crafted to last generations, but it requires proper care and attention to maintain its original brilliance.
           </p>
         </div>
 
-        <div className="bg-white p-8 md:p-12 border border-gray-100 space-y-12">
+        <div className="bg-white p-8 md:p-12 border border-[#E5E7EB] rounded-2xl space-y-12 shadow-sm">
           <section>
             <h3 className="font-serif text-2xl text-gray-900 mb-4">Everyday Care</h3>
             <p className="text-gray-600 font-light leading-relaxed mb-4">

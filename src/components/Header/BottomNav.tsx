@@ -219,7 +219,7 @@ const BottomNav = () => {
                             href={`${activeCategory.href}/${link
                               .toLowerCase()
                               .replace(/\s+/g, "-")}`}
-                            className="text-sm text-gray-700 hover:text-red-800 transition-colors flex items-center gap-1 group/link"
+                            className="text-sm text-gray-700 hover:text-[#B8860B] transition-colors flex items-center gap-1 group/link"
                           >
                             <span>{link}</span>
                             <HiOutlineChevronRight
@@ -235,7 +235,7 @@ const BottomNav = () => {
               </div>
 
               {/* Promo Banner */}
-              <div className="flex items-center bg-[#fdf8f3] rounded-xl px-5 py-4 gap-4 min-w-[300px] max-w-[340px]">
+              <div className="flex items-center bg-[#FFFDF8] rounded-xl px-5 py-4 gap-4 min-w-[300px] max-w-[340px]">
                 <div className="flex -space-x-2">
                   {activeCategory.promoImages.map((src, i) => (
                     <img
@@ -256,7 +256,7 @@ const BottomNav = () => {
                 </div>
                 <Link
                   href={activeCategory.href}
-                  className="bg-red-800 hover:bg-red-900 text-white text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap"
+                  className="bg-[#7A1F1F] hover:bg-[#B8860B] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap"
                 >
                   View All
                 </Link>
@@ -276,7 +276,7 @@ const BottomNav = () => {
                   </p>
                   <Link
                     href={activeCategory.href}
-                    className="text-xs flex items-center gap-1 text-amber-300 hover:text-amber-200 transition-colors mt-0.5"
+                    className="text-xs flex items-center gap-1 text-[#C9A227] hover:text-[#B8860B] transition-colors mt-0.5"
                   >
                     {activeCategory.imageSubLabel}
                     <HiOutlineArrowUpRight size={12} />
@@ -303,13 +303,13 @@ const BottomNav = () => {
                   href={cat.href}
                   className={`flex items-center gap-1.5 px-3 py-1.5 transition-all duration-200 font-medium ${
                     activeIndex === index
-                      ? "text-red-800"
-                      : "hover:text-red-800"
+                      ? "text-[#7A1F1F]"
+                      : "hover:text-[#B8860B]"
                   }`}
                 >
                   <span
                     className={`transition-colors ${
-                      activeIndex === index ? "text-red-800" : "text-gray-400"
+                      activeIndex === index ? "text-[#7A1F1F]" : "text-gray-400"
                     }`}
                   >
                     {cat.icon}
@@ -317,7 +317,7 @@ const BottomNav = () => {
                   <span>{cat.name}</span>
                 </Link>
                 {activeIndex === index && (
-                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-red-800 rounded-full" />
+                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#7A1F1F] rounded-full" />
                 )}
               </div>
             ))}

@@ -27,13 +27,13 @@ export default function FeaturedCollection() {
     <section id="collections" className="py-24 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <span className="text-emerald-800 uppercase tracking-widest text-sm font-medium mb-4 block">
+          <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
             Curated Selection
           </span>
           <h2 className="text-4xl md:text-5xl font-serif text-gray-900 mb-6">
             Featured Collections
           </h2>
-          <div className="w-24 h-px bg-gold-400 mx-auto"></div>
+          <div className="w-24 h-px bg-[#C9A227] mx-auto"></div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -58,7 +58,7 @@ export default function FeaturedCollection() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               
               <div className="absolute bottom-0 left-0 right-0 p-8 translate-y-4 group-hover:translate-y-0 transition-transform duration-500 opacity-0 group-hover:opacity-100">
-                <span className="text-gold-300 uppercase tracking-widest text-xs font-semibold block mb-2">
+                <span className="text-[#C9A227] uppercase tracking-widest text-xs font-semibold block mb-2">
                   {item.category}
                 </span>
                 <h3 className="text-2xl font-serif text-white mb-4">
@@ -66,7 +66,7 @@ export default function FeaturedCollection() {
                 </h3>
                 <Link 
                   href={item.link} 
-                  className="inline-block text-white border-b border-white pb-1 uppercase tracking-wider text-sm hover:text-gold-300 hover:border-gold-300 transition-colors"
+                  className="inline-block text-white border-b border-white pb-1 uppercase tracking-wider text-sm hover:text-[#B8860B] hover:border-[#B8860B] transition-colors"
                 >
                   Discover
                 </Link>
@@ -77,8 +77,8 @@ export default function FeaturedCollection() {
         
         <div className="mt-16 text-center">
           <Link 
-            href="#" 
-            className="inline-block border border-gray-900 text-gray-900 px-8 py-4 uppercase tracking-widest text-sm font-medium hover:bg-gray-900 hover:text-white transition-colors duration-300"
+            href="/collections" 
+            className="inline-block border border-[#7A1F1F] text-[#7A1F1F] px-8 py-4 uppercase tracking-widest text-sm font-medium hover:bg-[#7A1F1F] hover:text-white transition-colors duration-300"
           >
             View All Collections
           </Link>

@@ -83,35 +83,35 @@ const products = [
 export default function Home() {
   return (
     <div className="flex flex-col">
-      {/* <Hero />  */}
-      <section className="border-y border-[#e9d9c4] bg-white">
+      <Hero />
+      <section className="border-y border-[#E5E7EB] bg-white">
         <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 divide-y divide-[#ece5da] md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
+          <div className="grid grid-cols-1 divide-y divide-[#E5E7EB] md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
             {trustFeatures.map((item) => {
               const Icon = item.icon;
 
               return (
                 <div
                   key={item.id}
-                  className="group flex items-center gap-5 px-6 py-7 transition-all duration-300 hover:bg-[#fcfaf7]"
+                  className="group flex items-center gap-5 px-6 py-7 transition-all duration-300 hover:bg-[#FFFDF8]"
                 >
                   {/* Icon */}
 
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#eadcc8] bg-[#faf6ef] transition-all duration-300 group-hover:bg-[#7c1f2a] group-hover:border-[#7c1f2a]">
+                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#E5E7EB] bg-[#FFFDF8] transition-all duration-300 group-hover:bg-[#7A1F1F] group-hover:border-[#7A1F1F]">
                     <Icon
                       size={24}
-                      className="text-[#7c1f2a] transition-colors duration-300 group-hover:text-white"
+                      className="text-[#7A1F1F] transition-colors duration-300 group-hover:text-white"
                     />
                   </div>
 
                   {/* Content */}
 
                   <div>
-                    <h3 className="text-base font-bold uppercase tracking-wide text-[#2b2b2b]">
+                    <h3 className="text-base font-bold uppercase tracking-wide text-[#1A1A1A]">
                       {item.title}
                     </h3>
 
-                    <p className="mt-1 text-sm leading-6 text-gray-500">
+                    <p className="mt-1 text-sm leading-6 text-[#6B7280]">
                       {item.description}
                     </p>
                   </div>
@@ -136,12 +136,12 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/50" />
 
             {/* Decorative Blur */}
-            <div className="absolute right-0 top-0 h-52 w-52 rounded-full bg-[#b08a3c]/20 blur-3xl" />
+            <div className="absolute right-0 top-0 h-52 w-52 rounded-full bg-[#C9A227]/20 blur-3xl" />
 
             <div className="relative z-10 flex flex-col items-center justify-center px-8 py-16 text-center lg:px-20">
               <h3 className="max-w-3xl text-2xl font-bold leading-tight text-white md:text-6xl">
                 Looking for the Perfect
-                <span className="block text-[#d4af37]">
+                <span className="block text-[#C9A227]">
                   Gemstone or Rudraksha?
                 </span>
               </h3>
@@ -156,7 +156,7 @@ export default function Home() {
                 {/* Call Button */}
                 <a
                   href="tel:+919876543210"
-                  className="inline-flex items-center gap-3 rounded-full bg-[#b08a3c] px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-[#946f22] hover:scale-105"
+                  className="inline-flex items-center gap-3 rounded-full bg-[#C9A227] px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-[#B8860B] hover:scale-105"
                 >
                   <PhoneCall size={22} />
                   Call +91 98765 43210
@@ -165,7 +165,7 @@ export default function Home() {
                 {/* Contact Button */}
                 <Link
                   href="/contact-us"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-white hover:text-[#7c1f2a]"
+                  className="inline-flex items-center gap-2 rounded-full border-2 border-white px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-white hover:text-[#7A1F1F]"
                 >
                   Contact Us
                   <ArrowRight size={20} />
@@ -173,11 +173,11 @@ export default function Home() {
               </div>
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-16">
             {products.map((product) => (
               <div
                 key={product.id}
-                className="group relative block overflow-hidden border border-gray-100 pb-6 hover:shadow-lg transition-shadow duration-300"
+                className="group relative block overflow-hidden border border-[#E5E7EB] pb-6 hover:shadow-lg transition-shadow duration-300 rounded-xl bg-white"
               >
                 <Link href={`/collections/${product.id}`} className="block">
                   <div className="aspect-square overflow-hidden bg-neutral-100 relative mb-6">
@@ -190,19 +190,19 @@ export default function Home() {
                   </div>
 
                   <div className="px-6 text-center">
-                    <span className="text-gray-500 uppercase tracking-widest text-xs font-semibold block mb-2">
+                    <span className="text-[#6B7280] uppercase tracking-widest text-xs font-semibold block mb-2">
                       {product.category}
                     </span>
-                    <h3 className="text-lg font-serif text-gray-900 mb-2">
+                    <h3 className="text-lg font-serif text-[#1A1A1A] mb-2">
                       {product.name}
                     </h3>
-                    <p className="text-emerald-800 font-medium mb-4">
+                    <p className="text-[#7A1F1F] font-medium mb-4">
                       {product.price}
                     </p>
                   </div>
                 </Link>
                 <div className="px-6 text-center">
-                  <button className="text-gray-900 border-b border-gray-900 pb-1 uppercase tracking-wider text-xs hover:text-emerald-800 hover:border-emerald-800 transition-colors font-medium relative z-10">
+                  <button className="text-[#1A1A1A] border-b border-[#1A1A1A] pb-1 uppercase tracking-wider text-xs hover:text-[#B8860B] hover:border-[#B8860B] transition-colors font-medium relative z-10 cursor-pointer">
                     Add to Cart
                   </button>
                 </div>

@@ -157,15 +157,15 @@ export default function Hero() {
               <div className="relative z-10 flex h-full items-center">
                 <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
                   <div className="max-w-2xl text-white">
-                    <span className="mb-2 block text-xs tracking-[3px] uppercase text-[#ffd371] sm:text-sm md:text-lg md:tracking-[5px]">
+                    <span className="mb-2 block text-xs tracking-[3px] uppercase text-[#C9A227] sm:text-sm md:text-lg md:tracking-[5px]">
                       {slide.subtitle}
                     </span>
 
-                    <h1 className="font-serif text-3xl font-bold text-[#ffd371] sm:text-5xl lg:text-6xl">
+                    <h1 className="font-serif text-3xl font-bold text-[#C9A227] sm:text-5xl lg:text-6xl">
                       {slide.title}
                     </h1>
 
-                    <div className="my-5 h-px w-40 bg-amber-500 sm:w-60" />
+                    <div className="my-5 h-px w-40 bg-[#C9A227] sm:w-60" />
 
                     <p className="max-w-xl text-sm leading-7 text-neutral-200 sm:text-base md:leading-8">
                       {slide.description}
@@ -173,7 +173,7 @@ export default function Hero() {
 
                     <div className="mt-8">
                       <Link href={slide.buttonLink}>
-                        <button className="rounded-lg bg-[#caa146] px-5 py-3 text-base font-semibold text-black transition hover:bg-amber-300 sm:px-6 sm:text-lg">
+                        <button className="rounded-lg bg-[#C9A227] px-5 py-3 text-base font-semibold text-[#1A1A1A] transition hover:bg-[#B8860B] hover:text-white sm:px-6 sm:text-lg">
                           {slide.buttonText} →
                         </button>
                       </Link>
@@ -208,11 +208,11 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <button className="hero-prev absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition hover:bg-[#caa146] hover:text-black lg:flex">
+      <button className="hero-prev absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
         <ChevronLeft size={24} />
       </button>
 
-      <button className="hero-next absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#caa146] bg-black/40 text-[#caa146] backdrop-blur-md transition hover:bg-[#caa146] hover:text-black lg:flex">
+      <button className="hero-next absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
         <ChevronRight size={24} />
       </button>
     </section>

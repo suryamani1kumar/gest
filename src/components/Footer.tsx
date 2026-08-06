@@ -3,7 +3,7 @@ import { MapPin, Phone, Mail, Clock } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-[#1c3b59] text-white border-t border-neutral-900">
+    <footer className="bg-[#4B1313] text-white border-t border-[#7A1F1F]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
         {/* Top */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -15,7 +15,7 @@ export default function Footer() {
 
             <div className="space-y-4 text-sm">
               <div className="flex items-start gap-3">
-                <Phone size={18} className="text-amber-400 mt-0.5" />
+                <Phone size={18} className="text-[#C9A227] mt-0.5" />
                 <div>
                   <p>+91 98765 43210</p>
                   <p>+91 98765 43211</p>
@@ -23,12 +23,12 @@ export default function Footer() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Mail size={18} className="text-amber-400 mt-0.5" />
+                <Mail size={18} className="text-[#C9A227] mt-0.5" />
                 <p>info@auraandgem.com</p>
               </div>
 
               <div className="flex items-start gap-3">
-                <MapPin size={18} className="text-amber-400 mt-0.5" />
+                <MapPin size={18} className="text-[#C9A227] mt-0.5" />
                 <p>
                   Shop No. 12, MG Road,
                   <br />
@@ -39,7 +39,7 @@ export default function Footer() {
               </div>
 
               <div className="flex items-start gap-3">
-                <Clock size={18} className="text-amber-400 mt-0.5" />
+                <Clock size={18} className="text-[#C9A227] mt-0.5" />
                 <p>
                   Mon - Sat
                   <br />
@@ -59,7 +59,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/collections"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   All Collections
                 </Link>
@@ -68,7 +68,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/collections"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   New Arrivals
                 </Link>
@@ -77,7 +77,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/bespoke"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   Bespoke Design
                 </Link>
@@ -86,7 +86,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/gemstones"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   Gemstones
                 </Link>
@@ -104,7 +104,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/contact-us"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   Contact Us
                 </Link>
@@ -113,7 +113,7 @@ export default function Footer() {
               <li>
                 <Link
                   href="/terms-and-conditions"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   Shipping & Returns
                 </Link>
@@ -122,14 +122,14 @@ export default function Footer() {
               <li>
                 <Link
                   href="/care-guide"
-                  className="hover:text-amber-400 transition"
+                  className="hover:text-[#C9A227] transition"
                 >
                   Care Guide
                 </Link>
               </li>
 
               <li>
-                <Link href="/faq" className="hover:text-amber-400 transition">
+                <Link href="/faq" className="hover:text-[#C9A227] transition">
                   FAQ
                 </Link>
               </li>
