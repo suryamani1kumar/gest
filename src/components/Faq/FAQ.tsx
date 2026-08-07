@@ -66,7 +66,7 @@ export default function FAQ() {
         {/* Heading */}
 
         <div className="mb-10 text-center">
-          <h2 className="mt-3 text-4xl font-bold text-[#7A1F1F] md:text-5xl">
+          <h2 className="mt-3 text-3xl font-bold text-gray-900 md:text-4xl font-serif">
             Frequently Asked Questions
           </h2>
 
@@ -78,17 +78,17 @@ export default function FAQ() {
           {faqs.map((faq) => (
             <div
               key={faq.id}
-              className="self-start overflow-hidden rounded-2xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300"
+              className="self-start overflow-hidden rounded-xl border border-[#E5E7EB] bg-white shadow-sm transition-all duration-300"
             >
               <button
                 onClick={() => toggleFAQ(faq.id)}
-                className="flex w-full cursor-pointer items-center justify-between p-6 text-left"
+                className="flex w-full cursor-pointer items-center justify-between p-3 text-left"
               >
-                <span className="text-lg font-semibold text-[#7A1F1F]">
+                <span className="text-md text-[#1A1A1A]">
                   {faq.question}
                 </span>
 
-                <span className="text-3xl text-[#7A1F1F]">
+                <span className="text-md text-[#7A1F1F]">
                   {open === faq.id ? <Minus /> : <Plus />}
                 </span>
               </button>
@@ -99,7 +99,7 @@ export default function FAQ() {
                 }`}
               >
                 <div className="overflow-hidden">
-                  <div className="border-t border-[#E5E7EB] px-6 pb-6 pt-4">
+                  <div className="border-t border-[#E5E7EB] px-3 pb-3 pt-4">
                     <p className="leading-8 text-[#6B7280]">{faq.answer}</p>
                   </div>
                 </div>

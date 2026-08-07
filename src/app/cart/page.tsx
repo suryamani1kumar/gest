@@ -104,7 +104,7 @@ export default function CartPage() {
                       >
                         <Link
                           href={`/collections/gemstones/${item.id}`}
-                          className="relative w-32 h-40 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
+                          className="relative w-52 h-40 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
                         >
                           <Image
                             src={item.image}

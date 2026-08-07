@@ -431,30 +431,50 @@ export default function ProductDetailPage() {
               <h3 className="text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] mb-3">
                 Quantity
               </h3>
-              <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
-                >
-                  <Minus size={16} />
-                </button>
-                <span className="flex h-10 w-12 items-center justify-center border-x border-[#E5E7EB] text-sm font-semibold text-[#1A1A1A]">
-                  {quantity}
-                </span>
-                <button
-                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
-                  className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
-                >
-                  <Plus size={16} />
-                </button>
+              <div className="flex items-center justify-between">
+                <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
+                  >
+                    <Minus size={16} />
+                  </button>
+                  <span className="flex h-10 w-12 items-center justify-center border-x border-[#E5E7EB] text-sm font-semibold text-[#1A1A1A]">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
+                  >
+                    <Plus size={16} />
+                  </button>
+                </div>
+                <div className="flex items-center justify-center gap-2">
+                  <button
+                    onClick={() => setIsWishlisted(!isWishlisted)}
+                    className={`flex h-[40px] w-[40px] items-center justify-center rounded-lg border-2 transition-all duration-200 cursor-pointer ${
+                      isWishlisted
+                        ? "border-[#7A1F1F] bg-[#FAF0F0] text-[#7A1F1F]"
+                        : "border-[#E5E7EB] text-[#6B7280] hover:border-[#7A1F1F] hover:text-[#7A1F1F]"
+                    }`}
+                  >
+                    <Heart
+                      size={20}
+                      className={isWishlisted ? "fill-[#7A1F1F]" : ""}
+                    />
+                  </button>
+                  <button className="flex h-[40px] w-[40px] items-center justify-center rounded-lg border-2 border-[#E5E7EB] text-[#6B7280] transition-all hover:border-[#7A1F1F] hover:text-[#7A1F1F] cursor-pointer">
+                    <Share2 size={20} />
+                  </button>
+                </div>
               </div>
             </div>
 
             {/* Action Buttons */}
-            <div className="flex gap-3 mb-6">
+            <div className="flex items-center justify-center gap-3 mb-6">
               <button
                 onClick={handleAddToCart}
-                className={`flex-1 flex items-center justify-center gap-2 rounded-lg py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+                className={`w-1/2 flex items-center justify-center gap-2 rounded-lg py-3.5 text-sm font-semibold uppercase tracking-wider transition-all duration-300 cursor-pointer ${
                   addedToCart
                     ? "bg-green-600 text-white"
                     : "bg-[#7A1F1F] text-white hover:bg-[#5A1717]"
@@ -469,31 +489,14 @@ export default function ProductDetailPage() {
                   "Add to Cart"
                 )}
               </button>
-              <button
-                onClick={() => setIsWishlisted(!isWishlisted)}
-                className={`flex h-[50px] w-[50px] items-center justify-center rounded-lg border-2 transition-all duration-200 cursor-pointer ${
-                  isWishlisted
-                    ? "border-[#7A1F1F] bg-[#FAF0F0] text-[#7A1F1F]"
-                    : "border-[#E5E7EB] text-[#6B7280] hover:border-[#7A1F1F] hover:text-[#7A1F1F]"
-                }`}
+              {/* Buy Now */}
+              <Link
+                href="/checkout"
+                className="w-1/2 flex items-center justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#B8860B] hover:border-[#B8860B] hover:text-white"
               >
-                <Heart
-                  size={20}
-                  className={isWishlisted ? "fill-[#7A1F1F]" : ""}
-                />
-              </button>
-              <button className="flex h-[50px] w-[50px] items-center justify-center rounded-lg border-2 border-[#E5E7EB] text-[#6B7280] transition-all hover:border-[#7A1F1F] hover:text-[#7A1F1F] cursor-pointer">
-                <Share2 size={20} />
-              </button>
+                Buy Now
+              </Link>
             </div>
-
-            {/* Buy Now */}
-            <Link
-              href="/checkout"
-              className="mb-6 flex w-full items-center justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#B8860B] hover:border-[#B8860B] hover:text-white"
-            >
-              Buy Now
-            </Link>
 
             {/* Trust Badges */}
             <div className="grid grid-cols-2 gap-3">

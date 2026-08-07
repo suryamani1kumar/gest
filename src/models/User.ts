@@ -1,60 +1,109 @@
-import mongoose, { Schema, model, models, Document } from "mongoose";
+import mongoose, { Schema, Document, Model } from "mongoose";
 
 export interface IUser extends Document {
-  _id: mongoose.Types.ObjectId;
-  name: string;
-  userName: string;
+  firstName: string;
+  lastName: string;
+
   email: string;
+  phone?: string;
+
   password: string;
-  role: "superadmin" | "admin" | "agent";
-  isActive: boolean;
+
+  profileImage?: string;
+
+  status: "active" | "inactive" | "blocked";
+
+  emailVerified: boolean;
+  phoneVerified: boolean;
+
+  provider: "email" | "google";
+
+  lastLogin?: Date;
+
   createdAt: Date;
   updatedAt: Date;
 }
 
 const UserSchema = new Schema<IUser>(
   {
-    name: {
+    firstName: {
       type: String,
-      required: [true, "Name is required"],
+      required: true,
       trim: true,
+      minlength: 2,
+      maxlength: 50,
     },
-    userName: {
+
+    lastName: {
       type: String,
-      required: [true, "Username is required"],
-      unique: true,
+      required: true,
       trim: true,
-      lowercase: true,
+      minlength: 2,
+      maxlength: 50,
     },
+
     email: {
       type: String,
-      required: [true, "Email is required"],
+      required: true,
       unique: true,
-      trim: true,
       lowercase: true,
-      match: [/^\S+@\S+\.\S+$/, "Please enter a valid email"],
+      trim: true,
+      index: true,
     },
+
+    phone: {
+      type: String,
+      default: null,
+      trim: true,
+    },
+
     password: {
       type: String,
-      required: [true, "Password is required"],
+      required: true,
       minlength: 6,
+      select: false, // Don't return password by default
     },
-    role: {
+
+    profileImage: {
       type: String,
-      enum: ["superadmin", "admin", "agent"],
-      default: "agent",
+      default: null,
     },
-    isActive: {
+
+    status: {
+      type: String,
+      enum: ["active", "inactive", "blocked"],
+      default: "active",
+    },
+
+    emailVerified: {
       type: Boolean,
-      default: true,
+      default: false,
     },
+
+    phoneVerified: {
+      type: Boolean,
+      default: false,
+    },
+
+    provider: {
+      type: String,
+      enum: ["email", "google"],
+      default: "email",
+    },
+
+    lastLogin: {
+      type: Date,
+      default: null,
+    },
+
   },
   {
     timestamps: true,
+    versionKey: false,
   }
 );
 
-// Prevent re-compilation during Next.js hot reload
-const User = models.User || model<IUser>("User", UserSchema);
+const Customer: Model<IUser> =
+  mongoose.models.Customer || mongoose.model<IUser>("Customer", UserSchema);
 
-export default User;
+export default Customer;

@@ -665,7 +665,7 @@ export default function CollectionsPage() {
                     </button>
 
                     {/* Image */}
-                    <Link href={`/collections/${product.id}`} className="block">
+                    <Link href={`/collections/gemstones/${product.id}`} className="block">
                       <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
                         <Image
                           src={product.image}
@@ -682,7 +682,7 @@ export default function CollectionsPage() {
                         {product.category}
                       </span>
 
-                      <Link href={`/collections/${product.id}`}>
+                      <Link href={`/collections/gemstones/${product.id}`}>
                         <h3 className="text-sm sm:text-base font-serif text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
                           {product.name}
                         </h3>
