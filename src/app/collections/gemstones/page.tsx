@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -12,6 +12,7 @@ import {
   Star,
   Search,
 } from "lucide-react";
+import PriceRange from "@/components/Products/filter/PriceRange";
 
 /* ─── Product Data ─── */
 const allProducts = [
@@ -232,7 +233,7 @@ function FilterAccordion({
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
   return (
-    <div className="border-b border-[#E5E7EB] py-5">
+    <div className="border-b border-[#E5E7EB] py-3">
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="flex w-full items-center justify-between text-left cursor-pointer"
@@ -258,25 +259,6 @@ function FilterAccordion({
   );
 }
 
-/* ─── Star Rating ─── */
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-0.5">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <Star
-          key={star}
-          size={12}
-          className={
-            star <= Math.round(rating)
-              ? "fill-[#C9A227] text-[#C9A227]"
-              : "text-[#E5E7EB]"
-          }
-        />
-      ))}
-    </div>
-  );
-}
-
 /* ─── Main Page ─── */
 export default function CollectionsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -288,6 +270,32 @@ export default function CollectionsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/products?productType=gemstone", {
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setProducts(data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  console.log("products", products);
 
   const toggleMaterial = (mat: string) => {
     setSelectedMaterials((prev) =>
@@ -375,72 +383,72 @@ export default function CollectionsPage() {
   /* ─── Filter Sidebar Content ─── */
   const filterContent = (
     <>
-      {/* Search */}
-      <div className="relative mb-5">
-        <Search
-          size={16}
-          className="absolute left-3 top-1/2 -translate-y-1/2 text-[#6B7280]"
-        />
-        <input
-          type="text"
-          placeholder="Search products..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full rounded-lg border border-[#E5E7EB] bg-white py-2.5 pl-9 pr-4 text-sm text-[#1A1A1A] placeholder:text-[#9CA3AF] outline-none transition-colors focus:border-[#7A1F1F]"
-        />
-      </div>
-
-      {/* Category */}
-      <FilterAccordion title="Category">
-        <div className="flex flex-col gap-2">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`flex items-center justify-between rounded-lg px-3 py-2 text-left text-sm transition-all duration-200 cursor-pointer ${
-                selectedCategory === cat
-                  ? "bg-[#7A1F1F] text-white font-medium"
-                  : "text-[#1A1A1A] hover:bg-[#FAF0F0] hover:text-[#7A1F1F]"
-              }`}
-            >
-              {cat}
-              <span
-                className={`text-xs ${
-                  selectedCategory === cat ? "text-white/70" : "text-[#9CA3AF]"
-                }`}
-              >
-                {cat === "All"
-                  ? allProducts.length
-                  : allProducts.filter((p) => p.category === cat).length}
-              </span>
-            </button>
-          ))}
-        </div>
-      </FilterAccordion>
-
       {/* Price Range */}
       <FilterAccordion title="Price Range">
         <div className="flex flex-col gap-2">
-          {priceRanges.map((range, idx) => (
-            <button
-              key={idx}
-              onClick={() =>
-                setSelectedPriceRange(selectedPriceRange === idx ? null : idx)
-              }
-              className={`flex items-center gap-3 rounded-lg px-3 py-2 text-left text-sm transition-all duration-200 cursor-pointer ${
-                selectedPriceRange === idx
-                  ? "bg-[#7A1F1F] text-white font-medium"
-                  : "text-[#1A1A1A] hover:bg-[#FAF0F0] hover:text-[#7A1F1F]"
-              }`}
+          <PriceRange />
+        </div>
+      </FilterAccordion>
+
+      {/* Price Per Carat */}
+      <FilterAccordion title="Price Per Carat">
+        <div className="flex flex-col gap-2">
+          <PriceRange />
+        </div>
+      </FilterAccordion>
+
+      {/* Weight Range */}
+      <FilterAccordion title="Weight Carat">
+        <div className="flex flex-col gap-2">
+          <PriceRange />
+        </div>
+      </FilterAccordion>
+
+      {/* Shape */}
+      <FilterAccordion title="Shape">
+        <div className="flex flex-col gap-2.5">
+          {materials.map((mat) => (
+            <label
+              key={mat}
+              className="flex cursor-pointer items-center gap-3 text-sm text-[#1A1A1A]"
             >
-              {range.label}
-            </button>
+              <div
+                className={`flex h-[18px] w-[18px] items-center justify-center rounded border-2 transition-all duration-200 ${
+                  selectedMaterials.includes(mat)
+                    ? "border-[#7A1F1F] bg-[#7A1F1F]"
+                    : "border-[#D1D5DB]"
+                }`}
+                onClick={() => toggleMaterial(mat)}
+              >
+                {selectedMaterials.includes(mat) && (
+                  <svg
+                    width="10"
+                    height="8"
+                    viewBox="0 0 10 8"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M1 4L3.5 6.5L9 1"
+                      stroke="white"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                )}
+              </div>
+              <span onClick={() => toggleMaterial(mat)}>{mat}</span>
+              <span className="ml-auto text-xs text-[#9CA3AF]">
+                {allProducts.filter((p) => p.material === mat).length}
+              </span>
+            </label>
           ))}
         </div>
       </FilterAccordion>
 
-      {/* Material */}
-      <FilterAccordion title="Material">
+      {/* Origin */}
+      <FilterAccordion title="Origin">
         <div className="flex flex-col gap-2.5">
           {materials.map((mat) => (
             <label
@@ -642,58 +650,68 @@ export default function CollectionsPage() {
             )}
 
             {/* Products Grid */}
-            {filteredProducts.length > 0 ? (
+            {products.length > 0 ? (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
-                {filteredProducts.map((product) => (
+                {products.map((product) => (
                   <div
-                    key={product.id}
+                    key={product._id}
                     className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40"
                   >
                     {/* Wishlist */}
                     <button
-                      onClick={() => toggleWishlist(product.id)}
+                      onClick={() => toggleWishlist(product._id)}
                       className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-sm transition-all hover:bg-white hover:scale-110 cursor-pointer"
                     >
                       <Heart
                         size={16}
                         className={
-                          wishlist.includes(product.id)
+                          wishlist.includes(product._id)
                             ? "fill-[#7A1F1F] text-[#7A1F1F]"
                             : "text-[#6B7280]"
                         }
                       />
                     </button>
-
                     {/* Image */}
-                    <Link href={`/collections/gemstones/${product.id}`} className="block">
-                      <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
+                    <Link
+                      href={`/collections/gemstones/${product.slug}`}
+                      className="block"
+                    >
+                      <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative">
                         <Image
-                          src={product.image}
-                          alt={product.name}
+                          src={product?.gallery[0]?.url}
+                          alt={"Name"}
                           fill
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       </div>
                     </Link>
-
                     {/* Info */}
-                    <div className="p-3 sm:p-4">
-                      <span className="text-[#6B7280] uppercase tracking-widest text-[10px] font-semibold block mb-1">
-                        {product.category}
-                      </span>
-
-                      <Link href={`/collections/gemstones/${product.id}`}>
-                        <h3 className="text-sm sm:text-base font-serif text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
-                          {product.name}
+                    <div className="px-3 pt-2 sm:p-4">
+                      <Link href={`/collections/gemstones/${product.slug}`}>
+                        <h3 className="text-sm sm:text-base text-center text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
+                          {product.name} - {product.specifications.weight.value}{" "}
+                          {product.specifications.weight.unit}
                         </h3>
                       </Link>
+                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
+                        {product.specifications.weight.value}{" "}
+                        {product.specifications.weight.unit}{" "}
+                        {product.indianName}
+                      </span>
+                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
+                        Origin : {product.specifications.origin}
+                      </span>
+                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
+                        SKU : {product.sku}
+                      </span>
 
                       {/* Price + Add to Cart */}
-                      <div className="flex items-center justify-between">
+                      <div className="flex items-center justify-between mt-4">
                         <p className="text-[#7A1F1F] font-bold text-sm sm:text-base">
-                          ₹{product.price.toLocaleString("en-IN")}
+                          ₹{" "}
+                          {product.pricing.sellingPrice.toLocaleString("en-IN")}
                         </p>
-                        <button className="hidden sm:flex items-center gap-1 rounded-full bg-[#FFFDF8] border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#7A1F1F] hover:text-white hover:border-[#7A1F1F] cursor-pointer">
+                        <button className="hidden sm:flex items-center gap-1 rounded-lg bg-[#FFFDF8] border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#7A1F1F] hover:text-white hover:border-[#7A1F1F] cursor-pointer">
                           Add to Cart
                         </button>
                       </div>

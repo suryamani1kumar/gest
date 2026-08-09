@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -288,6 +288,32 @@ export default function CollectionsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [wishlist, setWishlist] = useState<number[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/products?productType=rudraksha", {
+        cache: "no-store",
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        setProducts(data.data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  console.log("products", products);
 
   const toggleMaterial = (mat: string) => {
     setSelectedMaterials((prev) =>
@@ -665,7 +691,10 @@ export default function CollectionsPage() {
                     </button>
 
                     {/* Image */}
-                    <Link href={`/collections/rudraksha/${product.id}`} className="block">
+                    <Link
+                      href={`/collections/rudraksha/${product.id}`}
+                      className="block"
+                    >
                       <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
                         <Image
                           src={product.image}

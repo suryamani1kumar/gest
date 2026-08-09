@@ -127,7 +127,7 @@ export default function Footer() {
 
              <li>
                 <Link
-                  href="/shipping-policy"
+                  href="/refund-policy"
                   className="hover:text-[#C9A227] transition"
                 >
                   Return & Exchange Policy
