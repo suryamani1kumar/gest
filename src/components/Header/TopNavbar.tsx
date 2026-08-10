@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import { Tfn1 } from "@/lib/data";
 import { useRouter } from "next/navigation";
+import Login from "../Account/Login";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
@@ -425,52 +426,7 @@ export default function Navbar({
       {/* Mobile Drawer Modal */}
       {mobileOpen && <MobileMenuModal onClose={() => setMobileOpen(false)} />}
       {accountOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-6">
-          <div className="relative flex w-full max-w-3xl overflow-hidden rounded-3xl bg-[#FFFDF8] shadow-2xl">
-            {/* Close */}
-            <button
-              onClick={() => setAccountOpen(false)}
-              className="absolute right-6 top-6 text-gray-600 hover:text-[#7A1F1F]"
-            >
-              ✕
-            </button>
-
-            {/* Left Side */}
-            <div className="hidden w-1/2 bg-gradient-to-br from-[#FFFDF8] to-[#FFFDF0] p-12 lg:flex flex-col justify-center items-center">
-              <img src="/images/login-offer.png" alt="" className="w-72" />
-            </div>
-
-            {/* Right Side */}
-            <div className="flex w-full flex-col justify-center p-12 lg:w-1/2">
-              <h2 className="text-5xl font-serif font-bold text-gray-800">
-                Welcome
-              </h2>
-
-              <p className="mt-3 text-gray-500">
-                Login or Signup to continue shopping
-              </p>
-
-              <div className="mt-10 flex overflow-hidden rounded-full border border-gray-200">
-                <div className="flex items-center gap-2 border-r px-5">
-                  🇮🇳 +91
-                </div>
-
-                <input
-                  placeholder="Enter mobile number"
-                  className="flex-1 px-5 outline-none"
-                />
-
-                <button className="bg-[#7A1F1F] px-8 font-semibold text-white hover:bg-[#B8860B] transition-colors">
-                  Request OTP
-                </button>
-              </div>
-
-              <p className="mt-8 text-center text-sm text-gray-500">
-                By continuing you agree to our Terms & Privacy Policy.
-              </p>
-            </div>
-          </div>
-        </div>
+       <Login setAccountOpen={setAccountOpen}/>
       )}
     </>
   );

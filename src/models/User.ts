@@ -1,22 +1,23 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Document, Model, Schema } from "mongoose";
 
 export interface IUser extends Document {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
 
   email: string;
   phone?: string;
 
-  password: string;
-
   profileImage?: string;
 
-  status: "active" | "inactive" | "blocked";
+  status: "pending" | "active" | "inactive" | "blocked";
 
   emailVerified: boolean;
-  phoneVerified: boolean;
 
   provider: "email" | "google";
+
+  emailOtpHash?: string;
+  emailOtpExpiresAt?: Date;
+  emailOtpAttempts: number;
 
   lastLogin?: Date;
 
@@ -28,7 +29,6 @@ const UserSchema = new Schema<IUser>(
   {
     firstName: {
       type: String,
-      required: true,
       trim: true,
       minlength: 2,
       maxlength: 50,
@@ -36,7 +36,6 @@ const UserSchema = new Schema<IUser>(
 
     lastName: {
       type: String,
-      required: true,
       trim: true,
       minlength: 2,
       maxlength: 50,
@@ -57,13 +56,6 @@ const UserSchema = new Schema<IUser>(
       trim: true,
     },
 
-    password: {
-      type: String,
-      required: true,
-      minlength: 6,
-      select: false, // Don't return password by default
-    },
-
     profileImage: {
       type: String,
       default: null,
@@ -71,16 +63,11 @@ const UserSchema = new Schema<IUser>(
 
     status: {
       type: String,
-      enum: ["active", "inactive", "blocked"],
-      default: "active",
+      enum: ["pending", "active", "inactive", "blocked"],
+      default: "pending",
     },
 
     emailVerified: {
-      type: Boolean,
-      default: false,
-    },
-
-    phoneVerified: {
       type: Boolean,
       default: false,
     },
@@ -91,19 +78,41 @@ const UserSchema = new Schema<IUser>(
       default: "email",
     },
 
+    // -------------------------
+    // Email OTP
+    // -------------------------
+
+    emailOtpHash: {
+      type: String,
+      default: null,
+      select: false,
+    },
+
+    emailOtpExpiresAt: {
+      type: Date,
+      default: null,
+      select: false,
+    },
+
+    emailOtpAttempts: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+
     lastLogin: {
       type: Date,
       default: null,
     },
-
   },
   {
     timestamps: true,
     versionKey: false,
-  }
+  },
 );
 
 const Customer: Model<IUser> =
-  mongoose.models.Customer || mongoose.model<IUser>("Customer", UserSchema);
+  mongoose.models.Customer ||
+  mongoose.model<IUser>("Customer", UserSchema);
 
 export default Customer;

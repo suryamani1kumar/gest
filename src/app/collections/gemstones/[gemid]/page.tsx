@@ -17,8 +17,10 @@ import {
   Share2,
   Check,
   Package,
+  PhoneCall,
 } from "lucide-react";
 import Gallery from "@/components/Products/Gallery/Gallery";
+import { Tfn1 } from "@/lib/data";
 
 /* Fallback for any ID not in the catalogue */
 function getProduct(id: string) {
@@ -42,12 +44,18 @@ function getProduct(id: string) {
       "/images/craftsmanship.png",
     ],
     details: [
-      { label: "Center Stone", value: "2.5 Carat Blue Sapphire (Ceylon)" },
-      { label: "Accent Stones", value: "0.75ct Diamonds (VVS1, E Color)" },
-      { label: "Metal", value: "18k White Gold" },
-      { label: "Setting", value: "Prong and Pavé" },
-      { label: "Weight", value: "4.2 grams" },
-      { label: "Certification", value: "GIA Certified" },
+      { label: "Gemstone", value: "2.5 Carat Blue Sapphire (Ceylon)" },
+      { label: "Certification", value: "0.75ct Diamonds (VVS1, E Color)" },
+      { label: "Colour", value: "18k White Gold" },
+      { label: "Specific Gravity", value: "Prong and Pavé" },
+      { label: "Weight (ratti)", value: "4.2 grams" },
+      { label: "Treatment", value: "GIA Certified" },
+      { label: "Return Policy", value: "GIA Certified" },
+      { label: "Exact Dimensions", value: "GIA Certified" },
+      { label: "Refractive Index", value: "GIA Certified" },
+      { label: "Cut", value: "GIA Certified" },
+      { label: "Origin", value: "GIA Certified" },
+      { label: "Shape", value: "GIA Certified" },
     ],
     highlights: [
       "GIA Certified natural sapphire",
@@ -106,7 +114,6 @@ export default function ProductDetailPage() {
   const [singleProduct, setSingleProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("Details");
   const [isWishlisted, setIsWishlisted] = useState(false);
@@ -138,10 +145,6 @@ export default function ProductDetailPage() {
 
     fetchProduct();
   }, [productId]);
-
-  const discount = Math.round(
-    ((product.originalPrice - product.price) / product.originalPrice) * 100,
-  );
 
   const handleAddToCart = () => {
     setAddedToCart(true);
@@ -188,7 +191,8 @@ export default function ProductDetailPage() {
 
                 {/* SKU */}
                 <p className="mb-3 text-xs text-[#9CA3AF]">
-                  SKU: {singleProduct.sku}   <span className="mx-10">|</span> Origin: {singleProduct.specifications.origin}
+                  SKU: {singleProduct.sku} <span className="mx-10">|</span>{" "}
+                  Origin: {singleProduct.specifications.origin}
                 </p>
 
                 {/* Price */}
@@ -196,10 +200,14 @@ export default function ProductDetailPage() {
                   <span className="text-2xl font-bold text-[#7A1F1F]">
                     ₹{singleProduct.pricing.salePrice.toLocaleString("en-IN")}
                   </span>
-                  {singleProduct.pricing.sellingPrice > singleProduct.pricing.salePrice && (
+                  {singleProduct.pricing.sellingPrice >
+                    singleProduct.pricing.salePrice && (
                     <>
                       <span className="text-lg text-[#9CA3AF] line-through">
-                        ₹{singleProduct.pricing.sellingPrice.toLocaleString("en-IN")}
+                        ₹
+                        {singleProduct.pricing.sellingPrice.toLocaleString(
+                          "en-IN",
+                        )}
                       </span>
                       <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
                         {singleProduct.pricing.discount}% OFF
@@ -214,24 +222,11 @@ export default function ProductDetailPage() {
 
                 {/* Short Description */}
                 <p className="text-[#6B7280] leading-relaxed text-sm mb-6">
-                  {product.shortDescription}
+                  {singleProduct.name} ({singleProduct.indianName}) weighing{" "}
+                  {singleProduct.specifications.weight.value} Carats (8.25
+                  Ratti) of {singleProduct.specifications.origin} Origin,
+                  Unheated & Untreated Gemstone certified by Govt. IIGJ
                 </p>
-
-                {/* Highlights */}
-                <div className="mb-6 space-y-2">
-                  {product.highlights.map((h, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center gap-2 text-sm text-[#1A1A1A]"
-                    >
-                      <Check
-                        size={14}
-                        className="text-green-600 flex-shrink-0"
-                      />
-                      <span>{h}</span>
-                    </div>
-                  ))}
-                </div>
 
                 {/* Divider */}
                 <div className="h-px bg-[#E5E7EB] mb-6" />
@@ -301,54 +296,63 @@ export default function ProductDetailPage() {
                     Buy Now
                   </Link>
                 </div>
-
-                {/* Trust Badges */}
-                <div className="grid grid-cols-2 gap-3">
-                  {[
-                    {
-                      icon: Truck,
-                      title: "Free Shipping",
-                      desc: "Orders above ₹2,000",
-                    },
-                    {
-                      icon: RotateCcw,
-                      title: "Easy Returns",
-                      desc: "7-day return policy",
-                    },
-                    {
-                      icon: ShieldCheck,
-                      title: "Secure Payment",
-                      desc: "100% encrypted",
-                    },
-                    {
-                      icon: Award,
-                      title: "Certified",
-                      desc: "Lab authenticated",
-                    },
-                  ].map((item, idx) => {
-                    const Icon = item.icon;
-                    return (
-                      <div
-                        key={idx}
-                        className="flex items-center gap-2.5 rounded-lg border border-[#E5E7EB] bg-white p-3"
-                      >
-                        <Icon
-                          size={18}
-                          className="text-[#7A1F1F] flex-shrink-0"
-                        />
-                        <div>
-                          <p className="text-xs font-semibold text-[#1A1A1A]">
-                            {item.title}
-                          </p>
-                          <p className="text-[10px] text-[#9CA3AF]">
-                            {item.desc}
-                          </p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                <div className="rounded-lg border border-[#E5E7EB] bg-white p-3">
+                  <p className="text-sm">
+                    Customize your Gemstone in Bracelet, Pendant, or Ring of
+                    your choice. For assistance, please contact
+                  </p>
+                  <Link
+                    href={`tel:${Tfn1}`}
+                    className="flex flex-1 items-center justify-center rounded-lg py-2.5 text-sm tracking-wider text-[#7A1F1F] transition-all"
+                  >
+                    <div className="flex items-center justify-center rounded-full bg-white/20 ">
+                      <PhoneCall size={15} className="mr-2" /> {Tfn1}
+                    </div>{" "}
+                  </Link>
                 </div>
               </div>
+            </div>
+            {/* Trust Badges */}
+
+            <div className="grid grid-cols-2 gap-3 mt-10">
+              {[
+                {
+                  icon: Truck,
+                  title: "Free Shipping",
+                  desc: "Orders above ₹2,000",
+                },
+                {
+                  icon: RotateCcw,
+                  title: "Easy Returns",
+                  desc: "10 - 7 day return policy",
+                },
+                {
+                  icon: ShieldCheck,
+                  title: "Secure Payment",
+                  desc: "100% encrypted",
+                },
+                {
+                  icon: Award,
+                  title: "Certified",
+                  desc: "Lab authenticated",
+                },
+              ].map((item, idx) => {
+                const Icon = item.icon;
+                return (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-2.5 rounded-lg border border-[#E5E7EB] bg-white p-3"
+                  >
+                    <Icon size={18} className="text-[#7A1F1F] flex-shrink-0" />
+                    <div>
+                      <p className="text-xs font-semibold text-[#1A1A1A]">
+                        {item.title}
+                      </p>
+                      <p className="text-[10px] text-[#9CA3AF]">{item.desc}</p>
+                    </div>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
@@ -378,36 +382,57 @@ export default function ProductDetailPage() {
               {/* Tab Content */}
               <div className="py-10">
                 {activeTab === "Details" && (
-                  <div className="flex flex-col lg:flex-row gap-12">
-                    <div className="lg:w-1/2">
-                      <h3 className="text-xl font-serif text-[#1A1A1A] mb-4">
-                        Specifications
-                      </h3>
-                      <div className="rounded-xl border border-[#E5E7EB] overflow-hidden">
-                        {product.details.map((detail, idx) => (
-                          <div
-                            key={idx}
-                            className={`flex items-center justify-between px-5 py-3.5 text-sm ${
-                              idx % 2 === 0 ? "bg-[#FFFDF8]" : "bg-white"
-                            }`}
-                          >
-                            <span className="font-medium text-[#1A1A1A]">
-                              {detail.label}
-                            </span>
-                            <span className="text-[#6B7280]">
-                              {detail.value}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="lg:w-1/2">
-                      <h3 className="text-xl font-serif text-[#1A1A1A] mb-4">
-                        About This Product
-                      </h3>
-                      <p className="text-sm text-[#6B7280] leading-7 mb-6">
-                        {product.description}
-                      </p>
+                  <div>
+                    <h3 className="text-xl font-serif text-[#1A1A1A] mb-4">
+                      About This Product
+                    </h3>
+                    <p className="text-sm text-[#6B7280] leading-7 mb-6">
+                      {product.description}
+                    </p>
+                    <h3 className="text-xl font-serif text-[#1A1A1A] mb-4">
+                      Specifications
+                    </h3>
+                    <div className="w-full overflow-hidden rounded-xl border border-[#BDBDBD]">
+                      {Array.from(
+                        { length: Math.ceil(product.details.length / 2) },
+                        (_, rowIndex) => {
+                          const rowDetails = product.details.slice(
+                            rowIndex * 2,
+                            rowIndex * 2 + 2,
+                          );
+
+                          return (
+                            <div
+                              key={rowIndex}
+                              className={`grid grid-cols-1 lg:grid-cols-2 ${
+                                rowIndex % 2 === 0 ? "bg-white" : "bg-[#FFFDF8]"
+                              }`}
+                            >
+                              {rowDetails.map((detail, index) => (
+                                <div
+                                  key={index}
+                                  className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 px-5 py-3.5 text-sm"
+                                >
+                                  {/* Label */}
+                                  <span className="font-semibold text-[#171717]">
+                                    {detail.label}
+                                  </span>
+
+                                  {/* Colon */}
+                                  <span className="text-center text-[#171717]">
+                                    :
+                                  </span>
+
+                                  {/* Value */}
+                                  <span className="min-w-0 break-words text-[#333333]">
+                                    {detail.value}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          );
+                        },
+                      )}
                     </div>
                   </div>
                 )}
