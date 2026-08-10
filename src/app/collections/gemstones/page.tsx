@@ -258,7 +258,10 @@ function FilterAccordion({
     </div>
   );
 }
-
+interface CartItem {
+  productId: string;
+  quantity: number;
+}
 /* ─── Main Page ─── */
 export default function CollectionsPage() {
   const [selectedCategory, setSelectedCategory] = useState("All");
@@ -269,9 +272,11 @@ export default function CollectionsPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [wishlist, setWishlist] = useState<number[]>([]);
+  const [wishlist, setWishlist] = useState<string[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+  const [cart, setCart] = useState<CartItem[]>([]);
+  console.log("wishlist", wishlist);
 
   const fetchProducts = async () => {
     try {
@@ -293,6 +298,11 @@ export default function CollectionsPage() {
 
   useEffect(() => {
     fetchProducts();
+    const saved = localStorage.getItem("wishlist");
+
+    if (saved) {
+      setWishlist(JSON.parse(saved));
+    }
   }, []);
 
   console.log("products", products);
@@ -303,10 +313,16 @@ export default function CollectionsPage() {
     );
   };
 
-  const toggleWishlist = (id: number) => {
-    setWishlist((prev) =>
-      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id],
-    );
+  const toggleWishlist = (id: string) => {
+    setWishlist((prev) => {
+      const updated = prev.includes(id)
+        ? prev.filter((item) => item !== id)
+        : [...prev, id];
+
+      localStorage.setItem("wishlist", JSON.stringify(updated));
+
+      return updated;
+    });
   };
 
   const clearAllFilters = () => {
@@ -379,7 +395,46 @@ export default function CollectionsPage() {
     sortBy,
     searchQuery,
   ]);
+  useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
 
+    if (savedCart) {
+      setCart(JSON.parse(savedCart));
+    }
+  }, []);
+  console.log("cart", cart);
+  const addToCart = (productId: string) => {
+    setCart((prev) => {
+      const existingItem = prev.find((item) => item.productId === productId);
+
+      let updatedCart: CartItem[];
+
+      if (existingItem) {
+        // Increase quantity
+        updatedCart = prev.map((item) =>
+          item.productId === productId
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+              }
+            : item,
+        );
+      } else {
+        // Add new product
+        updatedCart = [
+          ...prev,
+          {
+            productId,
+            quantity: 1,
+          },
+        ];
+      }
+
+      localStorage.setItem("cart", JSON.stringify(updatedCart));
+
+      return updatedCart;
+    });
+  };
   /* ─── Filter Sidebar Content ─── */
   const filterContent = (
     <>
@@ -711,7 +766,10 @@ export default function CollectionsPage() {
                           ₹{" "}
                           {product.pricing.sellingPrice.toLocaleString("en-IN")}
                         </p>
-                        <button className="hidden sm:flex items-center gap-1 rounded-lg bg-[#FFFDF8] border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#7A1F1F] hover:text-white hover:border-[#7A1F1F] cursor-pointer">
+                        <button
+                          onClick={() => addToCart(product._id)}
+                          className="hidden sm:flex items-center gap-1 rounded-lg bg-[#FFFDF8] border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#7A1F1F] hover:text-white hover:border-[#7A1F1F] cursor-pointer"
+                        >
                           Add to Cart
                         </button>
                       </div>
