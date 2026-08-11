@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
 import connectDB from "@/lib/db";
 import Customer from "@/models/User";
+import { cookies } from "next/headers";
+import { createSession } from "@/lib/auth";
 
 export async function POST(request: NextRequest) {
   try {
@@ -32,11 +34,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const normalizedEmail =
-      email.toLowerCase().trim();
-
-    const normalizedOTP =
-      String(otp).trim();
+    const normalizedEmail = email.toLowerCase().trim();
+    const normalizedOTP = String(otp).trim();
 
     const emailRegex =
       /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -147,10 +146,7 @@ export async function POST(request: NextRequest) {
       customer.emailOtpHash.length ===
         otpHash.length &&
       crypto.timingSafeEqual(
-        Buffer.from(
-          otpHash,
-          "hex",
-        ),
+        Buffer.from(otpHash, "hex"),
         Buffer.from(
           customer.emailOtpHash,
           "hex",
@@ -174,11 +170,10 @@ export async function POST(request: NextRequest) {
               ? "Invalid OTP"
               : "Too many incorrect OTP attempts. Please request a new OTP",
 
-          remainingAttempts:
-            Math.max(
-              remainingAttempts,
-              0,
-            ),
+          remainingAttempts: Math.max(
+            remainingAttempts,
+            0,
+          ),
         },
         {
           status:
@@ -204,12 +199,27 @@ export async function POST(request: NextRequest) {
 
       await customer.save();
 
+      const token = await createSession(
+        customer._id.toString(),
+      );
+
+      const cookieStore = await cookies();
+
+      cookieStore.set("session", token, {
+        httpOnly: true,
+        secure:
+          process.env.NODE_ENV ===
+          "production",
+        sameSite: "lax",
+        maxAge: 60 * 60 * 24 * 30, // 30 days
+        path: "/",
+      });
+
       return NextResponse.json(
         {
           success: true,
 
-          message:
-            "Login successful",
+          message: "Login successful",
 
           isExistingUser: true,
 

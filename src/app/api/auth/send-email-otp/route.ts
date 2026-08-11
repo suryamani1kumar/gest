@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-
 import connectDB from "@/lib/db";
 import Customer from "@/models/User";
 import { sendEmail } from "@/lib/email";
@@ -38,9 +37,7 @@ export async function POST(request: NextRequest) {
 
     let customer = await Customer.findOne({
       email: normalizedEmail,
-    }).select(
-      "+emailOtpHash +emailOtpExpiresAt +emailOtpAttempts",
-    );
+    }).select("+emailOtpHash +emailOtpExpiresAt +emailOtpAttempts");
 
     if (customer?.status === "blocked") {
       return NextResponse.json(
@@ -54,16 +51,12 @@ export async function POST(request: NextRequest) {
 
     if (customer?.emailOtpExpiresAt) {
       const otpCreatedTime =
-        new Date(customer.emailOtpExpiresAt).getTime() -
-        10 * 60 * 1000;
+        new Date(customer.emailOtpExpiresAt).getTime() - 10 * 60 * 1000;
 
-      const secondsSinceLastOTP =
-        (Date.now() - otpCreatedTime) / 1000;
+      const secondsSinceLastOTP = (Date.now() - otpCreatedTime) / 1000;
 
       if (secondsSinceLastOTP < 60) {
-        const remainingSeconds = Math.ceil(
-          60 - secondsSinceLastOTP,
-        );
+        const remainingSeconds = Math.ceil(60 - secondsSinceLastOTP);
 
         return NextResponse.json(
           {
@@ -76,18 +69,11 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const otp = crypto
-      .randomInt(100000, 1000000)
-      .toString();
+    const otp = crypto.randomInt(100000, 1000000).toString();
 
-    const otpHash = crypto
-      .createHash("sha256")
-      .update(otp)
-      .digest("hex");
+    const otpHash = crypto.createHash("sha256").update(otp).digest("hex");
 
-    const expiresAt = new Date(
-      Date.now() + 10 * 60 * 1000,
-    );
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
     if (!customer) {
       customer = await Customer.create({
@@ -106,7 +92,6 @@ export async function POST(request: NextRequest) {
         emailOtpAttempts: 0,
       });
     } else {
-
       customer.emailOtpHash = otpHash;
       customer.emailOtpExpiresAt = expiresAt;
       customer.emailOtpAttempts = 0;
@@ -118,7 +103,7 @@ export async function POST(request: NextRequest) {
       await sendEmail({
         to: normalizedEmail,
 
-        subject: "Your Login Verification Code",
+        subject: "Your Verification Code",
 
         html: `
           <!DOCTYPE html>
@@ -148,8 +133,7 @@ export async function POST(request: NextRequest) {
                 </h2>
 
                 <p>
-                  Use the following OTP to
-                  continue:
+                  Use the following OTP to verify your email address and continue:
                 </p>
 
                 <div
@@ -177,37 +161,38 @@ export async function POST(request: NextRequest) {
                 </div>
 
                 <p>
-                  This OTP will expire in
-                  <strong>10 minutes</strong>.
+                  This OTP will expire in 1 minutes.
                 </p>
 
-                <p
-                  style="
-                    color:#777;
-                    font-size:13px;
-                  "
-                >
-                  If you did not request this
-                  OTP, please ignore this email.
+                <p>
+                  For your security, do not share this verification code with.
                 </p>
-
+                <p>
+                  If you did not request this OTP, please ignore this email.
+                </p>
+                <p style="
+                    margin-top:60px;
+                  ">
+                  Thank you,
+                </p>
+                 <p>
+                  <strong>[Your Company Name]</strong>
+                </p>
+                <p>
+                  Gemstones & Jewellery
+                </p>
               </div>
-
             </body>
           </html>
         `,
       });
     } catch (emailError) {
-      console.error(
-        "EMAIL SEND ERROR:",
-        emailError,
-      );
+      console.error("EMAIL SEND ERROR:", emailError);
 
       return NextResponse.json(
         {
           success: false,
-          message:
-            "Unable to send verification email. Please try again.",
+          message: "Unable to send verification email. Please try again.",
         },
         { status: 500 },
       );
@@ -223,17 +208,12 @@ export async function POST(request: NextRequest) {
       { status: 200 },
     );
   } catch (error: any) {
-    console.error(
-      "SEND EMAIL OTP ERROR:",
-      error,
-    );
+    console.error("SEND EMAIL OTP ERROR:", error);
 
     return NextResponse.json(
       {
         success: false,
-        message:
-          error.message ||
-          "Failed to send verification OTP",
+        message: error.message || "Failed to send verification OTP",
       },
       { status: 500 },
     );
