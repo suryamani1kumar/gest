@@ -19,6 +19,9 @@ export interface IUser extends Document {
   emailOtpExpiresAt?: Date;
   emailOtpAttempts: number;
 
+  sessionToken?: string;
+  sessionExpiresAt?: Date;
+
   lastLogin?: Date;
 
   createdAt: Date;
@@ -78,10 +81,6 @@ const UserSchema = new Schema<IUser>(
       default: "email",
     },
 
-    // -------------------------
-    // Email OTP
-    // -------------------------
-
     emailOtpHash: {
       type: String,
       default: null,
@@ -97,6 +96,19 @@ const UserSchema = new Schema<IUser>(
     emailOtpAttempts: {
       type: Number,
       default: 0,
+      select: false,
+    },
+
+    sessionToken: {
+      type: String,
+      default: null,
+      select: false,
+      index: true,
+    },
+
+    sessionExpiresAt: {
+      type: Date,
+      default: null,
       select: false,
     },
 
