@@ -23,11 +23,20 @@ interface Product {
   _id: string;
   name: string;
   slug: string;
+  indianName: string;
   gallery?: {
     url: string;
   }[];
+  sku: string;
   pricing?: {
     sellingPrice?: number;
+  };
+  specifications: {
+    weight: {
+      value: string;
+      unit: string;
+    };
+    origin: string;
   };
 }
 
@@ -162,19 +171,19 @@ export default function CartPage() {
 
   return (
     <>
-      <div className="pt-15 pb-24 bg-[#FFFDF8] min-h-screen">
+      <div className="pt-10 pb-24 bg-[#FFFDF8] min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Header */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-12"
+            className="mb-10"
           >
-            <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
+            <span className="text-[#7A1F1F] tracking-widest text-sm font-medium mb-2 block">
               Review Your Selection
             </span>
-            <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-6">
+            <h1 className="text-2xl md:text-3xl font-serif text-[#1A1A1A] mb-3">
               Your Shopping Bag
             </h1>
             <div className="w-24 h-px bg-[#C9A227]"></div>
@@ -190,98 +199,97 @@ export default function CartPage() {
                 className="flex flex-col lg:flex-row gap-12"
               >
                 <div className="lg:w-2/3">
-                  <div className="border-t border-[#E5E7EB]">
-                    <AnimatePresence>
-                      {cart.map((item, index) => (
-                        <motion.div
-                          key={item._id}
-                          layout
-                          initial={{ opacity: 0, x: -20 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          exit={{
-                            opacity: 0,
-                            x: -20,
-                            transition: { duration: 0.2 },
-                          }}
-                          transition={{ duration: 0.4, delay: index * 0.1 }}
-                          className="py-8 border-b border-[#E5E7EB] flex flex-col sm:flex-row items-start sm:items-center gap-6 group"
+                  <AnimatePresence>
+                    {cart.map((item, index) => (
+                      <motion.div
+                        key={item._id}
+                        layout
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{
+                          opacity: 0,
+                          x: -20,
+                          transition: { duration: 0.2 },
+                        }}
+                        transition={{ duration: 0.4, delay: index * 0.1 }}
+                        className="p-4 mb-5 border border-[#E5E7EB] rounded-md flex flex-col sm:flex-row items-start sm:items-center gap-6 group"
+                      >
+                        <Link
+                          href={`/collections/gemstones/${item._id}`}
+                          className="relative w-50 h-35 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
                         >
-                          <Link
-                            href={`/collections/gemstones/${item._id}`}
-                            className="relative w-52 h-40 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
-                          >
-                            console.log(item)
-                            {item.gallery?.[0]?.url && (
-                              <Image
-                                src={item.gallery[0].url}
-                                alt={item.name}
-                                fill
-                                sizes="112px"
-                                className="object-cover"
-                              />
-                            )}
-                          </Link>
+                          console.log(item)
+                          {item.gallery?.[0]?.url && (
+                            <Image
+                              src={item.gallery[0].url}
+                              alt={item.name}
+                              fill
+                              sizes="112px"
+                              className="object-cover"
+                            />
+                          )}
+                        </Link>
 
-                          <div className="flex-grow flex flex-col justify-between h-full sm:h-40 py-1 w-full">
-                            <div className="flex justify-between items-start w-full">
-                              <div>
-                                <span className="text-[#C9A227] uppercase tracking-widest text-[10px] font-bold block mb-1">
-                                  {item.name}
-                                </span>
-                                <Link
-                                  href={`/collections/gemstones/${item._id}`}
-                                >
-                                  <h3 className="text-xl font-serif text-[#1A1A1A] group-hover:text-[#7A1F1F] transition-colors">
-                                    {item.name}
-                                  </h3>
-                                </Link>
-                              </div>
-                              <p className="text-lg font-bold text-[#1A1A1A]">
-                                ₹ 12,349
-                                {/* {(item.price * item.quantity).toLocaleString(
-                                  "en-IN",
-                                )} */}
+                        <div className="flex-grow flex flex-col justify-between h-full sm:h-40 py-1 w-full">
+                          <div className="flex justify-between items-start w-full">
+                            <div>
+                              <Link href={`/collections/gemstones/${item._id}`}>
+                                <h3 className="text-xl text-[#1A1A1A] group-hover:text-[#7A1F1F] transition-colors">
+                                  {item.name} ({item.indianName}) -{" "}
+                                  {item.specifications.weight.value}{" "}
+                                  {item.specifications.weight.unit}
+                                </h3>
+                              </Link>
+                              <p className="my-1 text-xs text-[#9CA3AF]">
+                                SKU : {item.sku}
+                              </p>
+                              <p className="mb-1 text-xs text-[#9CA3AF]">
+                                Origin : {item.specifications.origin}
                               </p>
                             </div>
+                            <p className="text-lg font-bold text-[#1A1A1A]">
+                              ₹
+                              {(
+                                item.pricing?.sellingPrice ?? 0 * item.quantity
+                              ).toLocaleString("en-IN")}
+                            </p>
+                          </div>
 
-                            <div className="flex items-center justify-between mt-6 sm:mt-0 w-full">
-                              <div className="flex items-center border border-[#E5E7EB] rounded-sm">
-                                <button
-                                  onClick={() =>
-                                    updateQuantity(item._id, item.quantity - 1)
-                                  }
-                                  className="w-10 h-10 flex items-center justify-center text-[#6B7280] hover:text-[#1A1A1A] hover:bg-neutral-50 transition-colors cursor-pointer"
-                                  aria-label="Decrease quantity"
-                                >
-                                  <Minus size={14} />
-                                </button>
-                                <span className="w-10 text-center text-sm font-medium text-[#1A1A1A]">
-                                  {item.quantity}
-                                </span>
-                                <button
-                                  onClick={() =>
-                                    updateQuantity(item._id, item.quantity + 1)
-                                  }
-                                  className="w-10 h-10 flex items-center justify-center text-[#6B7280] hover:text-[#1A1A1A] hover:bg-neutral-50 transition-colors cursor-pointer"
-                                  aria-label="Increase quantity"
-                                >
-                                  <Plus size={14} />
-                                </button>
-                              </div>
-
+                          <div className="flex items-center justify-between mt-6 sm:mt-0 w-full">
+                            <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
                               <button
-                                onClick={() => removeFromCart(item._id)}
-                                className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
+                                onClick={() =>
+                                  updateQuantity(item._id, item.quantity - 1)
+                                }
+                                className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
                               >
-                                <Trash2 size={16} />
-                                <span className="hidden sm:inline">Remove</span>
+                                <Minus size={16} />
+                              </button>
+                              <span className="flex h-10 w-10 items-center justify-center border-x border-[#E5E7EB] text-sm font-semibold text-[#1A1A1A]">
+                                {item.quantity}
+                              </span>
+                              <button
+                                onClick={() =>
+                                  updateQuantity(item._id, item.quantity + 1)
+                                }
+                                className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
+                              >
+                                <Plus size={16} />
                               </button>
                             </div>
+
+                            <button
+                              onClick={() => removeFromCart(item._id)}
+                              className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
+                            >
+                              <Trash2 size={16} />
+                              <span className="hidden sm:inline">Remove</span>
+                            </button>
                           </div>
-                        </motion.div>
-                      ))}
-                    </AnimatePresence>
-                  </div>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </AnimatePresence>
                 </div>
 
                 <motion.div
@@ -320,7 +328,7 @@ export default function CartPage() {
 
                     <div className="flex justify-between items-center text-xl font-serif font-bold text-[#1A1A1A] mb-8">
                       <span>Total</span>
-                      <span>₹1234</span>
+                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
                     </div>
 
                     <Link
