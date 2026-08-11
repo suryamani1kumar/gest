@@ -23,6 +23,7 @@ import {
 import { Tfn1 } from "@/lib/data";
 import { useRouter } from "next/navigation";
 import Login from "../Account/Login";
+import { FiLogIn } from "react-icons/fi";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
@@ -218,7 +219,9 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div>
-            <p className="text-xl font-bold text-[#7A1F1F] tracking-wide">Aura</p>
+            <p className="text-xl font-bold text-[#7A1F1F] tracking-wide">
+              Aura
+            </p>
             <p className="text-xs text-gray-400">Fine Jewellery</p>
           </div>
           <button
@@ -301,7 +304,6 @@ export default function Navbar({
             <div
               className="relative "
               onMouseEnter={() => setShowAccountMenu(true)}
-              onMouseLeave={() => setShowAccountMenu(false)}
             >
               <button
                 aria-label="Account"
@@ -311,42 +313,31 @@ export default function Navbar({
               </button>
 
               {showAccountMenu && (
-                <div className="absolute left-1/2 top-8 z-50 w-72 overflow-hidden rounded-2xl bg-white shadow-2xl border border-gray-100">
+                <div className="absolute left-1/2 top-8 z-50 -translate-x-1/2 w-58 overflow-hidden rounded-lg bg-white shadow-2xl border border-gray-100">
                   <button
                     onClick={() => {
                       setAccountOpen(true);
                       setShowAccountMenu(false);
                     }}
-                    className="flex w-full items-center gap-4 px-6 py-5 text-left hover:bg-[#FFFDF8] transition"
+                    className="flex w-full items-center cursor-pointer gap-4 p-4 text-left hover:bg-[#FFFDF8] transition"
                   >
-                    <Gift className="text-[#7A1F1F]" size={24} />
+                    <FiLogIn className="text-[#7A1F1F]" size={22} />
 
-                    <div>
-                      <p className="text-xl font-serif text-gray-800">
-                        Log in / Sign up
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Access your account
-                      </p>
-                    </div>
+                    <p className="text-md font-serif text-gray-800">
+                      Log in / Sign up
+                    </p>
                   </button>
 
-                  <div className="border-t" />
-
                   <Link
-                    href="/contact"
-                    className="flex items-center gap-4 px-6 py-5 hover:bg-[#FFFDF8] transition"
+                    href="/account"
+                    onClick={() => {
+                      setShowAccountMenu(false);
+                    }}
+                    className="flex items-center gap-4 cursor-pointer px-4 pb-4 hover:bg-[#FFFDF8] transition"
                   >
-                    <MessageCircleMore className="text-[#7A1F1F]" size={24} />
+                    <User className="text-[#7A1F1F]" size={22} />
 
-                    <div>
-                      <p className="text-xl font-serif text-gray-800">
-                        Contact Us
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        We're here to help
-                      </p>
-                    </div>
+                    <p className="text-md font-serif text-gray-800">Account</p>
                   </Link>
                 </div>
               )}
@@ -425,9 +416,7 @@ export default function Navbar({
 
       {/* Mobile Drawer Modal */}
       {mobileOpen && <MobileMenuModal onClose={() => setMobileOpen(false)} />}
-      {accountOpen && (
-       <Login setAccountOpen={setAccountOpen}/>
-      )}
+      {accountOpen && <Login setAccountOpen={setAccountOpen} />}
     </>
   );
 }
