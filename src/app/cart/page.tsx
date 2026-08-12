@@ -13,6 +13,15 @@ import {
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
+import { useDispatch, useSelector } from "react-redux";
+
+import {
+  setCart,
+  updateQuantity as updateCartQuantity,
+  removeFromCart as removeCartItem,
+} from "@/redux/slices/cartSlice";
+
+import type { RootState, AppDispatch } from "@/redux/store";
 
 interface CartItem {
   productId: string;
@@ -45,23 +54,56 @@ interface CartProduct extends Product {
 }
 
 export default function CartPage() {
-  const [cart, setCart] = useState<CartProduct[]>([]);
+  const dispatch = useDispatch<AppDispatch>();
+
+  // Redux cart
+  const cartItems = useSelector((state: RootState) => state.cart.items);
+  console.log("cartItems", cartItems);
+  // Product details fetched from API
+  const [cart, setCartProducts] = useState<CartProduct[]>([]);
+
   const [loading, setLoading] = useState(true);
-  console.log("cart", cart);
+  const [cartHydrated, setCartHydrated] = useState(false);
+
+  console.log("Redux cart:", cartItems);
+  console.log("Cart products:", cart);
+
   useEffect(() => {
+    const savedCart = localStorage.getItem("cart");
+
+    if (!savedCart) {
+      setCartHydrated(true);
+      return;
+    }
+
+    try {
+      const items = JSON.parse(savedCart);
+
+      if (Array.isArray(items)) {
+        dispatch(setCart(items));
+      }
+    } catch (error) {
+      console.error("Failed to load cart:", error);
+    }
+
+    setCartHydrated(true);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!cartHydrated) return;
+
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems, cartHydrated]);
+
+  useEffect(() => {
+    if (!cartHydrated) return;
+
     const fetchCart = async () => {
       try {
-        const savedCart = localStorage.getItem("cart");
-
-        if (!savedCart) {
-          setCart([]);
-          return;
-        }
-
-        const cartItems: CartItem[] = JSON.parse(savedCart);
+        setLoading(true);
 
         if (!cartItems.length) {
-          setCart([]);
+          setCartProducts([]);
           return;
         }
 
@@ -69,76 +111,80 @@ export default function CartPage() {
 
         const response = await fetch(`/api/cart?ids=${ids.join(",")}`);
 
+        if (!response.ok) {
+          throw new Error("Failed to fetch cart products");
+        }
+
         const data = await response.json();
 
         if (!data.success) {
-          throw new Error(data.message);
+          throw new Error(data.message || "Failed to fetch cart");
         }
 
-        // Attach quantity from localStorage to product
         const cartProducts: CartProduct[] = data.data
           .map((product: Product) => {
             const cartItem = cartItems.find(
               (item) => item.productId === product._id,
             );
 
+            if (!cartItem) {
+              return null;
+            }
+
             return {
               ...product,
-              quantity: cartItem?.quantity || 1,
+              quantity: cartItem.quantity,
             };
           })
-          .filter(Boolean);
+          .filter(
+            (product: CartProduct | null): product is CartProduct =>
+              product !== null,
+          );
 
-        setCart(cartProducts);
+        setCartProducts(cartProducts);
       } catch (error) {
         console.error("Cart error:", error);
+
+        setCartProducts([]);
       } finally {
         setLoading(false);
       }
     };
 
     fetchCart();
-  }, []);
+  }, [cartItems, cartHydrated]);
 
-  const updateQuantity = (productId: string, quantity: number) => {
+  const handleUpdateQuantity = (productId: string, quantity: number) => {
     if (quantity < 1) {
-      removeFromCart(productId);
+      handleRemoveFromCart(productId);
       return;
     }
 
-    setCart((prev) =>
-      prev.map((item) =>
-        item._id === productId ? { ...item, quantity } : item,
-      ),
+    // Redux
+    dispatch(
+      updateCartQuantity({
+        productId,
+        quantity,
+      }),
     );
 
-    const savedCart = localStorage.getItem("cart");
-
-    if (savedCart) {
-      const cartItems: CartItem[] = JSON.parse(savedCart);
-
-      const updatedCart = cartItems.map((item) =>
-        item.productId === productId ? { ...item, quantity } : item,
-      );
-
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-    }
+    // Update displayed product
+    setCartProducts((prev) =>
+      prev.map((item) =>
+        item._id === productId
+          ? {
+              ...item,
+              quantity,
+            }
+          : item,
+      ),
+    );
   };
 
-  const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item._id !== productId));
-
-    const savedCart = localStorage.getItem("cart");
-
-    if (savedCart) {
-      const cartItems: CartItem[] = JSON.parse(savedCart);
-
-      const updatedCart = cartItems.filter(
-        (item) => item.productId !== productId,
-      );
-
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-    }
+  const handleRemoveFromCart = (productId: string) => {
+    // Redux
+    dispatch(removeCartItem(productId));
+    setCartProducts((prev) => prev.filter((item) => item._id !== productId));
   };
 
   if (loading) {
@@ -259,7 +305,10 @@ export default function CartPage() {
                             <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
                               <button
                                 onClick={() =>
-                                  updateQuantity(item._id, item.quantity - 1)
+                                  handleUpdateQuantity(
+                                    item._id,
+                                    item.quantity - 1,
+                                  )
                                 }
                                 className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
                               >
@@ -270,7 +319,10 @@ export default function CartPage() {
                               </span>
                               <button
                                 onClick={() =>
-                                  updateQuantity(item._id, item.quantity + 1)
+                                  handleUpdateQuantity(
+                                    item._id,
+                                    item.quantity + 1,
+                                  )
                                 }
                                 className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
                               >
@@ -279,7 +331,7 @@ export default function CartPage() {
                             </div>
 
                             <button
-                              onClick={() => removeFromCart(item._id)}
+                              onClick={() => handleRemoveFromCart(item._id)}
                               className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
                             >
                               <Trash2 size={16} />

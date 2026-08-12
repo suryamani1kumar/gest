@@ -5,6 +5,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Heart, Trash2, ArrowRight, Loader2 } from "lucide-react";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import {
+  addToWishList,
+  removeFromWishList,
+} from "@/redux/slices/wishlistSlice";
 
 interface Product {
   _id: string;
@@ -31,27 +37,24 @@ interface Product {
 }
 
 export default function WishlistPage() {
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+
+  const dispatch = useDispatch();
   const [wishlist, setWishlist] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const savedWishlist = localStorage.getItem("wishlist");
+        const wishlistIds = wishlistItems.map((item) => item.productId);
 
-        if (!savedWishlist) {
-          setWishlist([]);
-          return;
-        }
-
-        const wishlistIds: string[] = JSON.parse(savedWishlist);
+        console.log("wishlistIds:", wishlistIds);
 
         if (!wishlistIds.length) {
           setWishlist([]);
+          setLoading(false);
           return;
         }
-
-        console.log("wishlistIds:", wishlistIds);
 
         const response = await fetch(
           `/api/wishlist?ids=${wishlistIds.join(",")}`,
@@ -77,28 +80,38 @@ export default function WishlistPage() {
     };
 
     fetchWishlist();
-  }, []);
+  }, [wishlistItems]);
 
-  const removeFromWishlist = (id: string) => {
-    // Remove product from React state
-    setWishlist((prev) => prev.filter((product) => product._id !== id));
-
-    // Remove product ID from localStorage
+  useEffect(() => {
     const savedWishlist = localStorage.getItem("wishlist");
 
-    if (savedWishlist) {
-      try {
-        const wishlistIds: string[] = JSON.parse(savedWishlist);
-
-        const updatedWishlist = wishlistIds.filter(
-          (wishlistId) => wishlistId !== id,
-        );
-
-        localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
-      } catch (error) {
-        console.error("Failed to update wishlist:", error);
-      }
+    if (!savedWishlist) {
+      setLoading(false);
+      return;
     }
+
+    try {
+      const items: { productId: string }[] = JSON.parse(savedWishlist);
+
+      items.forEach((item) => {
+        dispatch(addToWishList(item));
+      });
+    } catch (error) {
+      console.error("Failed to load wishlist:", error);
+    }
+  }, [dispatch]);
+
+  const removeFromWishlist = (id: string) => {
+    dispatch(removeFromWishList(id));
+
+    setWishlist((prev) => prev.filter((product) => product._id !== id));
+
+    localStorage.setItem(
+      "wishlist",
+      JSON.stringify(
+        wishlistItems.filter((product) => product.productId !== id),
+      ),
+    );
   };
 
   if (loading) {

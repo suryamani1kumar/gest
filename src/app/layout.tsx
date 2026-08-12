@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Header";
+import ReduxProvider from "@/redux/provider";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -30,11 +31,13 @@ export default function RootLayout({
       lang="en"
       className={`${playfair.variable} ${inter.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col font-sans">
-        <Header />
-        <main className="flex-grow mt-[116px] md:mt-[130px]">{children}</main>
-        <Footer />
-      </body>
+      <ReduxProvider>
+        <body className="min-h-full flex flex-col font-sans">
+          <Header />
+          <main className="flex-grow mt-[116px] md:mt-[130px]">{children}</main>
+          <Footer />
+        </body>
+      </ReduxProvider>
     </html>
   );
 }

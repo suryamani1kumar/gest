@@ -1,18 +1,11 @@
 "use client";
 
 import React, { useState, useMemo, useEffect } from "react";
-import Image from "next/image";
-import Link from "next/link";
-import {
-  SlidersHorizontal,
-  X,
-  ChevronDown,
-  ChevronRight,
-  Heart,
-  Star,
-  Search,
-} from "lucide-react";
+import { SlidersHorizontal, X, ChevronDown, Heart, Search } from "lucide-react";
 import PriceRange from "@/components/Products/filter/PriceRange";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
+import ProductCard from "@/components/Products/ProductCard/ProductCard";
 
 /* ─── Product Data ─── */
 const allProducts = [
@@ -194,15 +187,6 @@ const allProducts = [
   },
 ];
 
-const categories = [
-  "All",
-  "Rings",
-  "Earrings",
-  "Necklaces",
-  "Gemstones",
-  "Rudraksha",
-];
-
 const materials = ["Gold", "Silver", "Platinum", "Natural"];
 
 const priceRanges = [
@@ -258,12 +242,11 @@ function FilterAccordion({
     </div>
   );
 }
-interface CartItem {
-  productId: string;
-  quantity: number;
-}
+
 /* ─── Main Page ─── */
 export default function CollectionsPage() {
+  const dispatch = useDispatch();
+  const cartItems = useSelector((state: RootState) => state.cart.items);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(
@@ -272,11 +255,8 @@ export default function CollectionsPage() {
   const [sortBy, setSortBy] = useState("featured");
   const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [wishlist, setWishlist] = useState<string[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [cart, setCart] = useState<CartItem[]>([]);
-  console.log("wishlist", wishlist);
 
   const fetchProducts = async () => {
     try {
@@ -298,31 +278,12 @@ export default function CollectionsPage() {
 
   useEffect(() => {
     fetchProducts();
-    const saved = localStorage.getItem("wishlist");
-
-    if (saved) {
-      setWishlist(JSON.parse(saved));
-    }
   }, []);
-
-  console.log("products", products);
 
   const toggleMaterial = (mat: string) => {
     setSelectedMaterials((prev) =>
       prev.includes(mat) ? prev.filter((m) => m !== mat) : [...prev, mat],
     );
-  };
-
-  const toggleWishlist = (id: string) => {
-    setWishlist((prev) => {
-      const updated = prev.includes(id)
-        ? prev.filter((item) => item !== id)
-        : [...prev, id];
-
-      localStorage.setItem("wishlist", JSON.stringify(updated));
-
-      return updated;
-    });
   };
 
   const clearAllFilters = () => {
@@ -395,46 +356,7 @@ export default function CollectionsPage() {
     sortBy,
     searchQuery,
   ]);
-  useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
 
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
-  }, []);
-  console.log("cart", cart);
-  const addToCart = (productId: string) => {
-    setCart((prev) => {
-      const existingItem = prev.find((item) => item.productId === productId);
-
-      let updatedCart: CartItem[];
-
-      if (existingItem) {
-        // Increase quantity
-        updatedCart = prev.map((item) =>
-          item.productId === productId
-            ? {
-                ...item,
-                quantity: item.quantity + 1,
-              }
-            : item,
-        );
-      } else {
-        // Add new product
-        updatedCart = [
-          ...prev,
-          {
-            productId,
-            quantity: 1,
-          },
-        ];
-      }
-
-      localStorage.setItem("cart", JSON.stringify(updatedCart));
-
-      return updatedCart;
-    });
-  };
   /* ─── Filter Sidebar Content ─── */
   const filterContent = (
     <>
@@ -708,73 +630,7 @@ export default function CollectionsPage() {
             {products.length > 0 ? (
               <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
                 {products.map((product) => (
-                  <div
-                    key={product._id}
-                    className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40"
-                  >
-                    {/* Wishlist */}
-                    <button
-                      onClick={() => toggleWishlist(product._id)}
-                      className="absolute right-3 top-3 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-white/80 backdrop-blur-sm shadow-sm transition-all hover:bg-white hover:scale-110 cursor-pointer"
-                    >
-                      <Heart
-                        size={16}
-                        className={
-                          wishlist.includes(product._id)
-                            ? "fill-[#7A1F1F] text-[#7A1F1F]"
-                            : "text-[#6B7280]"
-                        }
-                      />
-                    </button>
-                    {/* Image */}
-                    <Link
-                      href={`/collections/gemstones/${product.slug}`}
-                      className="block"
-                    >
-                      <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative">
-                        <Image
-                          src={product?.gallery[0]?.url}
-                          alt={"Name"}
-                          fill
-                          className="object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      </div>
-                    </Link>
-                    {/* Info */}
-                    <div className="px-3 pt-2 sm:p-4">
-                      <Link href={`/collections/gemstones/${product.slug}`}>
-                        <h3 className="text-sm sm:text-base text-center text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
-                          {product.name} - {product.specifications.weight.value}{" "}
-                          {product.specifications.weight.unit}
-                        </h3>
-                      </Link>
-                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-                        {product.specifications.weight.value}{" "}
-                        {product.specifications.weight.unit}{" "}
-                        {product.indianName}
-                      </span>
-                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-                        Origin : {product.specifications.origin}
-                      </span>
-                      <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-                        SKU : {product.sku}
-                      </span>
-
-                      {/* Price + Add to Cart */}
-                      <div className="flex items-center justify-between mt-4">
-                        <p className="text-[#7A1F1F] font-bold text-sm sm:text-base">
-                          ₹{" "}
-                          {product.pricing.sellingPrice.toLocaleString("en-IN")}
-                        </p>
-                        <button
-                          onClick={() => addToCart(product._id)}
-                          className="hidden sm:flex items-center gap-1 rounded-lg bg-[#FFFDF8] border border-[#E5E7EB] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:bg-[#7A1F1F] hover:text-white hover:border-[#7A1F1F] cursor-pointer"
-                        >
-                          Add to Cart
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductCard product={product} key={product._id} />
                 ))}
               </div>
             ) : (
