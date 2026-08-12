@@ -24,6 +24,8 @@ import { Tfn1 } from "@/lib/data";
 import { useRouter } from "next/navigation";
 import Login from "../Account/Login";
 import { FiLogIn } from "react-icons/fi";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/store";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
@@ -264,6 +266,8 @@ export default function Navbar({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [showAccountMenu, setShowAccountMenu] = useState(false);
   const router = useRouter();
+  const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
+  const cartItems = useSelector((state: RootState) => state.cart.items);
 
   return (
     <>
@@ -297,13 +301,17 @@ export default function Navbar({
           <div className="hidden md:flex items-center gap-10 text-[#7A1F1F]">
             <button
               onClick={() => router.push("/wishlist")}
-              className="cursor-pointer hover:text-[#B8860B] transition-colors"
+              className="relative cursor-pointer hover:text-[#B8860B] transition-colors"
             >
               <Heart size={22} />
+              <span className="absolute -top-2 -right-2 bg-[#7A1F1F] text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+                {wishlistItems.length}
+              </span>
             </button>
             <div
               className="relative "
               onMouseEnter={() => setShowAccountMenu(true)}
+              onMouseLeave={() => setShowAccountMenu(false)}
             >
               <button
                 aria-label="Account"
@@ -313,7 +321,7 @@ export default function Navbar({
               </button>
 
               {showAccountMenu && (
-                <div className="absolute left-1/2 top-8 z-50 -translate-x-1/2 w-58 overflow-hidden rounded-lg bg-white shadow-2xl border border-gray-100">
+                <div className="absolute left-1/2 top-7 z-50 -translate-x-1/2 w-58 overflow-hidden rounded-lg bg-white shadow-2xl border border-gray-100">
                   <button
                     onClick={() => {
                       setAccountOpen(true);
@@ -350,7 +358,7 @@ export default function Navbar({
             >
               <ShoppingBag size={22} />
               <span className="absolute -top-2 -right-2 bg-[#7A1F1F] text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
-                0
+                {cartItems.length}
               </span>
             </button>
             <Link
