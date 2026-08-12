@@ -91,7 +91,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/gemstones"
+                  href="/collections/gemstones"
                   className="hover:text-[#C9A227] transition"
                 >
                   Gemstones
@@ -125,7 +125,7 @@ export default function Footer() {
                 </Link>
               </li>
 
-             <li>
+              <li>
                 <Link
                   href="/refund-policy"
                   className="hover:text-[#C9A227] transition"
@@ -136,11 +136,14 @@ export default function Footer() {
 
               <li>
                 <Link href="/faq" className="hover:text-[#C9A227] transition">
-                  FAQ
+                  Help & FAQs
                 </Link>
               </li>
               <li>
-                <Link href="/our-story" className="hover:text-[#C9A227] transition">
+                <Link
+                  href="/our-story"
+                  className="hover:text-[#C9A227] transition"
+                >
                   About Us
                 </Link>
               </li>
@@ -191,13 +194,6 @@ export default function Footer() {
               className="hover:text-[#C9A227] transition"
             >
               Terms & Conditions
-            </Link>
-
-            <Link
-              href="/disclaimer"
-              className="hover:text-[#C9A227] transition"
-            >
-              Disclaimer
             </Link>
           </div>
         </div>

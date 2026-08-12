@@ -79,7 +79,56 @@ const products = [
     image: "/images/hero.png",
   },
 ];
-
+const faqs = [
+  {
+    id: 1,
+    question: "Are your gemstones and Rudraksha certified?",
+    answer:
+      "Yes. Every natural gemstone and authentic Rudraksha comes with a trusted laboratory certification or authenticity certificate to ensure its authenticity and quality.",
+  },
+  {
+    id: 2,
+    question: "Are your gemstones 100% natural?",
+    answer:
+      "Yes. We deal only in genuine natural gemstones sourced from trusted suppliers. Any treatments or enhancements, if applicable, are clearly mentioned on the product page.",
+  },
+  {
+    id: 3,
+    question: "Do you provide energized gemstones and Rudraksha?",
+    answer:
+      "Yes. We offer optional Vedic energization (Pran Pratishtha) performed by experienced priests before dispatch for customers who request this service.",
+  },
+  {
+    id: 4,
+    question: "Do you offer Cash on Delivery (COD)?",
+    answer:
+      "Yes. Cash on Delivery is available for eligible PIN codes across India. You can check availability during checkout.",
+  },
+  {
+    id: 5,
+    question: "Can I return or exchange my order?",
+    answer:
+      "Returns and exchanges are accepted according to our Return Policy. Customized, energized, or made-to-order products may not be eligible for return unless they are damaged or incorrect.",
+  },
+  {
+    id: 6,
+    question: "What payment methods do you accept?",
+    answer:
+      "We accept UPI, Credit Cards, Debit Cards, Net Banking, Wallets, and other secure online payment methods. Cash on Delivery is also available for selected locations.",
+  },
+  {
+    id: 7,
+    question: "Can I customize gemstone jewelry?",
+    answer:
+      "Yes. We offer customization for rings, pendants, bracelets, and other jewelry. You can choose the gemstone, metal, and size according to your preference.",
+  },
+  {
+    id: 8,
+    question: "How can I track my order?",
+    answer:
+      "Once your order is shipped, you'll receive a tracking link via SMS or email so you can monitor your shipment until it reaches you.",
+  },
+];
 export default function Home() {
   return (
     <div className="flex flex-col">
@@ -193,7 +242,10 @@ export default function Home() {
                 key={product.id}
                 className="group relative block overflow-hidden border border-[#E5E7EB] pb-4 hover:shadow-md transition-all duration-300 rounded-xl bg-white"
               >
-                <Link href={`/collections/gemstones/${product.id}`} className="block">
+                <Link
+                  href={`/collections/gemstones/${product.id}`}
+                  className="block"
+                >
                   <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative mb-3">
                     <Image
                       src={product.image}
@@ -227,7 +279,23 @@ export default function Home() {
       </section>
 
       <Craftsmanship />
-      <FAQ />
+      <section className="bg-[#FFFDF8] py-12">
+        <div className="mx-auto max-w-7xl px-5">
+          {/* Heading */}
+
+          <div className="mb-10 text-center">
+            <h2 className="mt-3 text-3xl font-bold text-gray-900 md:text-4xl font-serif">
+              Frequently Asked Questions
+            </h2>
+
+            <div className="mx-auto mt-4 h-1 w-20 rounded-full bg-[#C9A227]" />
+          </div>
+
+          <div className="grid grid-cols-1 gap-5 xl:grid-cols-2">
+            <FAQ faqs={faqs} />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }
