@@ -12,95 +12,24 @@ import {
   ChevronDown,
   ChevronRight,
   Gem,
-  Diamond,
-  Circle,
-  Gift,
-  Sparkles,
   ArrowUpRight,
   PhoneCall,
-  MessageCircleMore,
+  LogOut,
+  Package2,
 } from "lucide-react";
+import { MdOutlineBrightnessHigh } from "react-icons/md";
 import { Tfn1 } from "@/lib/data";
 import { useRouter } from "next/navigation";
 import Login from "../Account/Login";
 import { FiLogIn } from "react-icons/fi";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch, RootState } from "@/redux/store";
+import { logout } from "@/redux/slices/authSlice";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
 ───────────────────────────────────────── */
 const mobileCategories = [
-  {
-    name: "All Jewellery",
-    icon: <Sparkles size={18} />,
-    href: "/collections/all",
-    links: [
-      "Necklaces",
-      "Chains",
-      "Pendants",
-      "Bracelets",
-      "Bangles",
-      "Mangalsutra",
-      "New Arrival",
-      "Temple Jewellery",
-    ],
-  },
-  {
-    name: "Gold",
-    icon: <Gem size={18} />,
-    href: "/collections/gold",
-    links: [
-      "Gold Rings",
-      "Gold Chains",
-      "Gold Earrings",
-      "Gold Pendants",
-      "Gold Bangles",
-      "Bridal Gold",
-    ],
-  },
-  {
-    name: "Diamond",
-    icon: <Diamond size={18} />,
-    href: "/collections/diamond",
-    links: [
-      "All Diamond",
-      "Diamond Bangles",
-      "Diamond Bracelets",
-      "Diamond Earrings",
-      "Diamond Rings",
-      "Diamond Necklaces",
-      "Diamond Pendants",
-    ],
-  },
-  {
-    name: "Earrings",
-    icon: <Circle size={18} />,
-    href: "/collections/earrings",
-    links: ["Studs", "Hoops", "Jhumkas", "Drop Earrings", "Chandbalis"],
-  },
-  {
-    name: "Rings",
-    icon: <Circle size={18} />,
-    href: "/collections/rings",
-    links: [
-      "Engagement Rings",
-      "Wedding Bands",
-      "Statement Rings",
-      "Stackable Rings",
-    ],
-  },
-  {
-    name: "Daily Wear",
-    icon: <Heart size={18} />,
-    href: "/collections/daily-wear",
-    links: [
-      "Light Necklaces",
-      "Simple Earrings",
-      "Thin Bangles",
-      "Delicate Rings",
-    ],
-  },
   {
     name: "Gemstone",
     icon: <Gem size={18} />,
@@ -108,40 +37,10 @@ const mobileCategories = [
     links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
   },
   {
-    name: "Wedding",
-    icon: <Diamond size={18} />,
-    href: "/collections/wedding",
-    links: [
-      "Bridal Necklace Sets",
-      "Bridal Earrings",
-      "Bridal Bangles",
-      "Groom Rings",
-      "Groom Chains",
-    ],
-  },
-  {
-    name: "Gifting",
-    icon: <Gift size={18} />,
-    href: "/collections/gifting",
-    links: [
-      "Birthday",
-      "Anniversary",
-      "Valentine's Day",
-      "Festivals",
-      "Under ₹5,000",
-      "₹5,000–₹15,000",
-    ],
-  },
-  {
-    name: "More",
-    icon: <Menu size={18} />,
-    href: "#",
-    links: [
-      "Silver Jewellery",
-      "Platinum Jewellery",
-      "Coins & Bars",
-      "Accessories",
-    ],
+    name: "Rudraksha",
+    icon: <MdOutlineBrightnessHigh size={18} />,
+    href: "/collections/rudraksha",
+    links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
   },
 ];
 
@@ -224,7 +123,6 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
             <p className="text-xl font-bold text-[#7A1F1F] tracking-wide">
               Aura
             </p>
-            <p className="text-xs text-gray-400">Fine Jewellery</p>
           </div>
           <button
             onClick={onClose}
@@ -268,6 +166,15 @@ export default function Navbar({
   const router = useRouter();
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const dispatch = useDispatch<AppDispatch>();
+  const { customer, isAuthenticated, loading } = useSelector(
+    (state: RootState) => state.auth,
+  );
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+    setShowAccountMenu(false);
+  };
 
   return (
     <>
@@ -321,32 +228,89 @@ export default function Navbar({
               </button>
 
               {showAccountMenu && (
-                <div className="absolute left-1/2 top-7 z-50 -translate-x-1/2 w-58 overflow-hidden rounded-lg bg-white shadow-2xl border border-gray-100">
-                  <button
-                    onClick={() => {
-                      setAccountOpen(true);
-                      setShowAccountMenu(false);
-                    }}
-                    className="flex w-full items-center cursor-pointer gap-4 p-4 text-left hover:bg-[#FFFDF8] transition"
-                  >
-                    <FiLogIn className="text-[#7A1F1F]" size={22} />
+                <div className="absolute left-1/2 top-7 z-50 -translate-x-1/2 overflow-hidden rounded-lg bg-white shadow-2xl border border-gray-100">
+                  {!isAuthenticated ? (
+                    <button
+                      onClick={() => {
+                        setAccountOpen(true);
+                        setShowAccountMenu(false);
+                      }}
+                      className="flex w-50 items-center cursor-pointer gap-4 p-4 text-left hover:bg-[#FFFDF8] transition"
+                    >
+                      <FiLogIn className="text-[#7A1F1F]" size={22} />
 
-                    <p className="text-md font-serif text-gray-800">
-                      Log in / Sign up
-                    </p>
-                  </button>
+                      <p className="text-md font-serif text-gray-800">
+                        Log in / Sign up
+                      </p>
+                    </button>
+                  ) : (
+                    <>
+                      <div className="flex items-center gap-4 px-4 py-2 cursor-pointer hover:bg-[#FFFDF8] transition">
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#7A1F1F] text-[21px] font-semibold text-white">
+                          {customer?.firstName?.charAt(0)}
+                        </div>
 
-                  <Link
-                    href="/account"
-                    onClick={() => {
-                      setShowAccountMenu(false);
-                    }}
-                    className="flex items-center gap-4 cursor-pointer px-4 pb-4 hover:bg-[#FFFDF8] transition"
-                  >
-                    <User className="text-[#7A1F1F]" size={22} />
+                        <div>
+                          <h3 className="text-md font-semibold text-[#1A1A1A]">
+                            {customer?.firstName} {customer?.lastName}
+                          </h3>
 
-                    <p className="text-md font-serif text-gray-800">Account</p>
-                  </Link>
+                          <p className="text-sm text-gray-500">
+                            {customer?.email}
+                          </p>
+                        </div>
+                      </div>
+                      <Link
+                        href="/account"
+                        onClick={() => {
+                          setShowAccountMenu(false);
+                        }}
+                        className="flex items-center gap-4 cursor-pointer px-4 py-2 hover:bg-[#FFFDF8] transition"
+                      >
+                        <User className="text-[#7A1F1F]" size={22} />
+
+                        <p className="text-md font-serif text-gray-800">
+                          My Profile
+                        </p>
+                      </Link>
+                      <Link
+                        href="/wishlist"
+                        onClick={() => {
+                          setShowAccountMenu(false);
+                        }}
+                        className="flex items-center gap-4 cursor-pointer px-4 py-2 hover:bg-[#FFFDF8] transition"
+                      >
+                        <Heart className="text-[#7A1F1F]" size={22} />
+
+                        <p className="text-md font-serif text-gray-800">
+                          Wishlist
+                        </p>
+                      </Link>
+                      <Link
+                        href="/account/orders"
+                        onClick={() => {
+                          setShowAccountMenu(false);
+                        }}
+                        className="flex items-center gap-4 cursor-pointer px-4 py-2 hover:bg-[#FFFDF8] transition"
+                      >
+                        <Package2 className="text-[#7A1F1F]" size={22} />
+
+                        <p className="text-md font-serif text-gray-800">
+                          Orders
+                        </p>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className="flex w-full items-center cursor-pointer gap-4 px-4 py-2 text-left hover:bg-[#FFFDF8] transition"
+                      >
+                        <LogOut className="text-[#7A1F1F]" size={22} />
+
+                        <p className="text-md font-serif text-gray-800">
+                          Log out / Sign out
+                        </p>
+                      </button>
+                    </>
+                  )}
                 </div>
               )}
             </div>

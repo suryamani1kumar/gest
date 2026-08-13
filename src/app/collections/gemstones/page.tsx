@@ -2,10 +2,11 @@
 
 import React, { useState, useMemo, useEffect } from "react";
 import { SlidersHorizontal, X, ChevronDown, Heart, Search } from "lucide-react";
-import PriceRange from "@/components/Products/filter/PriceRange";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import ProductCard from "@/components/Products/ProductCard/ProductCard";
+import Loader from "@/components/Spinloader/Loader";
+import Filter from "@/components/Products/filter/Filter";
 
 /* ─── Product Data ─── */
 const allProducts = [
@@ -187,8 +188,6 @@ const allProducts = [
   },
 ];
 
-const materials = ["Gold", "Silver", "Platinum", "Natural"];
-
 const priceRanges = [
   { label: "Under ₹3,000", min: 0, max: 3000 },
   { label: "₹3,000 – ₹7,000", min: 3000, max: 7000 },
@@ -203,45 +202,6 @@ const sortOptions = [
   { label: "Highest Rated", value: "rating" },
   { label: "Newest First", value: "newest" },
 ];
-
-/* ─── Filter Accordion ─── */
-function FilterAccordion({
-  title,
-  defaultOpen = true,
-  children,
-}: {
-  title: string;
-  defaultOpen?: boolean;
-  children: React.ReactNode;
-}) {
-  const [isOpen, setIsOpen] = useState(defaultOpen);
-
-  return (
-    <div className="border-b border-[#E5E7EB] py-3">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex w-full items-center justify-between text-left cursor-pointer"
-      >
-        <span className="text-sm font-semibold uppercase tracking-wider text-[#1A1A1A]">
-          {title}
-        </span>
-        <ChevronDown
-          size={16}
-          className={`text-[#6B7280] transition-transform duration-300 ${
-            isOpen ? "rotate-180" : ""
-          }`}
-        />
-      </button>
-      <div
-        className={`grid transition-all duration-300 ${
-          isOpen ? "grid-rows-[1fr] mt-4" : "grid-rows-[0fr]"
-        }`}
-      >
-        <div className="overflow-hidden">{children}</div>
-      </div>
-    </div>
-  );
-}
 
 /* ─── Main Page ─── */
 export default function CollectionsPage() {
@@ -357,306 +317,201 @@ export default function CollectionsPage() {
     searchQuery,
   ]);
 
-  /* ─── Filter Sidebar Content ─── */
-  const filterContent = (
-    <>
-      {/* Price Range */}
-      <FilterAccordion title="Price Range">
-        <div className="flex flex-col gap-2">
-          <PriceRange />
-        </div>
-      </FilterAccordion>
-
-      {/* Price Per Carat */}
-      <FilterAccordion title="Price Per Carat">
-        <div className="flex flex-col gap-2">
-          <PriceRange />
-        </div>
-      </FilterAccordion>
-
-      {/* Weight Range */}
-      <FilterAccordion title="Weight Carat">
-        <div className="flex flex-col gap-2">
-          <PriceRange />
-        </div>
-      </FilterAccordion>
-
-      {/* Shape */}
-      <FilterAccordion title="Shape">
-        <div className="flex flex-col gap-2.5">
-          {materials.map((mat) => (
-            <label
-              key={mat}
-              className="flex cursor-pointer items-center gap-3 text-sm text-[#1A1A1A]"
-            >
-              <div
-                className={`flex h-[18px] w-[18px] items-center justify-center rounded border-2 transition-all duration-200 ${
-                  selectedMaterials.includes(mat)
-                    ? "border-[#7A1F1F] bg-[#7A1F1F]"
-                    : "border-[#D1D5DB]"
-                }`}
-                onClick={() => toggleMaterial(mat)}
-              >
-                {selectedMaterials.includes(mat) && (
-                  <svg
-                    width="10"
-                    height="8"
-                    viewBox="0 0 10 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 4L3.5 6.5L9 1"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </div>
-              <span onClick={() => toggleMaterial(mat)}>{mat}</span>
-              <span className="ml-auto text-xs text-[#9CA3AF]">
-                {allProducts.filter((p) => p.material === mat).length}
-              </span>
-            </label>
-          ))}
-        </div>
-      </FilterAccordion>
-
-      {/* Origin */}
-      <FilterAccordion title="Origin">
-        <div className="flex flex-col gap-2.5">
-          {materials.map((mat) => (
-            <label
-              key={mat}
-              className="flex cursor-pointer items-center gap-3 text-sm text-[#1A1A1A]"
-            >
-              <div
-                className={`flex h-[18px] w-[18px] items-center justify-center rounded border-2 transition-all duration-200 ${
-                  selectedMaterials.includes(mat)
-                    ? "border-[#7A1F1F] bg-[#7A1F1F]"
-                    : "border-[#D1D5DB]"
-                }`}
-                onClick={() => toggleMaterial(mat)}
-              >
-                {selectedMaterials.includes(mat) && (
-                  <svg
-                    width="10"
-                    height="8"
-                    viewBox="0 0 10 8"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M1 4L3.5 6.5L9 1"
-                      stroke="white"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                )}
-              </div>
-              <span onClick={() => toggleMaterial(mat)}>{mat}</span>
-              <span className="ml-auto text-xs text-[#9CA3AF]">
-                {allProducts.filter((p) => p.material === mat).length}
-              </span>
-            </label>
-          ))}
-        </div>
-      </FilterAccordion>
-
-      {/* Clear Filters */}
-      {activeFilterCount > 0 && (
-        <button
-          onClick={clearAllFilters}
-          className="mt-5 w-full rounded-lg border border-[#7A1F1F] py-2.5 text-sm font-semibold text-[#7A1F1F] transition-all hover:bg-[#7A1F1F] hover:text-white cursor-pointer"
-        >
-          Clear All Filters ({activeFilterCount})
-        </button>
-      )}
-    </>
-  );
-
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
-      {/* ─── Main Content ─── */}
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="flex gap-8">
-          {/* ─── Desktop Sidebar ─── */}
-          <aside className="hidden lg:block w-[260px] flex-shrink-0">
-            <div className="sticky top-[150px]">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-lg font-serif font-bold text-[#1A1A1A]">
-                  Filters
-                </h2>
-                {activeFilterCount > 0 && (
-                  <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#7A1F1F] text-[10px] font-bold text-white">
-                    {activeFilterCount}
-                  </span>
-                )}
-              </div>
-              {filterContent}
-            </div>
-          </aside>
-
-          {/* ─── Mobile Filter Overlay ─── */}
-          {mobileFiltersOpen && (
-            <div className="fixed inset-0 z-50 lg:hidden">
-              <div
-                className="absolute inset-0 bg-black/40"
-                onClick={() => setMobileFiltersOpen(false)}
-              />
-              <div className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
-                <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#E5E7EB] bg-white px-5 py-4">
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+          <div className="flex gap-8">
+            {/* ─── Desktop Sidebar ─── */}
+            <aside className="hidden lg:block w-[260px] flex-shrink-0">
+              <div className="sticky top-[150px]">
+                <div className="flex items-center justify-between mb-2">
                   <h2 className="text-lg font-serif font-bold text-[#1A1A1A]">
                     Filters
                   </h2>
-                  <button
-                    onClick={() => setMobileFiltersOpen(false)}
-                    className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-[#FAF0F0] transition cursor-pointer"
-                  >
-                    <X size={18} className="text-[#1A1A1A]" />
-                  </button>
-                </div>
-                <div className="px-5 pb-8">{filterContent}</div>
-              </div>
-            </div>
-          )}
-
-          {/* ─── Products Area ─── */}
-          <div className="flex-1 min-w-0">
-            {/* Top Bar */}
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-              <div className="flex items-center gap-3">
-                {/* Mobile filter button */}
-                <button
-                  onClick={() => setMobileFiltersOpen(true)}
-                  className="flex items-center gap-2 rounded-lg border border-[#E5E7EB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] lg:hidden cursor-pointer"
-                >
-                  <SlidersHorizontal size={16} />
-                  Filters
                   {activeFilterCount > 0 && (
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#7A1F1F] text-[10px] font-bold text-white">
                       {activeFilterCount}
                     </span>
                   )}
-                </button>
-                <p className="text-sm text-[#6B7280]">
-                  Showing{" "}
-                  <span className="font-semibold text-[#1A1A1A]">
-                    {filteredProducts.length}
-                  </span>{" "}
-                  {filteredProducts.length === 1 ? "product" : "products"}
-                </p>
-              </div>
-
-              {/* Sort */}
-              <div className="flex items-center gap-2">
-                <span className="text-xs text-[#6B7280] hidden sm:inline">
-                  Sort by:
-                </span>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value)}
-                  className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#1A1A1A] outline-none transition focus:border-[#7A1F1F] cursor-pointer"
-                >
-                  {sortOptions.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-            </div>
-
-            {/* Active Filter Tags */}
-            {activeFilterCount > 0 && (
-              <div className="mb-5 flex flex-wrap items-center gap-2">
-                {selectedCategory !== "All" && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                    {selectedCategory}
-                    <X
-                      size={12}
-                      className="cursor-pointer hover:text-[#4B1313]"
-                      onClick={() => setSelectedCategory("All")}
-                    />
-                  </span>
-                )}
-                {selectedPriceRange !== null && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                    {priceRanges[selectedPriceRange].label}
-                    <X
-                      size={12}
-                      className="cursor-pointer hover:text-[#4B1313]"
-                      onClick={() => setSelectedPriceRange(null)}
-                    />
-                  </span>
-                )}
-                {selectedMaterials.map((mat) => (
-                  <span
-                    key={mat}
-                    className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]"
-                  >
-                    {mat}
-                    <X
-                      size={12}
-                      className="cursor-pointer hover:text-[#4B1313]"
-                      onClick={() => toggleMaterial(mat)}
-                    />
-                  </span>
-                ))}
-                {searchQuery && (
-                  <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                    &quot;{searchQuery}&quot;
-                    <X
-                      size={12}
-                      className="cursor-pointer hover:text-[#4B1313]"
-                      onClick={() => setSearchQuery("")}
-                    />
-                  </span>
-                )}
-                <button
-                  onClick={clearAllFilters}
-                  className="text-xs font-medium text-[#7A1F1F] underline underline-offset-2 hover:text-[#4B1313] transition cursor-pointer"
-                >
-                  Clear all
-                </button>
-              </div>
-            )}
-
-            {/* Products Grid */}
-            {products.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
-                {products.map((product) => (
-                  <ProductCard product={product} key={product._id} />
-                ))}
-              </div>
-            ) : (
-              /* Empty State */
-              <div className="flex flex-col items-center justify-center py-20 text-center">
-                <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-[#FAF0F0]">
-                  <Search size={32} className="text-[#7A1F1F]" />
                 </div>
-                <h3 className="text-xl font-serif font-bold text-[#1A1A1A] mb-2">
-                  No products found
-                </h3>
-                <p className="text-sm text-[#6B7280] max-w-md mb-6">
-                  We couldn&apos;t find any products matching your filters. Try
-                  adjusting your selection or clear all filters.
-                </p>
-                <button
-                  onClick={clearAllFilters}
-                  className="rounded-full bg-[#7A1F1F] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5A1717] cursor-pointer"
-                >
-                  Clear All Filters
-                </button>
+
+                <Filter
+                  activeFilterCount={activeFilterCount}
+                  toggleMaterial={toggleMaterial}
+                  clearAllFilters={clearAllFilters}
+                  selectedMaterials={selectedMaterials}
+                />
+              </div>
+            </aside>
+
+            {/* ─── Mobile Filter Overlay ─── */}
+            {mobileFiltersOpen && (
+              <div className="fixed inset-0 z-50 lg:hidden">
+                <div
+                  className="absolute inset-0 bg-black/40"
+                  onClick={() => setMobileFiltersOpen(false)}
+                />
+                <div className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
+                  <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#E5E7EB] bg-white px-5 py-4">
+                    <h2 className="text-lg font-serif font-bold text-[#1A1A1A]">
+                      Filters
+                    </h2>
+                    <button
+                      onClick={() => setMobileFiltersOpen(false)}
+                      className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-[#FAF0F0] transition cursor-pointer"
+                    >
+                      <X size={18} className="text-[#1A1A1A]" />
+                    </button>
+                  </div>
+                  <div className="px-5 pb-8">
+                    {" "}
+                    <Filter
+                      activeFilterCount={activeFilterCount}
+                      toggleMaterial={toggleMaterial}
+                      clearAllFilters={clearAllFilters}
+                      selectedMaterials={selectedMaterials}
+                    />
+                  </div>
+                </div>
               </div>
             )}
+
+            {/* ─── Products Area ─── */}
+            <div className="flex-1 min-w-0">
+              {/* Top Bar */}
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+                <div className="flex items-center gap-3">
+                  {/* Mobile filter button */}
+                  <button
+                    onClick={() => setMobileFiltersOpen(true)}
+                    className="flex items-center gap-2 rounded-lg border border-[#E5E7EB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] lg:hidden cursor-pointer"
+                  >
+                    <SlidersHorizontal size={16} />
+                    Filters
+                    {activeFilterCount > 0 && (
+                      <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#7A1F1F] text-[10px] font-bold text-white">
+                        {activeFilterCount}
+                      </span>
+                    )}
+                  </button>
+                  <p className="text-sm text-[#6B7280]">
+                    Showing{" "}
+                    <span className="font-semibold text-[#1A1A1A]">
+                      {filteredProducts.length}
+                    </span>{" "}
+                    {filteredProducts.length === 1 ? "product" : "products"}
+                  </p>
+                </div>
+
+                {/* Sort */}
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-[#6B7280] hidden sm:inline">
+                    Sort by:
+                  </span>
+                  <select
+                    value={sortBy}
+                    onChange={(e) => setSortBy(e.target.value)}
+                    className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#1A1A1A] outline-none transition focus:border-[#7A1F1F] cursor-pointer"
+                  >
+                    {sortOptions.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Active Filter Tags */}
+              {activeFilterCount > 0 && (
+                <div className="mb-5 flex flex-wrap items-center gap-2">
+                  {selectedCategory !== "All" && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
+                      {selectedCategory}
+                      <X
+                        size={12}
+                        className="cursor-pointer hover:text-[#4B1313]"
+                        onClick={() => setSelectedCategory("All")}
+                      />
+                    </span>
+                  )}
+                  {selectedPriceRange !== null && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
+                      {priceRanges[selectedPriceRange].label}
+                      <X
+                        size={12}
+                        className="cursor-pointer hover:text-[#4B1313]"
+                        onClick={() => setSelectedPriceRange(null)}
+                      />
+                    </span>
+                  )}
+                  {selectedMaterials.map((mat) => (
+                    <span
+                      key={mat}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]"
+                    >
+                      {mat}
+                      <X
+                        size={12}
+                        className="cursor-pointer hover:text-[#4B1313]"
+                        onClick={() => toggleMaterial(mat)}
+                      />
+                    </span>
+                  ))}
+                  {searchQuery && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
+                      &quot;{searchQuery}&quot;
+                      <X
+                        size={12}
+                        className="cursor-pointer hover:text-[#4B1313]"
+                        onClick={() => setSearchQuery("")}
+                      />
+                    </span>
+                  )}
+                  <button
+                    onClick={clearAllFilters}
+                    className="text-xs font-medium text-[#7A1F1F] underline underline-offset-2 hover:text-[#4B1313] transition cursor-pointer"
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+
+              {/* Products Grid */}
+              {products.length > 0 ? (
+                <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
+                  {products.map((product) => (
+                    <ProductCard product={product} key={product._id} />
+                  ))}
+                </div>
+              ) : (
+                /* Empty State */
+                <div className="flex flex-col items-center justify-center py-20 text-center">
+                  <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-[#FAF0F0]">
+                    <Search size={32} className="text-[#7A1F1F]" />
+                  </div>
+                  <h3 className="text-xl font-serif font-bold text-[#1A1A1A] mb-2">
+                    No products found
+                  </h3>
+                  <p className="text-sm text-[#6B7280] max-w-md mb-6">
+                    We couldn&apos;t find any products matching your filters.
+                    Try adjusting your selection or clear all filters.
+                  </p>
+                  <button
+                    onClick={clearAllFilters}
+                    className="rounded-full bg-[#7A1F1F] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5A1717] cursor-pointer"
+                  >
+                    Clear All Filters
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useState, useRef } from "react";
 import { MdOutlineBrightnessHigh } from "react-icons/md";
 import { IoDiamondOutline } from "react-icons/io5";
-import { HiOutlineChevronRight,HiOutlineArrowUpRight  } from "react-icons/hi2";
+import { HiOutlineChevronRight, HiOutlineArrowUpRight } from "react-icons/hi2";
 
 type SubGroup = {
   title: string;
@@ -25,93 +25,6 @@ type Category = {
 };
 
 const categories: Category[] = [
-  // {
-  //   name: "Diamond",
-  //   href: "/collections/diamond",
-  //   icon: <Diamond size={18} />,
-  //   submenu: [
-  //     {
-  //       title: "Diamond Jewellery",
-  //       links: [
-  //         "All Diamond",
-  //         "Diamond Bangles",
-  //         "Diamond Bracelets",
-  //         "Diamond Earrings",
-  //         "Diamond Rings",
-  //         "Diamond Mangalsutra",
-  //         "Diamond Necklace Set",
-  //         "Diamond Necklaces",
-  //         "Diamond Nose Pins",
-  //         "Diamond Pendants",
-  //       ],
-  //     },
-  //   ],
-  //   image:
-  //     "https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&q=80",
-  //   imageLabel: "Natural Diamonds",
-  //   imageSubLabel: "Explore Now",
-  //   promoTitle: "Diamonds for Every Sparkle",
-  //   promoSub: "Discover 6500+ Exquisite Designs.",
-  //   promoImages: [
-  //     "https://images.unsplash.com/photo-1589674781759-c21c37956a44?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
-  //   ],
-  // },
-  // {
-  //   name: "Healing Crystals",
-  //   href: "/collections/Healing Crystals",
-  //   icon: <Circle size={18} />,
-  //   submenu: [
-  //     {
-  //       title: "Earring Styles",
-  //       links: ["Studs", "Hoops", "Jhumkas", "Drop Earrings", "Chandbalis"],
-  //     },
-  //     {
-  //       title: "By Material",
-  //       links: ["Gold Earrings", "Diamond Earrings", "Silver Earrings"],
-  //     },
-  //   ],
-  //   image:
-  //     "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=400&q=80",
-  //   imageLabel: "Earrings",
-  //   imageSubLabel: "Explore Now",
-  //   promoTitle: "Earrings for Every Mood",
-  //   promoSub: "Explore 2000+ Styles.",
-  //   promoImages: [
-  //     "https://images.unsplash.com/photo-1535556116002-6281ff3e9f36?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
-  //   ],
-  // },
-
-  // {
-  //   name: "Mala",
-  //   href: "/collections/mala",
-  //   icon: <Heart size={18} />,
-  //   submenu: [
-  //     {
-  //       title: "Daily Essentials",
-  //       links: [
-  //         "Light Necklaces",
-  //         "Simple Earrings",
-  //         "Thin Bangles",
-  //         "Delicate Rings",
-  //       ],
-  //     },
-  //   ],
-  //   image:
-  //     "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400&q=80",
-  //   imageLabel: "Daily Wear",
-  //   imageSubLabel: "Explore Now",
-  //   promoTitle: "Everyday Elegance",
-  //   promoSub: "Light & Wearable Designs.",
-  //   promoImages: [
-  //     "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1610375461246-83df859d849d?w=80&q=80",
-  //     "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
-  //   ],
-  // },
   {
     name: "Gemstone",
     href: "/collections/gemstones",

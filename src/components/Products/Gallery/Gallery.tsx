@@ -4,7 +4,6 @@ import { useState } from "react";
 
 const Gallery = ({ image }: { image: { url: string; publicId: string }[] }) => {
   const [selectedImage, setSelectedImage] = useState(0);
-  console.log("image", image);
 
   return (
     <div className="lg:w-[55%]">

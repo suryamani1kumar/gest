@@ -7,7 +7,6 @@ interface Customer {
   email: string;
   phone?: string;
   profileImage?: string;
-  emailVerified?: boolean;
 }
 
 interface AuthState {
@@ -22,6 +21,7 @@ const initialState: AuthState = {
   loading: true,
 };
 
+// Check authentication
 export const checkAuth = createAsyncThunk(
   "auth/checkAuth",
   async (_, { rejectWithValue }) => {
@@ -41,7 +41,30 @@ export const checkAuth = createAsyncThunk(
     } catch (error) {
       return rejectWithValue("Authentication failed");
     }
-  }
+  },
+);
+
+// Logout
+export const logout = createAsyncThunk(
+  "auth/logout",
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        return rejectWithValue(data.message || "Logout failed");
+      }
+
+      return true;
+    } catch (error) {
+      return rejectWithValue("Logout failed");
+    }
+  },
 );
 
 const authSlice = createSlice({
@@ -49,14 +72,17 @@ const authSlice = createSlice({
   initialState,
 
   reducers: {
+    // Optional: useful if you need to clear auth manually
     logoutUser: (state) => {
       state.customer = null;
       state.isAuthenticated = false;
+      state.loading = false;
     },
   },
 
   extraReducers: (builder) => {
     builder
+      // Check auth
       .addCase(checkAuth.pending, (state) => {
         state.loading = true;
       })
@@ -71,6 +97,21 @@ const authSlice = createSlice({
         state.loading = false;
         state.customer = null;
         state.isAuthenticated = false;
+      })
+
+      // Logout
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+
+      .addCase(logout.fulfilled, (state) => {
+        state.loading = false;
+        state.customer = null;
+        state.isAuthenticated = false;
+      })
+
+      .addCase(logout.rejected, (state) => {
+        state.loading = false;
       });
   },
 });

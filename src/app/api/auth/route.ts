@@ -71,7 +71,6 @@ export async function GET(req: NextRequest) {
         email: user.email,
         phone: user.phone,
         profileImage: user.profileImage,
-        emailVerified: user.emailVerified,
       },
     });
   } catch (error) {
