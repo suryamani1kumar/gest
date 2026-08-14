@@ -8,186 +8,6 @@ import ProductCard from "@/components/Products/ProductCard/ProductCard";
 import Loader from "@/components/Spinloader/Loader";
 import Filter from "@/components/Products/filter/Filter";
 
-/* ─── Product Data ─── */
-const allProducts = [
-  {
-    id: 1,
-    name: "Sapphire Radiance Ring",
-    category: "Rings",
-    price: 4500,
-    material: "Gold",
-    rating: 4.8,
-    reviews: 124,
-    image: "/images/ring.png",
-    badge: "Bestseller",
-  },
-  {
-    id: 2,
-    name: "Diamond Cascade Earrings",
-    category: "Earrings",
-    price: 8200,
-    material: "Platinum",
-    rating: 4.9,
-    reviews: 89,
-    image: "/images/earrings.png",
-    badge: "New",
-  },
-  {
-    id: 3,
-    name: "Emerald Legacy Necklace",
-    category: "Necklaces",
-    price: 12000,
-    material: "Gold",
-    rating: 5.0,
-    reviews: 56,
-    image: "/images/hero.png",
-    badge: "",
-  },
-  {
-    id: 4,
-    name: "Golden Solitaire Ring",
-    category: "Rings",
-    price: 3800,
-    material: "Gold",
-    rating: 4.6,
-    reviews: 201,
-    image: "/images/ring.png",
-    badge: "",
-  },
-  {
-    id: 5,
-    name: "Pearl Drop Earrings",
-    category: "Earrings",
-    price: 2100,
-    material: "Silver",
-    rating: 4.5,
-    reviews: 67,
-    image: "/images/earrings.png",
-    badge: "",
-  },
-  {
-    id: 6,
-    name: "Sapphire Halo Pendant",
-    category: "Necklaces",
-    price: 5400,
-    material: "Gold",
-    rating: 4.7,
-    reviews: 143,
-    image: "/images/hero.png",
-    badge: "Trending",
-  },
-  {
-    id: 7,
-    name: "Ruby Eternity Band",
-    category: "Rings",
-    price: 6800,
-    material: "Platinum",
-    rating: 4.9,
-    reviews: 78,
-    image: "/images/ring.png",
-    badge: "New",
-  },
-  {
-    id: 8,
-    name: "Kundan Jhumka Earrings",
-    category: "Earrings",
-    price: 3200,
-    material: "Gold",
-    rating: 4.4,
-    reviews: 112,
-    image: "/images/earrings.png",
-    badge: "",
-  },
-  {
-    id: 9,
-    name: "5 Mukhi Rudraksha Mala",
-    category: "Rudraksha",
-    price: 1500,
-    material: "Natural",
-    rating: 4.8,
-    reviews: 234,
-    image: "/images/craftsmanship.png",
-    badge: "Bestseller",
-  },
-  {
-    id: 10,
-    name: "Manik (Ruby) Stone",
-    category: "Gemstones",
-    price: 7500,
-    material: "Natural",
-    rating: 4.9,
-    reviews: 45,
-    image: "/images/gemstones/manik.png",
-    badge: "Certified",
-  },
-  {
-    id: 11,
-    name: "Panna (Emerald) Stone",
-    category: "Gemstones",
-    price: 9200,
-    material: "Natural",
-    rating: 5.0,
-    reviews: 38,
-    image: "/images/gemstones/Panna.png",
-    badge: "Certified",
-  },
-  {
-    id: 12,
-    name: "Diamond Cluster Ring",
-    category: "Rings",
-    price: 15000,
-    material: "Platinum",
-    rating: 5.0,
-    reviews: 29,
-    image: "/images/ring.png",
-    badge: "",
-  },
-  {
-    id: 13,
-    name: "Moonga (Red Coral)",
-    category: "Gemstones",
-    price: 3500,
-    material: "Natural",
-    rating: 4.6,
-    reviews: 91,
-    image: "/images/gemstones/moonga.png",
-    badge: "",
-  },
-  {
-    id: 14,
-    name: "Pukhraj (Yellow Sapphire)",
-    category: "Gemstones",
-    price: 11000,
-    material: "Natural",
-    rating: 4.8,
-    reviews: 62,
-    image: "/images/gemstones/pukhraj.png",
-    badge: "Trending",
-  },
-  {
-    id: 15,
-    name: "1 Mukhi Rudraksha",
-    category: "Rudraksha",
-    price: 25000,
-    material: "Natural",
-    rating: 5.0,
-    reviews: 18,
-    image: "/images/craftsmanship.png",
-    badge: "Rare",
-  },
-  {
-    id: 16,
-    name: "Temple Gold Necklace",
-    category: "Necklaces",
-    price: 18500,
-    material: "Gold",
-    rating: 4.7,
-    reviews: 53,
-    image: "/images/hero.png",
-    badge: "",
-  },
-];
-
 const priceRanges = [
   { label: "Under ₹3,000", min: 0, max: 3000 },
   { label: "₹3,000 – ₹7,000", min: 3000, max: 7000 },
@@ -213,7 +33,6 @@ export default function CollectionsPage() {
     null,
   );
   const [sortBy, setSortBy] = useState("featured");
-  const [searchQuery, setSearchQuery] = useState("");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -250,29 +69,17 @@ export default function CollectionsPage() {
     setSelectedCategory("All");
     setSelectedMaterials([]);
     setSelectedPriceRange(null);
-    setSearchQuery("");
     setSortBy("featured");
   };
 
   const activeFilterCount =
     (selectedCategory !== "All" ? 1 : 0) +
     selectedMaterials.length +
-    (selectedPriceRange !== null ? 1 : 0) +
-    (searchQuery ? 1 : 0);
+    (selectedPriceRange !== null ? 1 : 0);
 
   /* ─── Filtered + Sorted Products ─── */
   const filteredProducts = useMemo(() => {
-    let result = [...allProducts];
-
-    // Search
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (p) =>
-          p.name.toLowerCase().includes(q) ||
-          p.category.toLowerCase().includes(q),
-      );
-    }
+    let result = [...products];
 
     // Category
     if (selectedCategory !== "All") {
@@ -309,13 +116,7 @@ export default function CollectionsPage() {
     }
 
     return result;
-  }, [
-    selectedCategory,
-    selectedMaterials,
-    selectedPriceRange,
-    sortBy,
-    searchQuery,
-  ]);
+  }, [selectedCategory, selectedMaterials, selectedPriceRange, sortBy]);
 
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
@@ -323,7 +124,7 @@ export default function CollectionsPage() {
         <Loader />
       ) : (
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-          <div className="flex gap-8">
+          <div className="flex gap-15">
             {/* ─── Desktop Sidebar ─── */}
             <aside className="hidden lg:block w-[260px] flex-shrink-0">
               <div className="sticky top-[150px]">
@@ -461,16 +262,7 @@ export default function CollectionsPage() {
                       />
                     </span>
                   ))}
-                  {searchQuery && (
-                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                      &quot;{searchQuery}&quot;
-                      <X
-                        size={12}
-                        className="cursor-pointer hover:text-[#4B1313]"
-                        onClick={() => setSearchQuery("")}
-                      />
-                    </span>
-                  )}
+
                   <button
                     onClick={clearAllFilters}
                     className="text-xs font-medium text-[#7A1F1F] underline underline-offset-2 hover:text-[#4B1313] transition cursor-pointer"
