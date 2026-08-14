@@ -39,7 +39,16 @@ const Filter = ({
       {/* Shape */}
       <FilterAccordion title="Shape">
         <div className="flex flex-col gap-2.5">
-          {["Gold", "Silver", "Platinum", "Natural"].map((mat) => (
+          {[
+            "Round",
+            "Radiant",
+            "Princess",
+            "Pear",
+            "Oval",
+            "Heart",
+            "Emerald",
+            "Cushion",
+          ].map((mat) => (
             <label
               key={mat}
               className="flex cursor-pointer items-center gap-3 text-sm text-[#1A1A1A]"
@@ -73,7 +82,7 @@ const Filter = ({
               <span onClick={() => toggleMaterial(mat)}>{mat}</span>
               <span className="ml-auto text-xs text-[#9CA3AF]">
                 {/* {allProducts.filter((p) => p.material === mat).length} */}{" "}
-                90
+                9
               </span>
             </label>
           ))}
@@ -83,7 +92,7 @@ const Filter = ({
       {/* Origin */}
       <FilterAccordion title="Origin">
         <div className="flex flex-col gap-2.5">
-          {["Gold", "Silver", "Platinum", "Natural"].map((mat) => (
+          {[" Sri Lanka", "Myanmar", "Colombia", "Zambia"].map((mat) => (
             <label
               key={mat}
               className="flex cursor-pointer items-center gap-3 text-sm text-[#1A1A1A]"
@@ -117,7 +126,7 @@ const Filter = ({
               <span onClick={() => toggleMaterial(mat)}>{mat}</span>
               <span className="ml-auto text-xs text-[#9CA3AF]">
                 {/* {allProducts.filter((p) => p.material === mat).length} */}{" "}
-                90
+                9
               </span>
             </label>
           ))}
