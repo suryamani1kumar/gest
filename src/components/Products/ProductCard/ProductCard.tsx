@@ -10,16 +10,12 @@ import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 
-interface CartItem {
-  productId: string;
-  quantity: number;
-}
-
 const ProductCard = ({ product }: any) => {
   const dispatch = useDispatch();
 
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const cartItems = useSelector((state: RootState) => state.cart.items);
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
   const toggleWishlist = (id: string) => {
     const isWishlisted = wishlistItems.some((item) => item.productId === id);
@@ -44,7 +40,7 @@ const ProductCard = ({ product }: any) => {
         },
       ];
     }
-
+    handleWishlist(id);
     localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
 
@@ -56,6 +52,7 @@ const ProductCard = ({ product }: any) => {
         quantity: 1,
       }),
     );
+    isAuthenticated && AddToCartData(productId);
   };
 
   useEffect(() => {
@@ -73,6 +70,57 @@ const ProductCard = ({ product }: any) => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  const AddToCartData = async (productId: string) => {
+    try {
+      const response = await fetch("/api/cart/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: productId,
+          quantity: 1,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
+
+      console.log("Cart:", data.cart);
+    } catch (error) {
+      console.error("Add to cart error:", error);
+    }
+  };
+
+  const handleWishlist = async (productId: string) => {
+    try {
+      const response = await fetch("/api/wishlist/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          productId: productId,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        console.error(data.message);
+        return;
+      }
+
+      // setIsWishlisted(data.isWishlisted);
+    } catch (error) {
+      console.error("Wishlist error:", error);
+    }
+  };
 
   return (
     <div className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40">
