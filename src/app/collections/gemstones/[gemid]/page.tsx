@@ -1,13 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import {
   ChevronRight,
   Heart,
-  Star,
   Minus,
   Plus,
   ShieldCheck,
@@ -15,61 +14,12 @@ import {
   RotateCcw,
   Award,
   Share2,
-  Check,
   Package,
   PhoneCall,
 } from "lucide-react";
 import Gallery from "@/components/Products/Gallery/Gallery";
 import { Tfn1 } from "@/lib/data";
-
-/* Fallback for any ID not in the catalogue */
-function getProduct(id: string) {
-  // if (productCatalogue[id]) return productCatalogue[id];
-  return {
-    id: parseInt(id) || 0,
-    name: "Sapphire Radiance Ring",
-    category: "Rings",
-    price: 4500,
-    originalPrice: 5200,
-    rating: 4.8,
-    reviews: 124,
-    description:
-      "A breathtaking exhibition of deep ocean blues, the Sapphire Radiance Ring features a meticulously cut 2.5-carat Ceylon sapphire, surrounded by a delicate halo of conflict-free brilliant diamonds. Set in 18k white gold, this piece is a testament to timeless elegance and superior craftsmanship.",
-    shortDescription:
-      "2.5ct Ceylon Sapphire with diamond halo set in 18k white gold.",
-    images: [
-      "/images/ring.png",
-      "/images/craftsmanship.png",
-      "/images/ring.png",
-      "/images/craftsmanship.png",
-    ],
-    details: [
-      { label: "Gemstone", value: "2.5 Carat Blue Sapphire (Ceylon)" },
-      { label: "Certification", value: "0.75ct Diamonds (VVS1, E Color)" },
-      { label: "Colour", value: "18k White Gold" },
-      { label: "Specific Gravity", value: "Prong and Pavé" },
-      { label: "Weight (ratti)", value: "4.2 grams" },
-      { label: "Treatment", value: "GIA Certified" },
-      { label: "Return Policy", value: "GIA Certified" },
-      { label: "Exact Dimensions", value: "GIA Certified" },
-      { label: "Refractive Index", value: "GIA Certified" },
-      { label: "Cut", value: "GIA Certified" },
-      { label: "Origin", value: "GIA Certified" },
-      { label: "Shape", value: "GIA Certified" },
-    ],
-    highlights: [
-      "GIA Certified natural sapphire",
-      "Ethically sourced & conflict-free",
-      "Handcrafted by master artisans",
-      "Lifetime warranty included",
-    ],
-    sizes: [5, 5.5, 6, 6.5, 7, 7.5, 8, 8.5],
-    material: "Gold",
-    sku: "SR-RING-001",
-    inStock: true,
-    badge: "Bestseller",
-  };
-}
+import Loader from "@/components/Spinloader/Loader";
 
 const relatedProducts = [
   {
@@ -109,16 +59,15 @@ const tabs = ["Details", "Shipping"];
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.gemid as string;
-
-  const product = getProduct(productId);
-  const [singleProduct, setSingleProduct] = useState<any>(null);
+  const router = useRouter();
+  const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("Details");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  console.log("singleProduct", singleProduct);
+  console.log("product", product);
 
   useEffect(() => {
     if (!productId) return;
@@ -135,7 +84,7 @@ export default function ProductDetailPage() {
           throw new Error(result.message || "Product not found");
         }
 
-        setSingleProduct(result.data);
+        setProduct(result.data);
       } catch (error: any) {
         setError(error.message);
       } finally {
@@ -153,64 +102,65 @@ export default function ProductDetailPage() {
 
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
-      {/* ─── Breadcrumbs ─── */}
-      <div className="border-b border-[#E5E7EB] bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <nav className="flex items-center gap-2 py-3 text-xs text-[#6B7280]">
-            <Link href="/" className="hover:text-[#7A1F1F] transition">
-              Home
-            </Link>
-            <ChevronRight size={12} />
-            <Link
-              href="/collections"
-              className="hover:text-[#7A1F1F] transition"
-            >
-              Collections
-            </Link>
-            <ChevronRight size={12} />
-            <span className="text-[#1A1A1A] font-medium">{product.name}</span>
-          </nav>
-        </div>
-      </div>
-
-      {!loading && (
+      {loading ? (
+        <Loader />
+      ) : (
         <>
+          {/* ─── Breadcrumbs ─── */}
+          <div className="border-b border-[#E5E7EB] bg-white">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+              <nav className="flex items-center gap-2 py-3 text-xs text-[#6B7280]">
+                <Link href="/" className="hover:text-[#7A1F1F] transition">
+                  Home
+                </Link>
+                <ChevronRight size={12} />
+                <Link
+                  href="/collections"
+                  className="hover:text-[#7A1F1F] transition"
+                >
+                  Collections
+                </Link>
+                <ChevronRight size={12} />
+                <span className="text-[#1A1A1A] font-medium">
+                  {product.name}
+                </span>
+              </nav>
+            </div>
+          </div>
           {/* ─── Product Section ─── */}
           <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
             <div className="flex flex-col lg:flex-row gap-8 lg:gap-14">
               {/* ─── Image Gallery ─── */}
-              <Gallery image={singleProduct?.gallery} />
+              <Gallery image={product?.gallery} />
 
               {/* ─── Product Info ─── */}
               <div className="lg:w-[45%]">
                 {/* Name */}
                 <h1 className="font-serif text-2xl sm:text-md lg:text-3xl text-[#1A1A1A] mb-3 leading-tight">
-                  {singleProduct.name} ({singleProduct.indianName}) -{" "}
-                  {singleProduct.specifications.weight.value} Carats
+                  {product.name} ({product.indianName}) -{" "}
+                  {product.specifications.weight.value} Carats
                 </h1>
 
                 {/* SKU */}
                 <p className="mb-3 text-xs text-[#9CA3AF]">
-                  SKU: {singleProduct.sku} <span className="mx-10">|</span>{" "}
-                  Origin: {singleProduct.specifications.origin}
+                  SKU: {product.sku}
+                </p>
+                <p className="mb-3 text-xs text-[#9CA3AF]">
+                  Origin: {product.specifications.origin}
                 </p>
 
                 {/* Price */}
                 <div className="flex items-end gap-3 mb-2">
                   <span className="text-2xl font-bold text-[#7A1F1F]">
-                    ₹{singleProduct.pricing.salePrice.toLocaleString("en-IN")}
+                    ₹{product.pricing.salePrice.toLocaleString("en-IN")}
                   </span>
-                  {singleProduct.pricing.sellingPrice >
-                    singleProduct.pricing.salePrice && (
+                  {product.pricing.sellingPrice > product.pricing.salePrice && (
                     <>
                       <span className="text-lg text-[#9CA3AF] line-through">
-                        ₹
-                        {singleProduct.pricing.sellingPrice.toLocaleString(
-                          "en-IN",
-                        )}
+                        ₹{product.pricing.sellingPrice.toLocaleString("en-IN")}
                       </span>
                       <span className="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">
-                        {singleProduct.pricing.discount}% OFF
+                        {product.pricing.discount}% OFF
                       </span>
                     </>
                   )}
@@ -222,10 +172,10 @@ export default function ProductDetailPage() {
 
                 {/* Short Description */}
                 <p className="text-[#6B7280] leading-relaxed text-sm mb-6">
-                  {singleProduct.name} ({singleProduct.indianName}) weighing{" "}
-                  {singleProduct.specifications.weight.value} Carats (8.25
-                  Ratti) of {singleProduct.specifications.origin} Origin,
-                  Unheated & Untreated Gemstone certified by Govt. IIGJ
+                  {product.name} ({product.indianName}) weighing{" "}
+                  {product.specifications.weight.value} Carats (8.25 Ratti) of{" "}
+                  {product.specifications.origin} Origin, Unheated & Untreated
+                  Gemstone certified by Govt. IIGJ
                 </p>
 
                 {/* Divider */}
@@ -289,12 +239,14 @@ export default function ProductDetailPage() {
                   </button>
 
                   {/* Buy Now */}
-                  <Link
-                    href="/checkout"
-                    className="flex flex-1 items-center justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
+                  <button
+                    onClick={() => {
+                      router.push("/checkout");
+                    }}
+                    className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
                   >
                     Buy Now
-                  </Link>
+                  </button>
                 </div>
                 <div className="rounded-lg border border-[#E5E7EB] bg-white p-3">
                   <p className="text-sm">
@@ -387,52 +339,143 @@ export default function ProductDetailPage() {
                       About This Product
                     </h3>
                     <p className="text-sm text-[#6B7280] leading-7 mb-6">
-                      {product.description}
+                      A breathtaking exhibition of deep ocean blues, the
+                      Sapphire Radiance Ring features a meticulously cut
+                      2.5-carat Ceylon sapphire, surrounded by a delicate halo
+                      of conflict-free brilliant diamonds. Set in 18k white
+                      gold, this piece is a testament to timeless elegance and
+                      superior craftsmanship.
                     </p>
                     <h3 className="text-xl font-serif text-[#1A1A1A] mb-4">
                       Specifications
                     </h3>
                     <div className="w-full overflow-hidden rounded-xl border border-[#BDBDBD]">
-                      {Array.from(
-                        { length: Math.ceil(product.details.length / 2) },
-                        (_, rowIndex) => {
-                          const rowDetails = product.details.slice(
-                            rowIndex * 2,
-                            rowIndex * 2 + 2,
-                          );
+                      <div className="grid grid-cols-1 lg:grid-cols-2 bg-white">
+                        {/* Row 1 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Gemstone
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            {product.name} ({product.indianName})
+                          </span>
+                        </div>
 
-                          return (
-                            <div
-                              key={rowIndex}
-                              className={`grid grid-cols-1 lg:grid-cols-2 ${
-                                rowIndex % 2 === 0 ? "bg-white" : "bg-[#FFFDF8]"
-                              }`}
-                            >
-                              {rowDetails.map((detail, index) => (
-                                <div
-                                  key={index}
-                                  className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 px-5 py-3.5 text-sm"
-                                >
-                                  {/* Label */}
-                                  <span className="font-semibold text-[#171717]">
-                                    {detail.label}
-                                  </span>
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Certification
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            op
+                          </span>
+                        </div>
+                        {/* Row 6 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Origin
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            ko
+                          </span>
+                        </div>
 
-                                  {/* Colon */}
-                                  <span className="text-center text-[#171717]">
-                                    :
-                                  </span>
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Shape
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            oiu
+                          </span>
+                        </div>
 
-                                  {/* Value */}
-                                  <span className="min-w-0 break-words text-[#333333]">
-                                    {detail.value}
-                                  </span>
-                                </div>
-                              ))}
-                            </div>
-                          );
-                        },
-                      )}
+                        {/* Row 2 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-white px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Colour
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            {product.specifications.color}
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-white px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Specific Gravity
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            89
+                          </span>
+                        </div>
+
+                        {/* Row 3 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2  bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Weight (ratti)
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            7
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Treatment
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            jk
+                          </span>
+                        </div>
+
+                        {/* Row 4 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-white px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Return Policy
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            0
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2 bg-white px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Exact Dimensions
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            90
+                          </span>
+                        </div>
+
+                        {/* Row 5 */}
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2  bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Refractive Index
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            90
+                          </span>
+                        </div>
+
+                        <div className="grid grid-cols-[minmax(100px,1fr)_20px_minmax(120px,1.5fr)] items-start gap-2  bg-[#FFFDF8] px-5 py-3.5 text-sm">
+                          <span className="font-semibold text-[#171717]">
+                            Cut
+                          </span>
+                          <span className="text-center text-[#171717]">:</span>
+                          <span className="min-w-0 break-words text-[#333333]">
+                            ooi
+                          </span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 )}
