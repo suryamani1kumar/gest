@@ -106,21 +106,12 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="pt-32 pb-24 bg-[#FFFDF8] min-h-screen">
+    <div className="pt-15 pb-24 bg-[#FFFDF8] min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <Script
           src="https://checkout.razorpay.com/v1/checkout.js"
           strategy="afterInteractive"
         />
-        <div className="mb-12">
-          <Link
-            href="/cart"
-            className="text-sm text-[#6B7280] hover:text-[#7A1F1F] mb-6 inline-block border-b border-transparent hover:border-[#7A1F1F] transition-colors"
-          >
-            &larr; Return to Bag
-          </Link>
-          <h1 className="text-4xl font-serif text-[#1A1A1A]">Checkout</h1>
-        </div>
 
         <div className="flex flex-col-reverse lg:flex-row gap-12">
           <div className="lg:w-2/3 space-y-10">
@@ -213,60 +204,6 @@ export default function CheckoutPage() {
                   <input
                     type="text"
                     className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg"
-                  />
-                </div>
-              </div>
-            </section>
-
-            {/* Payment Info */}
-            <section>
-              <h2 className="text-xl font-serif text-[#1A1A1A] mb-6">
-                Payment
-              </h2>
-              <p className="text-sm text-[#6B7280] mb-4">
-                All transactions are secure and encrypted.
-              </p>
-
-              <div className="border border-[#E5E7EB] bg-white p-6 space-y-4 rounded-xl">
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Card number
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="0000 0000 0000 0000"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] bg-white rounded-lg"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Expiration date (MM/YY)
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="MM / YY"
-                      className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] bg-white rounded-lg"
-                    />
-                  </div>
-                  <div className="col-span-1">
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Security code
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="CVC"
-                      className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] bg-white rounded-lg"
-                    />
-                  </div>
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Name on card
-                  </label>
-                  <input
-                    type="text"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] bg-white rounded-lg"
                   />
                 </div>
               </div>
