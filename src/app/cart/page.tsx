@@ -17,8 +17,8 @@ import { useDispatch, useSelector } from "react-redux";
 
 import {
   setCart,
-  updateQuantity as updateCartQuantity,
-  removeFromCart as removeCartItem,
+  updateQuantityAsync as updateCartQuantity,
+  removeFromCartAsync as removeCartItem,
 } from "@/redux/slices/cartSlice";
 
 import type { RootState, AppDispatch } from "@/redux/store";
@@ -63,41 +63,11 @@ export default function CartPage() {
   const [cart, setCartProducts] = useState<CartProduct[]>([]);
 
   const [loading, setLoading] = useState(true);
-  const [cartHydrated, setCartHydrated] = useState(false);
 
   console.log("Redux cart:", cartItems);
   console.log("Cart products:", cart);
 
   useEffect(() => {
-    const savedCart = localStorage.getItem("cart");
-
-    if (!savedCart) {
-      setCartHydrated(true);
-      return;
-    }
-
-    try {
-      const items = JSON.parse(savedCart);
-
-      if (Array.isArray(items)) {
-        dispatch(setCart(items));
-      }
-    } catch (error) {
-      console.error("Failed to load cart:", error);
-    }
-
-    setCartHydrated(true);
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!cartHydrated) return;
-
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems, cartHydrated]);
-
-  useEffect(() => {
-    if (!cartHydrated) return;
-
     const fetchCart = async () => {
       try {
         setLoading(true);
@@ -152,7 +122,7 @@ export default function CartPage() {
     };
 
     fetchCart();
-  }, [cartItems, cartHydrated]);
+  }, [cartItems]);
 
   const handleUpdateQuantity = (productId: string, quantity: number) => {
     if (quantity < 1) {
@@ -264,7 +234,6 @@ export default function CartPage() {
                           href={`/collections/gemstones/${item._id}`}
                           className="relative w-50 h-35 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
                         >
-                          console.log(item)
                           {item.gallery?.[0]?.url && (
                             <Image
                               src={item.gallery[0].url}

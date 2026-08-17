@@ -20,6 +20,10 @@ import {
 import Gallery from "@/components/Products/Gallery/Gallery";
 import { Tfn1 } from "@/lib/data";
 import Loader from "@/components/Spinloader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import type { RootState, AppDispatch } from "@/redux/store";
+import { addToCartAsync } from "@/redux/slices/cartSlice";
+import Login from "@/components/Account/Login";
 
 const relatedProducts = [
   {
@@ -60,6 +64,9 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.gemid as string;
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
+  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
+
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -67,6 +74,7 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState("Details");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
   console.log("product", product);
 
   useEffect(() => {
@@ -96,12 +104,40 @@ export default function ProductDetailPage() {
   }, [productId]);
 
   const handleAddToCart = () => {
+    if (!product) return;
+    dispatch(addToCartAsync({ productId: product._id, quantity }));
     setAddedToCart(true);
     setTimeout(() => setAddedToCart(false), 2500);
   };
 
+  /** Buy Now: add to cart then go to checkout (login guard) */
+  const handleBuyNow = async () => {
+    if (!product) return;
+    // Always add/sync item to cart first
+    await dispatch(addToCartAsync({ productId: product._id, quantity }));
+    if (!isAuthenticated) {
+      // Show login modal; after login navigate to checkout
+      setShowLoginModal(true);
+      return;
+    }
+    router.push("/checkout");
+  };
+
+  /** Called by Login modal after successful auth */
+  const handleLoginSuccess = () => {
+    setShowLoginModal(false);
+    router.push("/checkout");
+  };
+
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
+      {/* Login Modal for Buy Now */}
+      {showLoginModal && (
+        <Login
+          setAccountOpen={setShowLoginModal}
+          onSuccess={handleLoginSuccess}
+        />
+      )}
       {loading ? (
         <Loader />
       ) : (
@@ -240,9 +276,7 @@ export default function ProductDetailPage() {
 
                   {/* Buy Now */}
                   <button
-                    onClick={() => {
-                      router.push("/checkout");
-                    }}
+                    onClick={handleBuyNow}
                     className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
                   >
                     Buy Now

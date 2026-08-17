@@ -3,15 +3,15 @@ import mongoose from "mongoose";
 import connectDB from "@/lib/db";
 import Product from "@/models/Product";
 import Wishlist from "@/models/Wishlist";
-
+import { verifySession } from "@/lib/auth";
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    // Added by your middleware after JWT verification
-    const userId = req.headers.get("x-user-id");
+    // Get user ID from session cookie
+    const token = req.cookies.get("s_token")?.value;
 
-    if (!userId) {
+    if (!token) {
       return NextResponse.json(
         {
           success: false,
@@ -21,6 +21,19 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const session = await verifySession(token);
+    
+    if (!session || !session.userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid session",
+        },
+        { status: 401 }
+      );
+    }
+
+    const userId = session.userId;
     const { productId } = await req.json();
 
     if (!productId) {
@@ -58,7 +71,7 @@ export async function POST(req: NextRequest) {
 
     // Find wishlist
     let wishlist = await Wishlist.findOne({
-      user: userId,
+      customer: userId,
     });
 
     // Create wishlist

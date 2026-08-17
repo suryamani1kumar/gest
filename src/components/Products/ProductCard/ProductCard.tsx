@@ -1,17 +1,16 @@
-import { addToCart, setCart } from "@/redux/slices/cartSlice";
+import { addToCartAsync as addToCart } from "@/redux/slices/cartSlice";
 import {
-  addToWishList,
-  removeFromWishList,
+  addToWishlistAsync,
+  removeFromWishlistAsync,
 } from "@/redux/slices/wishlistSlice";
-import { RootState } from "@/redux/store";
+import { RootState, AppDispatch } from "@/redux/store";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 
 const ProductCard = ({ product }: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
   const cartItems = useSelector((state: RootState) => state.cart.items);
@@ -20,107 +19,22 @@ const ProductCard = ({ product }: any) => {
   const toggleWishlist = (id: string) => {
     const isWishlisted = wishlistItems.some((item) => item.productId === id);
 
-    let updatedWishlist;
-
     if (isWishlisted) {
-      dispatch(removeFromWishList(id));
-
-      updatedWishlist = wishlistItems.filter((item) => item.productId !== id);
+      dispatch(removeFromWishlistAsync(id));
     } else {
-      dispatch(
-        addToWishList({
-          productId: id,
-        }),
-      );
-
-      updatedWishlist = [
-        ...wishlistItems,
-        {
-          productId: id,
-        },
-      ];
+      dispatch(addToWishlistAsync({ productId: id }));
     }
-    handleWishlist(id);
-    localStorage.setItem("wishlist", JSON.stringify(updatedWishlist));
   };
 
   const handleAddToCart = (productId: string) => {
-    console.log("productId", productId);
     dispatch(
       addToCart({
         productId,
         quantity: 1,
       }),
     );
-    isAuthenticated && AddToCartData(productId);
   };
 
-  useEffect(() => {
-    const savedWishlist = localStorage.getItem("wishlist");
-
-    if (savedWishlist) {
-      const wishlist = JSON.parse(savedWishlist);
-
-      wishlist.forEach((item: { productId: string }) => {
-        dispatch(addToWishList(item));
-      });
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const AddToCartData = async (productId: string) => {
-    try {
-      const response = await fetch("/api/cart/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: productId,
-          quantity: 1,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error(data.message);
-        return;
-      }
-
-      console.log("Cart:", data.cart);
-    } catch (error) {
-      console.error("Add to cart error:", error);
-    }
-  };
-
-  const handleWishlist = async (productId: string) => {
-    try {
-      const response = await fetch("/api/wishlist/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          productId: productId,
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        console.error(data.message);
-        return;
-      }
-
-      // setIsWishlisted(data.isWishlisted);
-    } catch (error) {
-      console.error("Wishlist error:", error);
-    }
-  };
 
   return (
     <div className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40">

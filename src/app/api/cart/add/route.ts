@@ -3,7 +3,7 @@ import connectDB from "@/lib/db";
 import Product from "@/models/Product";
 import Cart from "@/models/Cart";
 import mongoose from "mongoose";
-
+import { verifySession } from "@/lib/auth";
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
@@ -12,10 +12,10 @@ export async function POST(req: NextRequest) {
 
     const { productId, quantity = 1 } = body;
 
-    // Get user ID from your auth system
-    const userId = req.headers.get("x-user-id");
-
-    if (!userId) {
+    // Get user ID from session cookie
+    const token = req.cookies.get("s_token")?.value;
+    
+    if (!token) {
       return NextResponse.json(
         {
           success: false,
@@ -24,7 +24,20 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
+    
+    const session = await verifySession(token);
+    
+    if (!session || !session.userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid session",
+        },
+        { status: 401 },
+      );
+    }
 
+    const userId = session.userId;
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         {

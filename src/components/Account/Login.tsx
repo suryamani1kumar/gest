@@ -15,9 +15,11 @@ interface FormData {
 
 interface LoginProps {
   setAccountOpen: (open: boolean) => void;
+  /** Called after a successful login or registration (instead of page reload) */
+  onSuccess?: () => void;
 }
 
-const Login = ({ setAccountOpen }: LoginProps) => {
+const Login = ({ setAccountOpen, onSuccess }: LoginProps) => {
   const [step, setStep] = useState<Step>("email");
 
   const [loading, setLoading] = useState(false);
@@ -165,8 +167,11 @@ const Login = ({ setAccountOpen }: LoginProps) => {
 
         setTimeout(() => {
           setAccountOpen(false);
-
-          window.location.reload();
+          if (onSuccess) {
+            onSuccess();
+          } else {
+            window.location.reload();
+          }
         }, 700);
 
         return;
@@ -261,8 +266,11 @@ const Login = ({ setAccountOpen }: LoginProps) => {
 
       setTimeout(() => {
         setAccountOpen(false);
-
-        window.location.reload();
+        if (onSuccess) {
+          onSuccess();
+        } else {
+          window.location.reload();
+        }
       }, 700);
     } catch (error) {
       console.error("REGISTER ERROR:", error);
