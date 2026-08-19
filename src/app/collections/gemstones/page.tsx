@@ -26,12 +26,15 @@ const sortOptions = [
 /* ─── Main Page ─── */
 export default function CollectionsPage() {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
-  const [selectedCategory, setSelectedCategory] = useState("All");
-  const [selectedMaterials, setSelectedMaterials] = useState<string[]>([]);
+  const [selectedOrigin, setSelectedOrigin] = useState("All");
+  const [selectedShapes, setSelectedShapes] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(
     null,
   );
+  const [selectedPricePerCarat, setSelectedPricePerCarat] = useState<
+    number | null
+  >(null);
+  const [selectedWeight, setSelectedWeight] = useState<number | null>(null);
   const [sortBy, setSortBy] = useState("featured");
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [products, setProducts] = useState<any[]>([]);
@@ -60,21 +63,21 @@ export default function CollectionsPage() {
   }, []);
 
   const toggleMaterial = (mat: string) => {
-    setSelectedMaterials((prev) =>
+    setSelectedShapes((prev) =>
       prev.includes(mat) ? prev.filter((m) => m !== mat) : [...prev, mat],
     );
   };
 
   const clearAllFilters = () => {
-    setSelectedCategory("All");
-    setSelectedMaterials([]);
+    setSelectedOrigin("All");
+    setSelectedShapes([]);
     setSelectedPriceRange(null);
     setSortBy("featured");
   };
 
   const activeFilterCount =
-    (selectedCategory !== "All" ? 1 : 0) +
-    selectedMaterials.length +
+    (selectedOrigin !== "All" ? 1 : 0) +
+    selectedShapes.length +
     (selectedPriceRange !== null ? 1 : 0);
 
   /* ─── Filtered + Sorted Products ─── */
@@ -82,13 +85,13 @@ export default function CollectionsPage() {
     let result = [...products];
 
     // Category
-    if (selectedCategory !== "All") {
-      result = result.filter((p) => p.category === selectedCategory);
+    if (selectedOrigin !== "All") {
+      result = result.filter((p) => p.category === selectedOrigin);
     }
 
     // Material
-    if (selectedMaterials.length > 0) {
-      result = result.filter((p) => selectedMaterials.includes(p.material));
+    if (selectedShapes.length > 0) {
+      result = result.filter((p) => selectedShapes.includes(p.material));
     }
 
     // Price range
@@ -116,7 +119,7 @@ export default function CollectionsPage() {
     }
 
     return result;
-  }, [selectedCategory, selectedMaterials, selectedPriceRange, sortBy]);
+  }, [selectedOrigin, selectedShapes, selectedPriceRange, sortBy]);
 
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
@@ -143,7 +146,7 @@ export default function CollectionsPage() {
                   activeFilterCount={activeFilterCount}
                   toggleMaterial={toggleMaterial}
                   clearAllFilters={clearAllFilters}
-                  selectedMaterials={selectedMaterials}
+                  selectedShapes={selectedShapes}
                 />
               </div>
             </aside>
@@ -173,7 +176,7 @@ export default function CollectionsPage() {
                       activeFilterCount={activeFilterCount}
                       toggleMaterial={toggleMaterial}
                       clearAllFilters={clearAllFilters}
-                      selectedMaterials={selectedMaterials}
+                      selectedShapes={selectedShapes}
                     />
                   </div>
                 </div>
@@ -229,13 +232,13 @@ export default function CollectionsPage() {
               {/* Active Filter Tags */}
               {activeFilterCount > 0 && (
                 <div className="mb-5 flex flex-wrap items-center gap-2">
-                  {selectedCategory !== "All" && (
+                  {selectedOrigin !== "All" && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                      {selectedCategory}
+                      {selectedOrigin}
                       <X
                         size={12}
                         className="cursor-pointer hover:text-[#4B1313]"
-                        onClick={() => setSelectedCategory("All")}
+                        onClick={() => setSelectedOrigin("All")}
                       />
                     </span>
                   )}
@@ -249,7 +252,7 @@ export default function CollectionsPage() {
                       />
                     </span>
                   )}
-                  {selectedMaterials.map((mat) => (
+                  {selectedShapes.map((mat) => (
                     <span
                       key={mat}
                       className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]"
