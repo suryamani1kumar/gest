@@ -6,13 +6,14 @@ const Filter = ({
   activeFilterCount,
   toggleMaterial,
   clearAllFilters,
-  selectedMaterials,
+  selectedShapes,
 }: {
   activeFilterCount: number;
   toggleMaterial: (mat: string) => void;
   clearAllFilters: () => void;
-  selectedMaterials: string[];
+  selectedShapes: string[];
 }) => {
+
   return (
     <>
       {/* Price Range */}
@@ -55,13 +56,13 @@ const Filter = ({
             >
               <div
                 className={`flex h-[18px] w-[18px] items-center justify-center rounded border-2 transition-all duration-200 ${
-                  selectedMaterials.includes(mat)
+                  selectedShapes.includes(mat)
                     ? "border-[#7A1F1F] bg-[#7A1F1F]"
                     : "border-[#D1D5DB]"
                 }`}
                 onClick={() => toggleMaterial(mat)}
               >
-                {selectedMaterials.includes(mat) && (
+                {selectedShapes.includes(mat) && (
                   <svg
                     width="10"
                     height="8"
@@ -99,13 +100,13 @@ const Filter = ({
             >
               <div
                 className={`flex h-[18px] w-[18px] items-center justify-center rounded border-2 transition-all duration-200 ${
-                  selectedMaterials.includes(mat)
+                  selectedShapes.includes(mat)
                     ? "border-[#7A1F1F] bg-[#7A1F1F]"
                     : "border-[#D1D5DB]"
                 }`}
                 onClick={() => toggleMaterial(mat)}
               >
-                {selectedMaterials.includes(mat) && (
+                {selectedShapes.includes(mat) && (
                   <svg
                     width="10"
                     height="8"

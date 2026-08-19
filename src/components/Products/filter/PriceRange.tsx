@@ -3,10 +3,10 @@
 import { useState } from "react";
 
 export default function PriceRange() {
-  const MIN = 0;
+  const MIN = 1000;
   const MAX = 100000;
 
-  const [minPrice, setMinPrice] = useState(0);
+  const [minPrice, setMinPrice] = useState(1000);
   const [maxPrice, setMaxPrice] = useState(100000);
 
   return (
