@@ -67,16 +67,16 @@ const ProductCard = ({ product }: any) => {
       <div className="px-3 pt-2 sm:p-4">
         <Link href={`/collections/gemstones/${product.slug}`}>
           <h3 className="text-sm sm:text-base text-center text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
-            {product.name} - {product.specifications.weight.value}{" "}
-            {product.specifications.weight.unit}
+            {product.name} - {product.gemstone.weight}{" "}
+            {product.gemstone.weightUnit}
           </h3>
         </Link>
         <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-          {product.specifications.weight.value}{" "}
-          {product.specifications.weight.unit} {product.indianName}
+          {product.gemstone.weight}{" "}
+          {product.gemstone.weightUnit} {product.gemstone.indianName}
         </span>
         <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-          Origin : {product.specifications.origin}
+          Origin : {product.gemstone.origin}
         </span>
         <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
           SKU : {product.sku}
