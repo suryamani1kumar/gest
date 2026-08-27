@@ -91,7 +91,7 @@ export default function Footer() {
 
               <li>
                 <Link
-                  href="/collections/gemstones"
+                  href="/gemstones"
                   className="hover:text-[#C9A227] transition"
                 >
                   Gemstones
