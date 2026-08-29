@@ -14,7 +14,7 @@ const ProductCard = ({
   gemcat,
 }: {
   product: any;
-  gemcat: string | undefined;
+  gemcat?: string | undefined;
 }) => {
   const dispatch = useDispatch<AppDispatch>();
 
