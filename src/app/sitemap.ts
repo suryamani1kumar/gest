@@ -17,11 +17,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${BASE_URL}/gemstones`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+     {
+      url: `${BASE_URL}/rudraksha`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
       url: `${BASE_URL}/terms-and-conditions`,
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 0.5,
     },
+    
     {
       url: `${BASE_URL}/contact-us`,
       lastModified: new Date(),

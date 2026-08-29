@@ -33,13 +33,13 @@ const mobileCategories = [
   {
     name: "Gemstone",
     icon: <Gem size={18} />,
-    href: "/collections/gemstones",
+    href: "/gemstones",
     links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
   },
   {
     name: "Rudraksha",
     icon: <MdOutlineBrightnessHigh size={18} />,
-    href: "/collections/rudraksha",
+    href: "/rudraksha",
     links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
   },
 ];

@@ -9,7 +9,13 @@ import Link from "next/link";
 import { Heart } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 
-const ProductCard = ({ product }: any) => {
+const ProductCard = ({
+  product,
+  gemcat,
+}: {
+  product: any;
+  gemcat: string | undefined;
+}) => {
   const dispatch = useDispatch<AppDispatch>();
 
   const wishlistItems = useSelector((state: RootState) => state.wishlist.items);
@@ -35,7 +41,6 @@ const ProductCard = ({ product }: any) => {
     );
   };
 
-
   return (
     <div className="group relative overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40">
       {/* Wishlist */}
@@ -53,7 +58,7 @@ const ProductCard = ({ product }: any) => {
         />
       </button>
       {/* Image */}
-      <Link href={`/collections/gemstones/${product.slug}`} className="block">
+      <Link href={`/gemstones/${gemcat}/${product.slug}`} className="block">
         <div className="aspect-[4/3] overflow-hidden bg-neutral-100 relative">
           <Image
             src={product?.gallery[0]?.url}
@@ -65,15 +70,15 @@ const ProductCard = ({ product }: any) => {
       </Link>
       {/* Info */}
       <div className="px-3 pt-2 sm:p-4">
-        <Link href={`/collections/gemstones/${product.slug}`}>
+        <Link href={`/gemstones/${gemcat}/${product.slug}`}>
           <h3 className="text-sm sm:text-base text-center text-[#1A1A1A] mb-1.5 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
             {product.name} - {product.gemstone.weight}{" "}
             {product.gemstone.weightUnit}
           </h3>
         </Link>
         <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
-          {product.gemstone.weight}{" "}
-          {product.gemstone.weightUnit} {product.gemstone.indianName}
+          {product.gemstone.weight} {product.gemstone.weightUnit}{" "}
+          {product.gemstone.indianName}
         </span>
         <span className="text-[#6B7280] tracking-widest text-[13px] text-center block mb-1">
           Origin : {product.gemstone.origin}

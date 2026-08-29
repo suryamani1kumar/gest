@@ -573,7 +573,7 @@ const PricingSchema = new Schema<PricingData>(
     WeightUnit: {
       type: String,
     },
-    
+
     salePrice: {
       type: Number,
       min: 0,
@@ -688,6 +688,8 @@ export interface IProduct extends Document {
   gemstone?: GemstoneData;
   rudraksha?: RudrakshaData;
   jewellery?: JewelleryData;
+  
+  specifications?: Record<string, any>;
 
   astrology?: AstrologyData;
 

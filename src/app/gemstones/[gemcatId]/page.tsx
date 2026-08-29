@@ -7,6 +7,7 @@ import type { RootState } from "@/redux/store";
 import ProductCard from "@/components/Products/ProductCard/ProductCard";
 import Loader from "@/components/Spinloader/Loader";
 import Filter from "@/components/Products/filter/Filter";
+import { useParams } from "next/navigation";
 
 const priceRanges = [
   { label: "Under ₹3,000", min: 0, max: 3000 },
@@ -26,6 +27,7 @@ const sortOptions = [
 /* ─── Main Page ─── */
 export default function GemsStonesCatPage() {
   const dispatch = useDispatch();
+  const params = useParams<{ gemcatId: string }>();
   const [selectedOrigin, setSelectedOrigin] = useState("All");
   const [selectedShapes, setSelectedShapes] = useState<string[]>([]);
   const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(
@@ -42,9 +44,12 @@ export default function GemsStonesCatPage() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("/api/products?productType=gemstone", {
-        cache: "no-store",
-      });
+      const res = await fetch(
+        `/api/products?productType=gemstone&category=${params.gemcatId}`,
+        {
+          cache: "no-store",
+        },
+      );
 
       const data = await res.json();
 
@@ -279,7 +284,11 @@ export default function GemsStonesCatPage() {
               {products.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
                   {products.map((product) => (
-                    <ProductCard product={product} key={product._id} />
+                    <ProductCard
+                      product={product}
+                      key={product._id}
+                      gemcat={params.gemcatId}
+                    />
                   ))}
                 </div>
               ) : (

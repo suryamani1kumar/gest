@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import HeroBanner from "@/components/HeroBanner/HeroBanner";
+import Loader from "@/components/Spinloader/Loader";
 
 interface CategoryImage {
   url: string;
@@ -65,195 +67,79 @@ const GemsStones = () => {
     fetchGemstoneCategories();
   }, []);
 
-  if (loading) {
-    return (
-      <main className="min-h-screen bg-[#faf9f6] px-6 py-16">
-        <div className="mx-auto flex max-w-7xl justify-center py-20">
-          <div className="h-10 w-10 animate-spin rounded-full border-2 border-gray-300 border-t-[#a67c00]" />
-        </div>
-      </main>
-    );
-  }
-
   return (
-    <main className="min-h-screen bg-[#faf9f6] px-6 py-16">
-      <div className="mx-auto max-w-7xl">
-        {/* Header */}
-        <div className="mb-12 text-center">
-          <h1 className="font-serif text-5xl text-gray-900">
-            {category?.name || "Gemstones"}
-          </h1>
-
-          <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-gray-500">
-            Discover our collection of natural gemstones, carefully selected for
-            their beauty, quality and unique character.
-          </p>
+    <main className="min-h-screen bg-[#faf9f6]">
+      <HeroBanner
+        title="Gemstones"
+        description="Discover our carefully selected collection of natural gemstones, sourced for beauty, quality, and authenticity."
+        image="/images/gemstones/gembanner1.png"
+        breadcrumbs={[
+          {
+            label: "Gemstones",
+          },
+        ]}
+      />
+      {loading ? (
+        <div className="relative">
+          <Loader />
         </div>
-
-        {/* Gemstone Cards */}
-        <div
-          className="
-            grid
-            grid-cols-1
-            gap-5
-            sm:grid-cols-2
-            lg:grid-cols-4
-            xl:grid-cols-5
-          "
-        >
-          {subCategories.map((gemstone) => (
-            <Link
-              key={gemstone._id}
-              href={`/gemstones/${gemstone.slug}`}
-              className="group"
-            >
-              <article
-                className="
-                  relative
-                  flex
-                  min-h-[200px]
-                  flex-col
-                  items-center
-                  rounded-[20px]
-                  border
-                  border-gray-200
-                  bg-white
-                  px-3
-                  py-4
-                  text-center
-                  shadow-[0_2px_8px_rgba(0,0,0,0.04)]
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:border-[#c99a19]
-                  hover:shadow-[0_15px_35px_rgba(0,0,0,0.10)]
-                "
+      ) : (
+        <div className="mx-auto max-w-7xl px-6 py-16">
+          {/* Gemstone Cards */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
+            {subCategories.map((gemstone) => (
+              <Link
+                key={gemstone._id}
+                href={`/gemstones/${gemstone.slug}`}
+                className="group relative block overflow-hidden rounded-2xl bg-white border border-[#E5E7EB] p-4 text-center shadow-xs hover:shadow-xl hover:border-[#C9A227] transition-all duration-300 transform hover:-translate-y-1"
               >
                 {/* Image Circle */}
-                <div
-                  className="
-                    relative
-                    flex
-                    h-[120px]
-                    w-[120px]
-                    items-center
-                    justify-center
-                    rounded-full
-                    border-gray-200
-                    transition-all
-                    duration-300
-                    group-hover:border-[#c99a19]
-                  "
-                >
+                <div className="relative w-30 h-30 sm:w-24 sm:h-24 mx-auto mb-4 rounded-full overflow-hidden bg-[#FFFDF8] group-hover:border-[#C9A227] transition-colors flex items-center justify-center">
                   {/* Inner Circle */}
-                  <div
-                    className="
-                      relative
-                      flex
-                      h-full
-                      w-full
-                      items-center
-                      justify-center
-                      overflow-hidden
-                      rounded-full
-                      bg-[#f7f4ec]
-                    "
-                  >
-                    {gemstone.image?.url ? (
-                      <img
-                        src={gemstone.image.url}
-                        alt={gemstone.name}
-                        className="
-                          h-full
-                          w-full
-                          object-cover
-                          transition-transform
-                          duration-500
-                          group-hover:scale-110
-                        "
-                      />
-                    ) : (
-                      <span className="font-serif text-3xl text-gray-300">
-                        {gemstone.name.charAt(0)}
-                      </span>
-                    )}
-                  </div>
+                  {gemstone.image?.url ? (
+                    <img
+                      src={gemstone.image.url}
+                      alt={gemstone.name}
+                      className="object-cover w-full h-full rounded-full transition-transform duration-500 group-hover:scale-110"
+                    />
+                  ) : (
+                    <span className="font-serif text-3xl text-gray-300">
+                      {gemstone.name.charAt(0)}
+                    </span>
+                  )}
                 </div>
 
                 {/* Category Name */}
-                <h2
-                  className="
-                    mt-3
-                    font-serif
-                    text-[21px]
-                    font-semibold
-                    text-gray-900
-                    transition-colors
-                    duration-300
-                    group-hover:text-[#8d1f1f]
-                  "
-                >
+                <h3 className="text-sm sm:text-base font-serif font-bold text-[#1A1A1A] group-hover:text-[#7A1F1F] transition-colors line-clamp-1">
                   {gemstone.name}
-                </h2>
-
-                
+                </h3>
 
                 {/* Product Count */}
-                <span
-                  className="
-                    mt-3
-                    rounded-full
-                    bg-[#fbf0f0]
-                    px-4
-                    py-1.5
-                    text-xs
-                    font-medium
-                    text-[#8d1f1f]
-                    transition-all
-                    duration-300
-                    group-hover:bg-[#8d1f1f]
-                    group-hover:text-white
-                  "
-                >
-                  {gemstone.productCount || 0}+ Varieties
+                <span className="inline-block mt-3 px-2.5 py-0.5 text-[12px] font-semibold text-[#7A1F1F] bg-[#FAF0F0] rounded-full group-hover:bg-[#7A1F1F] group-hover:text-white transition-colors">
+                  {gemstone.productCount || 0}+ Selections
                 </span>
 
                 {/* View Details */}
-                <div
-                  className="
-                    mt-3
-                    flex
-                    items-center
-                    gap-2
-                    text-xs
-                    font-medium
-                    uppercase
-                    tracking-wider
-                    text-gray-400
-                    transition-colors
-                    duration-300
-                    group-hover:text-gray-900
-                  "
-                >
+                <p className="text-[13px] flex items-center justify-center gap-2 text-[#6B7280] mt-3 line-clamp-1 font-light transition-colors  duration-300  group-hover:text-gray-900">
                   View Collection
                   <span className="transition-transform duration-300 group-hover:translate-x-1">
                     →
                   </span>
-                </div>
-              </article>
-            </Link>
-          ))}
-        </div>
-
-        {/* Empty State */}
-        {subCategories.length === 0 && (
-          <div className="py-20 text-center">
-            <p className="font-serif text-2xl text-gray-400">
-              No gemstone categories found.
-            </p>
+                </p>
+              </Link>
+            ))}
           </div>
-        )}
-      </div>
+
+          {/* Empty State */}
+          {subCategories.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="font-serif text-2xl text-gray-400">
+                No gemstone categories found.
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </main>
   );
 };

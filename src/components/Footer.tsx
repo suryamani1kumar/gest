@@ -97,6 +97,15 @@ export default function Footer() {
                   Gemstones
                 </Link>
               </li>
+
+              <li>
+                <Link
+                  href="/rudraksha"
+                  className="hover:text-[#C9A227] transition"
+                >
+                  Rudraksha
+                </Link>
+              </li>
             </ul>
           </div>
 

@@ -11,7 +11,7 @@ const Gallery = ({ image }: { image: { url: string; publicId: string }[] }) => {
       <div className="flex-1 relative">
         <div className="aspect-4/3 relative bg-neutral-50 rounded-2xl overflow-hidden group">
           <Image
-            src={image[selectedImage].url}
+            src={image[selectedImage]?.url}
             alt={"ss"}
             fill
             className="object-cover transition-transform duration-700 group-hover:scale-110"

@@ -27,7 +27,7 @@ type Category = {
 const categories: Category[] = [
   {
     name: "Gemstone",
-    href: "/collections/gemstones",
+    href: "/gemstones",
     icon: <IoDiamondOutline size={18} />,
     submenu: [
       {
@@ -53,7 +53,7 @@ const categories: Category[] = [
   },
   {
     name: "Rudraksha",
-    href: "/collections/rudraksha",
+    href: "/rudraksha",
     icon: <MdOutlineBrightnessHigh size={18} />,
     submenu: [
       {
@@ -100,6 +100,7 @@ const BottomNav = () => {
   };
 
   const activeCategory = activeIndex !== null ? categories[activeIndex] : null;
+  console.log("activeCategory", activeCategory);
 
   return (
     <>
