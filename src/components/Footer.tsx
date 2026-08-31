@@ -49,7 +49,7 @@ export default function Footer() {
                 <p>
                   Mon - Sun
                   <br />
-                  10:30 AM - 9:30 PM
+                   11:00 AM - 9:00 PM
                 </p>
               </div>
             </div>
