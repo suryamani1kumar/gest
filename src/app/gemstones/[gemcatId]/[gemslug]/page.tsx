@@ -284,12 +284,18 @@ export default function ProductDetailPage() {
                   </button>
 
                   {/* Buy Now */}
-                  <button
+                   <Link
+                    href={`tel:${Tfn1}`}
+                    className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
+                  >
+                    Call Now
+                  </Link>
+                  {/* <button
                     onClick={handleBuyNow}
                     className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
                   >
                     Buy Now
-                  </button>
+                  </button> */}
                 </div>
                 <div className="rounded-lg border border-[#E5E7EB] bg-white p-3">
                   <p className="text-sm">
