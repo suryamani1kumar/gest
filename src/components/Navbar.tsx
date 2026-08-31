@@ -20,7 +20,7 @@ export default function Navbar() {
           
           <div className="flex-shrink-0 flex items-center justify-center">
             <Link href="/" className="font-serif text-2xl tracking-widest uppercase font-bold text-gray-900">
-              Aura & Gem
+              R.K. JEWELLERS & GEMS
             </Link>
           </div>
           

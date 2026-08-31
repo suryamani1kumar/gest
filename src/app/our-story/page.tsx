@@ -23,7 +23,7 @@ export default function StoryPage() {
         <div className="prose prose-lg prose-neutral mx-auto max-w-none">
           <h3 className="font-serif text-2xl text-gray-900 mb-4">A Legacy of Excellence</h3>
           <p className="text-gray-600 font-light leading-relaxed mb-8">
-            Founded in the heart of the artisan district, Aura & Gem began with a simple yet ambitious vision: to create jewelry that transcends time. Our founders, master gemologists and visionary designers, sought to bring back the golden age of craftsmanship where every piece was a labor of immense love and dedication.
+            Founded in the heart of the artisan district, R.K. JEWELLERS & GEMS began with a simple yet ambitious vision: to create jewelry that transcends time. Our founders, master gemologists and visionary designers, sought to bring back the golden age of craftsmanship where every piece was a labor of immense love and dedication.
           </p>
 
           <h3 className="font-serif text-2xl text-gray-900 mb-4">Ethical Sourcing</h3>

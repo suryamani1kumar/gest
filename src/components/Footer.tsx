@@ -187,7 +187,7 @@ export default function Footer() {
 
         <div className="mt-8 border-t border-[#C9A227] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white">
-            © {new Date().getFullYear()} Aura & Gem. All Rights Reserved.
+            © {new Date().getFullYear()} R.K. JEWELLERS & GEMS. All Rights Reserved.
           </p>
 
           <div className="flex flex-wrap gap-6 text-xs">

@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
 import { useRouter } from "next/navigation";
+import SideNav from "@/components/Sidenav/SideNav";
 
 interface IOrder {
   _id: string;
@@ -33,9 +34,11 @@ interface IOrder {
 const Account = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { customer, isAuthenticated, loading: authLoading } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const {
+    customer,
+    isAuthenticated,
+    loading: authLoading,
+  } = useSelector((state: RootState) => state.auth);
   const wishlistItems = useSelector(
     (state: RootState) => state.wishlist?.items ?? [],
   );
@@ -77,11 +80,10 @@ const Account = () => {
   ).length;
   const recentOrders = orders.slice(0, 3);
 
-  const fullName =
-    customer
-      ? `${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() ||
-        "Customer"
-      : "Customer";
+  const fullName = customer
+    ? `${customer.firstName ?? ""} ${customer.lastName ?? ""}`.trim() ||
+      "Customer"
+    : "Customer";
 
   const initials = fullName
     .split(" ")
@@ -120,52 +122,7 @@ const Account = () => {
 
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
           {/* Sidebar */}
-          <aside className="h-fit rounded-2xl border border-[#E8E3D9] bg-white p-3 shadow-sm">
-            <nav className="space-y-1">
-              <Link href="/account">
-                <button className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition bg-[#7A1F1F] text-white shadow-sm">
-                  <User size={18} />
-                  <span>Account Overview</span>
-                  <ChevronRight size={15} className="ml-auto" />
-                </button>
-              </Link>
-
-              <Link href="/account/orders">
-                <button className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition text-gray-600 hover:bg-[#FAF9F6] hover:text-[#7A1F1F]">
-                  <Package size={18} />
-                  <span>My Orders</span>
-                  {totalOrders > 0 && (
-                    <span className="ml-auto rounded-full bg-[#7A1F1F]/10 px-2 py-0.5 text-[10px] font-bold text-[#7A1F1F]">
-                      {totalOrders}
-                    </span>
-                  )}
-                </button>
-              </Link>
-
-              <Link href="/wishlist">
-                <button className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition text-gray-600 hover:bg-[#FAF9F6] hover:text-[#7A1F1F]">
-                  <Heart size={18} />
-                  <span>Wishlist</span>
-                  {wishlistItems.length > 0 && (
-                    <span className="ml-auto rounded-full bg-[#7A1F1F]/10 px-2 py-0.5 text-[10px] font-bold text-[#7A1F1F]">
-                      {wishlistItems.length}
-                    </span>
-                  )}
-                </button>
-              </Link>
-
-              <div className="my-3 border-t border-gray-100" />
-
-              <button
-                onClick={handleLogout}
-                disabled={loggingOut}
-                className="flex w-full cursor-pointer items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-red-600 transition hover:bg-red-50 disabled:opacity-50"
-              >
-                <LogOut size={18} />
-                {loggingOut ? "Signing out…" : "Sign Out"}
-              </button>
-            </nav>
-          </aside>
+          <SideNav />
 
           {/* Main Content */}
           <section className="space-y-6">
@@ -252,7 +209,8 @@ const Account = () => {
                     No orders yet
                   </h3>
                   <p className="mt-1 max-w-sm text-xs leading-5 text-gray-500">
-                    Your recent gemstone and jewellery purchases will appear here.
+                    Your recent gemstone and jewellery purchases will appear
+                    here.
                   </p>
                   <Link href="/collections">
                     <button className="mt-5 rounded-lg bg-[#7A1F1F] px-5 py-2.5 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[#5A1717]">

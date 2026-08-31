@@ -121,7 +121,7 @@ function MobileMenuModal({ onClose }: { onClose: () => void }) {
         <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
           <div>
             <p className="text-xl font-bold text-[#7A1F1F] tracking-wide">
-              Aura
+              R.K. JEWELLERS
             </p>
           </div>
           <button
@@ -183,8 +183,8 @@ export default function Navbar({
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-[#7A1F1F] tracking-wide">
-                Aura
+              <h1 className="text-xl md:text-2xl font-bold text-[#7A1F1F] tracking-wide">
+                R.K. JEWELLERS
               </h1>
             </div>
           </Link>

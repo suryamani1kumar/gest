@@ -12,12 +12,15 @@ import {
   Eye,
   ShoppingBag,
   ArrowLeft,
+  SquarePen,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { useRouter } from "next/navigation";
+import SideNav from "@/components/Sidenav/SideNav";
+import WriteReview from "@/components/WriteReview/WriteReview";
 
 // ── Types ──────────────────────────────────────────────────────
 type OrderStatus =
@@ -223,8 +226,7 @@ const OrderDetailModal = ({
               </p>
               <p className="mt-1">{order.shippingAddress.address}</p>
               <p>
-                {order.shippingAddress.city},{" "}
-                {order.shippingAddress.postalCode}
+                {order.shippingAddress.city}, {order.shippingAddress.postalCode}
               </p>
             </div>
           </div>
@@ -261,9 +263,11 @@ const OrderDetailModal = ({
 const OrderCard = ({
   order,
   onViewDetails,
+  onReview,
 }: {
   order: IOrder;
   onViewDetails: () => void;
+  onReview: () => void;
 }) => {
   const status = STATUS_CONFIG[order.orderStatus] || STATUS_CONFIG.pending;
   const firstItem = order.items[0];
@@ -390,6 +394,13 @@ const OrderCard = ({
 
           <div className="flex flex-wrap gap-2">
             <button
+              onClick={onReview}
+              className="flex items-center justify-center gap-2 rounded-lg border border-[#E5E0D7] px-4 py-2 text-xs font-semibold text-gray-700 transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] cursor-pointer"
+            >
+              <SquarePen size={14} />
+              Ratings & Reviews
+            </button>
+            <button
               onClick={onViewDetails}
               className="flex items-center justify-center gap-2 rounded-lg border border-[#E5E0D7] px-4 py-2 text-xs font-semibold text-gray-700 transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] cursor-pointer"
             >
@@ -422,6 +433,7 @@ const OrderPage = () => {
   const [activeFilter, setActiveFilter] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedOrder, setSelectedOrder] = useState<IOrder | null>(null);
+  const [review, setReview] = useState<string | null>(null);
 
   // Auth guard
   useEffect(() => {
@@ -463,6 +475,7 @@ const OrderPage = () => {
     return result;
   }, [orders, activeFilter, searchQuery]);
 
+  console.log("filteredOrders", filteredOrders);
   // Filter counts
   const countByStatus = useMemo(() => {
     const counts: Record<string, number> = { all: orders.length };
@@ -479,6 +492,14 @@ const OrderPage = () => {
         <OrderDetailModal
           order={selectedOrder}
           onClose={() => setSelectedOrder(null)}
+        />
+      )}
+
+      {review && (
+        <WriteReview
+          open={review}
+          onClose={() => setReview(null)}
+          productId={"6a8c5e4abbc517f9e6645d5c"}
         />
       )}
 
@@ -525,101 +546,110 @@ const OrderPage = () => {
           </div>
         </div>
 
-        {/* Filter Tabs */}
-        <div className="mb-6 flex gap-1 overflow-x-auto border-b border-[#E8E3D9] pb-0">
-          {FILTERS.map((f) => {
-            const count = countByStatus[f.value] || 0;
-            const isActive = activeFilter === f.value;
-            return (
-              <button
-                key={f.value}
-                onClick={() => setActiveFilter(f.value)}
-                className={`shrink-0 cursor-pointer border-b-2 px-4 py-3 text-xs font-semibold uppercase tracking-wider transition whitespace-nowrap flex items-center gap-1.5 ${
-                  isActive
-                    ? "border-[#7A1F1F] text-[#7A1F1F]"
-                    : "border-transparent text-gray-400 hover:text-[#7A1F1F]"
-                }`}
-              >
-                {f.label}
-                {count > 0 && (
-                  <span
-                    className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-[260px_1fr]">
+          {/* Sidebar */}
+          <SideNav />
+
+          {/* Main Content */}
+          <section className="space-y-6">
+            {/* Filter Tabs */}
+            <div className="mb-6 flex gap-1 overflow-x-auto border-b border-[#E8E3D9] pb-0">
+              {FILTERS.map((f) => {
+                const count = countByStatus[f.value] || 0;
+                const isActive = activeFilter === f.value;
+                return (
+                  <button
+                    key={f.value}
+                    onClick={() => setActiveFilter(f.value)}
+                    className={`shrink-0 cursor-pointer border-b-2 px-4 py-3 text-xs font-semibold uppercase tracking-wider transition whitespace-nowrap flex items-center gap-1.5 ${
                       isActive
-                        ? "bg-[#7A1F1F] text-white"
-                        : "bg-gray-100 text-gray-500"
+                        ? "border-[#7A1F1F] text-[#7A1F1F]"
+                        : "border-transparent text-gray-400 hover:text-[#7A1F1F]"
                     }`}
                   >
-                    {count}
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Content */}
-        {loading ? (
-          <div className="space-y-5">
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="animate-pulse rounded-2xl border border-[#E8E3D9] bg-white p-6"
-              >
-                <div className="flex gap-4">
-                  <div className="h-24 w-24 rounded-xl bg-gray-100 flex-shrink-0" />
-                  <div className="flex-1 space-y-3 py-1">
-                    <div className="h-3 bg-gray-100 rounded w-1/3" />
-                    <div className="h-4 bg-gray-100 rounded w-2/3" />
-                    <div className="h-3 bg-gray-100 rounded w-1/4" />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        ) : filteredOrders.length === 0 ? (
-          <div className="rounded-2xl border border-[#E8E3D9] bg-white px-6 py-16 text-center shadow-sm">
-            <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#FAF4E8] text-[#B8860B]">
-              <Package size={28} />
+                    {f.label}
+                    {count > 0 && (
+                      <span
+                        className={`rounded-full px-1.5 py-0.5 text-[10px] font-bold ${
+                          isActive
+                            ? "bg-[#7A1F1F] text-white"
+                            : "bg-gray-100 text-gray-500"
+                        }`}
+                      >
+                        {count}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
             </div>
-            <h2 className="text-lg font-semibold text-[#1A1A1A]">
-              {searchQuery
-                ? "No orders match your search"
-                : activeFilter !== "all"
-                  ? `No ${activeFilter} orders`
-                  : "No orders yet"}
-            </h2>
-            <p className="mx-auto mt-2 max-w-md text-sm text-gray-500">
-              {searchQuery
-                ? "Try a different search term or order ID."
-                : "Explore our collection of natural gemstones and jewellery."}
-            </p>
-            {!searchQuery && (
-              <Link href="/collections">
-                <button className="mt-6 rounded-lg bg-[#7A1F1F] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[#5A1717]">
-                  Start Shopping
-                </button>
-              </Link>
-            )}
-          </div>
-        ) : (
-          <div className="space-y-5">
-            {filteredOrders.map((order) => (
-              <OrderCard
-                key={order._id}
-                order={order}
-                onViewDetails={() => setSelectedOrder(order)}
-              />
-            ))}
-          </div>
-        )}
 
-        {/* Summary */}
-        {!loading && filteredOrders.length > 0 && (
-          <p className="mt-6 text-center text-xs text-gray-400">
-            Showing {filteredOrders.length} of {orders.length} order
-            {orders.length !== 1 ? "s" : ""}
-          </p>
-        )}
+            {/* Content */}
+            {loading ? (
+              <div className="space-y-5">
+                {[1, 2, 3].map((i) => (
+                  <div
+                    key={i}
+                    className="animate-pulse rounded-2xl border border-[#E8E3D9] bg-white p-6"
+                  >
+                    <div className="flex gap-4">
+                      <div className="h-24 w-24 rounded-xl bg-gray-100 flex-shrink-0" />
+                      <div className="flex-1 space-y-3 py-1">
+                        <div className="h-3 bg-gray-100 rounded w-1/3" />
+                        <div className="h-4 bg-gray-100 rounded w-2/3" />
+                        <div className="h-3 bg-gray-100 rounded w-1/4" />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredOrders.length === 0 ? (
+              <div className="rounded-2xl border border-[#E8E3D9] bg-white px-6 py-16 text-center shadow-sm">
+                <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full bg-[#FAF4E8] text-[#B8860B]">
+                  <Package size={28} />
+                </div>
+                <h2 className="text-lg font-semibold text-[#1A1A1A]">
+                  {searchQuery
+                    ? "No orders match your search"
+                    : activeFilter !== "all"
+                      ? `No ${activeFilter} orders`
+                      : "No orders yet"}
+                </h2>
+                <p className="mx-auto mt-2 max-w-md text-sm text-gray-500">
+                  {searchQuery
+                    ? "Try a different search term or order ID."
+                    : "Explore our collection of natural gemstones and jewellery."}
+                </p>
+                {!searchQuery && (
+                  <Link href="/collections">
+                    <button className="mt-6 rounded-lg bg-[#7A1F1F] px-6 py-3 text-xs font-semibold uppercase tracking-wider text-white transition hover:bg-[#5A1717]">
+                      Start Shopping
+                    </button>
+                  </Link>
+                )}
+              </div>
+            ) : (
+              <div className="space-y-5">
+                {filteredOrders.map((order) => (
+                  <OrderCard
+                    key={order._id}
+                    order={order}
+                    onViewDetails={() => setSelectedOrder(order)}
+                    onReview={() => setReview("sdasd")}
+                  />
+                ))}
+              </div>
+            )}
+
+            {/* Summary */}
+            {!loading && filteredOrders.length > 0 && (
+              <p className="mt-6 text-center text-xs text-gray-400">
+                Showing {filteredOrders.length} of {orders.length} order
+                {orders.length !== 1 ? "s" : ""}
+              </p>
+            )}
+          </section>
+        </div>
       </div>
     </main>
   );

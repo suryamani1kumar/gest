@@ -55,9 +55,11 @@ export default function CheckoutPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  const { isAuthenticated, customer, loading: authLoading } = useSelector(
-    (state: RootState) => state.auth,
-  );
+  const {
+    isAuthenticated,
+    customer,
+    loading: authLoading,
+  } = useSelector((state: RootState) => state.auth);
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   // UI state
@@ -144,9 +146,7 @@ export default function CheckoutPage() {
 
   // ── Form helpers ─────────────────────────────────────────────────────────
 
-  const handleFormChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-  ) => {
+  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
       ...prev,
@@ -271,13 +271,16 @@ export default function CheckoutPage() {
             // Clear Redux cart
             dispatch(clearCart());
             setPaymentSuccess(true);
-            setSuccessOrderNumber(verifyData.orderNumber || orderData.orderNumber);
+            setSuccessOrderNumber(
+              verifyData.orderNumber || orderData.orderNumber,
+            );
 
             // Redirect to account after 3 seconds
             setTimeout(() => router.push("/account"), 3000);
           } else {
             setFormError(
-              verifyData.message || "Payment verification failed. Please contact support.",
+              verifyData.message ||
+                "Payment verification failed. Please contact support.",
             );
           }
           setPaying(false);
@@ -405,7 +408,6 @@ export default function CheckoutPage() {
         <div className="flex flex-col-reverse lg:flex-row gap-12">
           {/* ── Left — Form ── */}
           <div className="lg:w-2/3 space-y-10">
-
             {/* Auth notice */}
             {!isAuthenticated && !authLoading && (
               <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
@@ -644,10 +646,7 @@ export default function CheckoutPage() {
               {fetchingProducts ? (
                 <div className="space-y-4 mb-6">
                   {[1, 2].map((i) => (
-                    <div
-                      key={i}
-                      className="flex gap-4 animate-pulse"
-                    >
+                    <div key={i} className="flex gap-4 animate-pulse">
                       <div className="w-16 h-16 bg-gray-200 rounded-lg flex-shrink-0" />
                       <div className="flex-1 space-y-2 py-1">
                         <div className="h-3 bg-gray-200 rounded w-3/4" />
@@ -667,8 +666,7 @@ export default function CheckoutPage() {
                       item.product?.pricing?.salePrice ||
                       item.product?.pricing?.sellingPrice ||
                       0;
-                    const imageUrl =
-                      item.product?.gallery?.[0]?.url || "";
+                    const imageUrl = item.product?.gallery?.[0]?.url || "";
 
                     return (
                       <div key={item.productId} className="flex gap-4">

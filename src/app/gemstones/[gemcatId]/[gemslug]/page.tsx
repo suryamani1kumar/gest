@@ -62,7 +62,6 @@ const tabs = ["Details", "Shipping"];
 /* ─── Main Page ─── */
 export default function ProductDetailPage() {
   const params = useParams();
-  console.log("params", params);
   const productId = params.gemslug as string;
   const productCatgory = params.gemcatId as string;
   const router = useRouter();
@@ -117,11 +116,11 @@ export default function ProductDetailPage() {
     if (!product) return;
     // Always add/sync item to cart first
     await dispatch(addToCartAsync({ productId: product._id, quantity }));
-    if (!isAuthenticated) {
-      // Show login modal; after login navigate to checkout
-      setShowLoginModal(true);
-      return;
-    }
+    // if (!isAuthenticated) {
+    //   // Show login modal; after login navigate to checkout
+    //   setShowLoginModal(true);
+    //   return;
+    // }
     router.push("/checkout");
   };
 

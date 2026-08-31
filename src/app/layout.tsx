@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Aura & Gem | High Jewelry Collection",
+  title: "R.K. JEWELLERS & GEMS | High Jewelry Collection",
   description:
     "Discover exceptional craftsmanship and rarest gemstones curated for those who appreciate the extraordinary.",
 };

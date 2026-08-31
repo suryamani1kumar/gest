@@ -33,7 +33,7 @@ export default function CareGuidePage() {
           <section>
             <h3 className="font-serif text-2xl text-gray-900 mb-4">Storage</h3>
             <p className="text-gray-600 font-light leading-relaxed mb-4">
-              Store your jewelry in its original Aura & Gem box or a fabric-lined jewelry case. Keep pieces separated to prevent them from scratching each other—diamonds are the hardest mineral and can easily scratch other stones and metals.
+              Store your jewelry in its original R.K. JEWELLERS & GEMS box or a fabric-lined jewelry case. Keep pieces separated to prevent them from scratching each other—diamonds are the hardest mineral and can easily scratch other stones and metals.
             </p>
           </section>
         </div>
