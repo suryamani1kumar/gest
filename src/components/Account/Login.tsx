@@ -39,7 +39,7 @@ const Login = ({ setAccountOpen, onSuccess }: LoginProps) => {
   });
 
   const startResendTimer = () => {
-    setResendTimer(60);
+    setResendTimer(180);
 
     const interval = setInterval(() => {
       setResendTimer((prev) => {
