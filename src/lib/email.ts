@@ -21,7 +21,7 @@ export async function sendEmail({
   html: string;
 }) {
   return transporter.sendMail({
-    from: process.env.SMTP_FROM || process.env.SMTP_USER,
+    from: `R.K. JEWELLERS & GEMS <${process.env.SMTP_USER}>`,
     to,
     subject,
     html,
