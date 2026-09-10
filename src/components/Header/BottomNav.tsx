@@ -1,14 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useRef } from "react";
+import { useRef, useState } from "react";
 import { MdOutlineBrightnessHigh } from "react-icons/md";
 import { IoDiamondOutline } from "react-icons/io5";
-import { HiOutlineChevronRight, HiOutlineArrowUpRight } from "react-icons/hi2";
+import { HiOutlineChevronRight, HiOutlineChevronDown } from "react-icons/hi2";
+
+type MenuItem = {
+  name: string;
+  img: string;
+  link: string;
+};
 
 type SubGroup = {
   title: string;
-  links: string[];
+  list: MenuItem[];
 };
 
 type Category = {
@@ -16,12 +22,6 @@ type Category = {
   href: string;
   icon: React.ReactNode;
   submenu: SubGroup[];
-  image: string;
-  imageLabel: string;
-  imageSubLabel: string;
-  promoTitle: string;
-  promoSub: string;
-  promoImages: string[];
 };
 
 const categories: Category[] = [
@@ -31,114 +31,370 @@ const categories: Category[] = [
     icon: <IoDiamondOutline size={18} />,
     submenu: [
       {
-        title: "By Gemstone",
-        links: ["Ruby", "Emerald", "Sapphire", "Pearl", "Coral", "Turquoise"],
+        title: "Navratna · 9 Rashi Ratna",
+        list: [
+          {
+            name: "Ruby (Manik)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787570156/gemstone-products/ufqf52v7wnwvsefleoea.png",
+            link: "/gemstones/ruby",
+          },
+          {
+            name: "Blue Sapphire (Neelam)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787827408/gemstone-products/npp4ma5frmptmjpzmbpg.png",
+            link: "/gemstones/blue-sapphire",
+          },
+          {
+            name: "Emerald (Panna)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787827051/gemstone-products/mlb3on5mpeothilxkmrz.png",
+            link: "/gemstones/emerald",
+          },
+          {
+            name: "Yellow Sapphire (Pukhraj)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787827592/gemstone-products/kpaz8jt4kdiz2we09p6h.png",
+            link: "/gemstones/yellow-sapphire",
+          },
+          {
+            name: "Pearl (Moti)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787844594/gemstone-products/t7vjucddlznnuou0adba.png",
+            link: "/gemstones/pearl",
+          },
+          {
+            name: "Red Coral (Moonga)",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787844625/gemstone-products/kbdkfjjype71c5hyelg3.png",
+            link: "/gemstones/red-coral",
+          },
+          // {
+          //   name: "Diamond",
+          //   img: "/images/gemstones/diamond.jpg",
+          //   link: "/gemstones/diamond",
+          // },
+          // {
+          //   name: "Hessonite (Gomed)",
+          //   img: "/images/gemstones/blue-sapphire.jpg",
+          //   link: "/gemstones/blue-sapphire",
+          // },
+          // {
+          //   name: "Cat Eye (Lahsuniya)",
+          //   img: "/images/gemstones/blue-sapphire.jpg",
+          //   link: "/gemstones/blue-sapphire",
+          // },
+        ],
       },
       {
-        title: "By Jewellery",
-        links: ["Gemstone Rings", "Gemstone Necklaces", "Gemstone Earrings"],
+        title: "Popular Gemstones",
+        list: [
+          {
+            name: "Opal",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787828503/gemstone-products/n6e9w7udpbx85myroua2.png",
+            link: "/gemstones/opal",
+          },
+          {
+            name: "Turquoise",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787844648/gemstone-products/ozvefhlq1q4mj0ntonxp.jpg",
+            link: "/gemstones/turquoise",
+          },
+          {
+            name: "Citrine",
+            img: "https://res.cloudinary.com/djrtuyxoj/image/upload/v1787844667/gemstone-products/oes0zceeynedoault6f0.jpg",
+            link: "/gemstones/citrine",
+          },
+        ],
       },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=400&q=80",
-    imageLabel: "Gemstones",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Coloured Gemstone Magic",
-    promoSub: "Vibrant & Precious Stones.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1602173574767-37ac01994b2a?w=80&q=80",
-      "https://images.unsplash.com/photo-1535632787350-4e68ef0ac584?w=80&q=80",
-      "https://images.unsplash.com/photo-1609609789754-3ffc0b8bb6da?w=80&q=80",
+      // {
+      //   title: "Shop By Zodiac",
+      //   list: [
+      //     {
+      //       name: "Aries",
+      //       img: "/images/zodiac/aries.jpg",
+      //       link: "/zodiac/aries",
+      //     },
+      //     {
+      //       name: "Taurus",
+      //       img: "/images/zodiac/taurus.jpg",
+      //       link: "/zodiac/taurus",
+      //     },
+      //     {
+      //       name: "Gemini",
+      //       img: "/images/zodiac/gemini.jpg",
+      //       link: "/zodiac/gemini",
+      //     },
+      //     {
+      //       name: "Cancer",
+      //       img: "/images/zodiac/cancer.jpg",
+      //       link: "/zodiac/cancer",
+      //     },
+      //     {
+      //       name: "Leo",
+      //       img: "/images/zodiac/leo.jpg",
+      //       link: "/zodiac/leo",
+      //     },
+      //     {
+      //       name: "Virgo",
+      //       img: "/images/zodiac/virgo.jpg",
+      //       link: "/zodiac/virgo",
+      //     },
+      //     {
+      //       name: "Libra",
+      //       img: "/images/zodiac/libra.jpg",
+      //       link: "/zodiac/libra",
+      //     },
+      //     {
+      //       name: "Scorpio",
+      //       img: "/images/zodiac/scorpio.jpg",
+      //       link: "/zodiac/scorpio",
+      //     },
+      //   ],
+      // },
+     
     ],
   },
+
   {
     name: "Rudraksha",
     href: "/rudraksha",
     icon: <MdOutlineBrightnessHigh size={18} />,
     submenu: [
       {
-        title: "Bridal Sets",
-        links: [
-          "Bridal Necklace Sets",
-          "Bridal Earrings",
-          "Bridal Bangles",
-          "Bridal Maangtikka",
+        title: "Mukhi Rudraksha",
+        list: [
+          {
+            name: "1 Mukhi Rudraksha",
+            img: "/images/rudraksha/1-mukhi.jpg",
+            link: "/rudraksha/1-mukhi",
+          },
+          // {
+          //   name: "2 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/2-mukhi.jpg",
+          //   link: "/rudraksha/2-mukhi",
+          // },
+          // {
+          //   name: "3 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/3-mukhi.jpg",
+          //   link: "/rudraksha/3-mukhi",
+          // },
+          // {
+          //   name: "4 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/4-mukhi.jpg",
+          //   link: "/rudraksha/4-mukhi",
+          // },
+          // {
+          //   name: "5 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/5-mukhi.jpg",
+          //   link: "/rudraksha/5-mukhi",
+          // },
+          // {
+          //   name: "6 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/6-mukhi.jpg",
+          //   link: "/rudraksha/6-mukhi",
+          // },
+          // {
+          //   name: "7 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/7-mukhi.jpg",
+          //   link: "/rudraksha/7-mukhi",
+          // },
+          // {
+          //   name: "8 Mukhi Rudraksha",
+          //   img: "/images/rudraksha/8-mukhi.jpg",
+          //   link: "/rudraksha/8-mukhi",
+          // },
         ],
       },
-      {
-        title: "Groom's Collection",
-        links: ["Groom Rings", "Groom Chains", "Groom Bracelets"],
-      },
-    ],
-    image:
-      "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=400&q=80",
-    imageLabel: "Wedding Collection",
-    imageSubLabel: "Explore Now",
-    promoTitle: "Dream Wedding Jewellery",
-    promoSub: "Make Your Day Unforgettable.",
-    promoImages: [
-      "https://images.unsplash.com/photo-1596944924616-7b38e7cfac36?w=80&q=80",
-      "https://images.unsplash.com/photo-1573408301185-9519f94f5a5b?w=80&q=80",
-      "https://images.unsplash.com/photo-1617038220319-276d3cfab638?w=80&q=80",
+      // {
+      //   title: "Mukhi Rudraksha",
+      //   list: [
+      //     {
+      //       name: "9 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/9-mukhi.jpg",
+      //       link: "/rudraksha/9-mukhi",
+      //     },
+      //     {
+      //       name: "10 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/10-mukhi.jpg",
+      //       link: "/rudraksha/10-mukhi",
+      //     },
+      //     {
+      //       name: "11 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/11-mukhi.jpg",
+      //       link: "/rudraksha/11-mukhi",
+      //     },
+      //     {
+      //       name: "12 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/12-mukhi.jpg",
+      //       link: "/rudraksha/12-mukhi",
+      //     },
+      //     {
+      //       name: "13 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/13-mukhi.jpg",
+      //       link: "/rudraksha/13-mukhi",
+      //     },
+      //     {
+      //       name: "14 Mukhi Rudraksha",
+      //       img: "/images/rudraksha/14-mukhi.jpg",
+      //       link: "/rudraksha/14-mukhi",
+      //     },
+      //     {
+      //       name: "Gauri Shankar",
+      //       img: "/images/rudraksha/gauri-shankar.jpg",
+      //       link: "/rudraksha/gauri-shankar",
+      //     },
+      //   ],
+      // },
+      // {
+      //   title: "Rudraksha Mala",
+      //   list: [
+      //     {
+      //       name: "5 Mukhi Mala",
+      //       img: "/images/rudraksha/5-mukhi-mala.jpg",
+      //       link: "/rudraksha/mala/5-mukhi",
+      //     },
+      //     {
+      //       name: "108 Bead Mala",
+      //       img: "/images/rudraksha/108-bead-mala.jpg",
+      //       link: "/rudraksha/mala/108-bead",
+      //     },
+      //     {
+      //       name: "108 + 1 Mala",
+      //       img: "/images/rudraksha/108-plus-1.jpg",
+      //       link: "/rudraksha/mala/108-plus-1",
+      //     },
+      //     {
+      //       name: "Japa Mala",
+      //       img: "/images/rudraksha/japa-mala.jpg",
+      //       link: "/rudraksha/mala/japa",
+      //     },
+      //     {
+      //       name: "Rudraksha Bracelet",
+      //       img: "/images/rudraksha/bracelet.jpg",
+      //       link: "/rudraksha/bracelets",
+      //     },
+      //   ],
+      // },
+
+      // {
+      //   title: "Rudraksha By Origin",
+      //   list: [
+      //     {
+      //       name: "Nepal Rudraksha",
+      //       img: "/images/rudraksha/nepal.jpg",
+      //       link: "/rudraksha/origin/nepal",
+      //     },
+      //     {
+      //       name: "Haridwar Rudraksha",
+      //       img: "/images/rudraksha/haridwar.jpg",
+      //       link: "/rudraksha/origin/haridwar",
+      //     },
+      //     {
+      //       name: "Indonesian Rudraksha",
+      //       img: "/images/rudraksha/indonesia.jpg",
+      //       link: "/rudraksha/origin/indonesia",
+      //     },
+      //   ],
+      // },
     ],
   },
 ];
 
 const BottomNav = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  const clearMenuTimeout = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+  };
+
   const handleMouseEnter = (index: number) => {
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    clearMenuTimeout();
     setActiveIndex(index);
   };
 
   const handleMouseLeave = () => {
+    clearMenuTimeout();
+
     timeoutRef.current = setTimeout(() => {
       setActiveIndex(null);
-    }, 120);
+    }, 150);
   };
 
   const activeCategory = activeIndex !== null ? categories[activeIndex] : null;
-  console.log("activeCategory", activeCategory);
 
   return (
     <>
-      {/* ── Mega-menu dropdown ── */}
+      {/* ================================
+          MEGA MENU
+      ================================= */}
       {activeCategory && (
         <div
-          className="absolute left-0 right-0 bg-white shadow-2xl border-t border-gray-100 z-40"
-          style={{
-            top: "100%",
-            animation: "slideDown 0.18s ease-out forwards",
-          }}
-          onMouseEnter={() => {
-            if (timeoutRef.current) clearTimeout(timeoutRef.current);
-          }}
+          className="
+            absolute left-0 right-0 top-full z-40
+            border-t border-gray-100
+            bg-white shadow-2xl
+          "
+          onMouseEnter={clearMenuTimeout}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="max-w-7xl mx-auto px-6 py-6">
+          <div className="mx-auto max-w-7xl px-6 py-4">
             <div className="flex gap-8">
-              {/* Sub-groups */}
-              <div className="flex gap-10 flex-1">
+              {/* Groups */}
+              <div className="grid flex-1 grid-cols-4 gap-x-10 gap-y-8">
                 {activeCategory.submenu.map((group) => (
-                  <div key={group.title} className="min-w-[160px]">
-                    <h4 className="text-xs font-semibold uppercase tracking-widest text-gray-400 mb-3">
-                      {group.title}
+                  <div key={group.title} className="min-w-0">
+                    {/* Group title */}
+                    <h4 className="mb-4 border-b border-gray-100 pb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
+                      {group.title}sss
                     </h4>
+
+                    {/* Items */}
                     <ul className="space-y-2">
-                      {group.links.map((link) => (
-                        <li key={link}>
+                      {group.list.map((item) => (
+                        <li key={item.link}>
                           <Link
-                            href={`${activeCategory.href}/${link
-                              .toLowerCase()
-                              .replace(/\s+/g, "-")}`}
-                            className="text-sm text-gray-700 hover:text-[#B8860B] transition-colors flex items-center gap-1 group/link"
+                            href={item.link}
+                            className="
+                              group/link
+                              flex items-center gap-3
+                              rounded-md
+                              text-sm text-gray-700
+                              transition-colors
+                              hover:text-[#B8860B]
+                            "
                           >
-                            <span>{link}</span>
+                            {/* Image */}
+                            <span
+                              className="
+                                h-8 w-8 shrink-0
+                                overflow-hidden rounded-full
+                                bg-gray-100
+                              "
+                            >
+                              <img
+                                src={item.img}
+                                alt={item.name}
+                                loading="lazy"
+                                className="
+                                  h-full w-full object-cover
+                                  transition-transform duration-300
+                                  group-hover/link:scale-110
+                                "
+                              />
+                            </span>
+
+                            {/* Name */}
+                            <span className="flex-1">{item.name}</span>
+
+                            {/* Arrow */}
                             <HiOutlineChevronRight
-                              size={12}
-                              className="opacity-0 group-hover/link:opacity-100 -translate-x-1 group-hover/link:translate-x-0 transition-all"
+                              size={13}
+                              className="
+                                -translate-x-1
+                                opacity-0
+                                transition-all duration-200
+                                group-hover/link:translate-x-0
+                                group-hover/link:opacity-100
+                              "
                             />
                           </Link>
                         </li>
@@ -147,104 +403,82 @@ const BottomNav = () => {
                   </div>
                 ))}
               </div>
-
-              {/* Promo Banner */}
-              <div className="flex items-center bg-[#FFFDF8] rounded-xl px-5 py-4 gap-4 min-w-[300px] max-w-[340px]">
-                <div className="flex -space-x-2">
-                  {activeCategory.promoImages.map((src, i) => (
-                    <img
-                      key={i}
-                      src={src}
-                      alt=""
-                      className="w-12 h-12 rounded-lg object-cover border-2 border-white shadow-sm"
-                    />
-                  ))}
-                </div>
-                <div className="flex-1">
-                  <p className="font-semibold text-sm text-gray-800 leading-tight">
-                    {activeCategory.promoTitle}
-                  </p>
-                  <p className="text-xs text-gray-500 mt-0.5">
-                    {activeCategory.promoSub}
-                  </p>
-                </div>
-                <Link
-                  href={activeCategory.href}
-                  className="bg-[#7A1F1F] hover:bg-[#B8860B] text-white text-xs font-medium px-4 py-2 rounded-full transition-colors whitespace-nowrap"
-                >
-                  View All
-                </Link>
-              </div>
-
-              {/* Product Image Panel */}
-              <div className="relative rounded-xl overflow-hidden min-w-[180px] max-w-[200px] h-[180px] flex-shrink-0 group/img cursor-pointer">
-                <img
-                  src={activeCategory.image}
-                  alt={activeCategory.imageLabel}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover/img:scale-105"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                <div className="absolute bottom-3 left-3 text-white">
-                  <p className="font-semibold text-sm leading-tight">
-                    {activeCategory.imageLabel}
-                  </p>
-                  <Link
-                    href={activeCategory.href}
-                    className="text-xs flex items-center gap-1 text-[#C9A227] hover:text-[#B8860B] transition-colors mt-0.5"
-                  >
-                    {activeCategory.imageSubLabel}
-                    <HiOutlineArrowUpRight size={12} />
-                  </Link>
-                </div>
-              </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* ── Nav bar ── */}
-      <div className="hidden md:block bg-white border-t border-gray-100">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="flex items-center justify-center overflow-x-auto whitespace-nowrap py-2 text-gray-600 text-sm gap-5">
-            {categories.map((cat, index) => (
+      {/* ================================
+          NAVIGATION BAR
+      ================================= */}
+      <nav className="hidden border-t border-gray-100 bg-white md:block">
+        <div className="mx-auto max-w-7xl px-4">
+          <div className="flex items-center justify-center gap-5 overflow-x-auto whitespace-nowrap py-2 text-sm text-gray-600">
+            {categories.map((category, index) => (
               <div
-                key={cat.name}
+                key={category.name}
                 className="relative"
                 onMouseEnter={() => handleMouseEnter(index)}
                 onMouseLeave={handleMouseLeave}
               >
                 <Link
-                  href={cat.href}
-                  className={`flex items-center gap-1.5 px-3 py-1.5 transition-all duration-200 font-medium ${
-                    activeIndex === index
-                      ? "text-[#7A1F1F]"
-                      : "hover:text-[#B8860B]"
-                  }`}
+                  href={category.href}
+                  className={`
+                    flex items-center gap-1.5
+                    px-3 py-2
+                    font-medium
+                    transition-all duration-200
+                    ${
+                      activeIndex === index
+                        ? "text-[#7A1F1F]"
+                        : "text-gray-600 hover:text-[#B8860B]"
+                    }
+                  `}
                 >
+                  {/* Icon */}
                   <span
-                    className={`transition-colors ${
-                      activeIndex === index ? "text-[#7A1F1F]" : "text-gray-400"
-                    }`}
+                    className={`
+                      transition-colors
+                      ${
+                        activeIndex === index
+                          ? "text-[#7A1F1F]"
+                          : "text-gray-400"
+                      }
+                    `}
                   >
-                    {cat.icon}
+                    {category.icon}
                   </span>
-                  <span>{cat.name}</span>
+
+                  {/* Name */}
+                  <span>{category.name}</span>
+
+                  {/* Chevron */}
+                  {category.submenu.length > 0 && (
+                    <HiOutlineChevronDown
+                      size={13}
+                      className={`
+                        transition-transform duration-200
+                        ${activeIndex === index ? "rotate-180" : ""}
+                      `}
+                    />
+                  )}
                 </Link>
+
+                {/* Active underline */}
                 {activeIndex === index && (
-                  <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-[#7A1F1F] rounded-full" />
+                  <span
+                    className="
+                      absolute bottom-0 left-3 right-3
+                      h-0.5 rounded-full
+                      bg-[#7A1F1F]
+                    "
+                  />
                 )}
               </div>
             ))}
           </div>
         </div>
-      </div>
-
-      <style>{`
-        @keyframes slideDown {
-          from { opacity: 0; transform: translateY(-8px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-      `}</style>
+      </nav>
     </>
   );
 };

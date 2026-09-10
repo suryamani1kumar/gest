@@ -49,7 +49,7 @@ export default function Footer() {
                 <p>
                   Mon - Sun
                   <br />
-                   11:00 AM - 9:00 PM
+                  11:00 AM - 9:00 PM
                 </p>
               </div>
             </div>
@@ -167,13 +167,13 @@ export default function Footer() {
 
             <div className="overflow-hidden rounded-lg border border-neutral-800">
               <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3501.8046895772513!2d77.3597492687387!3d28.63561518327509!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce54b155ec4dd%3A0xdb138b279755df30!2s74c%2C%20near%20Kala%20Patthar%2C%20Naya%20Khand%20III%2C%20Makanpur%2C%20Nyay%20Khand%202%2C%20Indirapuram%2C%20Ghaziabad%2C%20Uttar%20Pradesh%20201020!5e0!3m2!1sen!2sin!4v1786030315131!5m2!1sen!2sin"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d401.71771807820255!2d77.35973398295016!3d28.63510781696823!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce50030a3a41d%3A0xd2b3b9da3c0403aa!2sR.K.%20JEWELLERS%20%26%20GEMS!5e0!3m2!1sen!2sin!4v1788837630848!5m2!1sen!2sin"
                 width="100%"
                 height="200"
                 loading="lazy"
                 allowFullScreen
                 className="w-full h-40"
-              />
+              ></iframe>
             </div>
 
             <p className="text-sm text-neutral-400 mt-4">
@@ -187,7 +187,8 @@ export default function Footer() {
 
         <div className="mt-8 border-t border-[#C9A227] pt-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-white">
-            © {new Date().getFullYear()} R.K. JEWELLERS & GEMS. All Rights Reserved.
+            © {new Date().getFullYear()} R.K. JEWELLERS & GEMS. All Rights
+            Reserved.
           </p>
 
           <div className="flex flex-wrap gap-6 text-xs">

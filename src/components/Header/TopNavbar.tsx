@@ -25,6 +25,7 @@ import { FiLogIn } from "react-icons/fi";
 import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch, RootState } from "@/redux/store";
 import { logout } from "@/redux/slices/authSlice";
+import Image from "next/image";
 
 /* ─────────────────────────────────────────
    Shared mobile nav data
@@ -182,11 +183,12 @@ export default function Navbar({
         <div className="h-16 md:h-20 flex items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="flex items-center">
-            <div>
-              <h1 className="text-xl md:text-2xl font-bold text-[#7A1F1F] tracking-wide">
-                R.K. JEWELLERS
-              </h1>
-            </div>
+            <Image
+              src={"/images/logo/logo.png"}
+              alt="R.K. JEWELLERS & GEMS"
+              width={250}
+              height={100}
+            />
           </Link>
 
           {/* Desktop Search */}
@@ -325,16 +327,6 @@ export default function Navbar({
                 {cartItems.length}
               </span>
             </button>
-            <Link
-              href={`tel:${Tfn1}`}
-              className="flex items-center gap-3 rounded-lg border border-[#7A1F1F] text-[#7A1F1F] hover:bg-[#7A1F1F] hover:text-white transition-all px-5 py-2"
-            >
-              <div className="flex items-center justify-center rounded-full bg-white/20">
-                <PhoneCall size={18} />
-              </div>
-
-              <p className="text-base font-bold">{Tfn1}</p>
-            </Link>
           </div>
 
           {/* Mobile: cart + hamburger */}
