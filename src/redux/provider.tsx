@@ -8,6 +8,7 @@ import type { AppDispatch } from "./store";
 
 import { syncCartAsync, fetchUserCart } from "./slices/cartSlice";
 import { syncWishlistAsync, fetchUserWishlist } from "./slices/wishlistSlice";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 function AuthInitializer() {
   const dispatch = useDispatch<AppDispatch>();
@@ -72,6 +73,7 @@ export default function ReduxProvider({
     <Provider store={store}>
       <AuthInitializer />
       {children}
+      <WhatsAppButton />
     </Provider>
   );
 }
