@@ -1,11 +1,13 @@
 import Hero from "@/components/Hero";
-import CategorySection from "@/components/CategorySection";
 import Craftsmanship from "@/components/Craftsmanship";
 import FAQ from "@/components/Faq/FAQ";
 import { Award, Gem, PackageCheck, Shield } from "lucide-react";
 import Link from "next/link";
 import { PhoneCall, ArrowRight } from "lucide-react";
 import Image from "next/image";
+import BenefitsSection from "@/components/BenefitsSection";
+import GemCategory from "@/components/Catgory/GemCategory";
+import RudCategory from "@/components/Catgory/RudCategory";
 
 export const trustFeatures = [
   {
@@ -133,97 +135,10 @@ export default function Home() {
   return (
     <div className="flex flex-col">
       <Hero />
-      <section className="border-y border-[#E5E7EB] bg-white">
-        <div className="mx-auto max-w-7xl">
-          <div className="grid grid-cols-1 divide-y divide-[#E5E7EB] md:grid-cols-2 md:divide-x md:divide-y-0 xl:grid-cols-4">
-            {trustFeatures.map((item) => {
-              const Icon = item.icon;
 
-              return (
-                <div
-                  key={item.id}
-                  className="group flex items-center gap-5 px-6 py-7 transition-all duration-300 hover:bg-[#FFFDF8]"
-                >
-                  {/* Icon */}
-
-                  <div className="flex h-14 w-14 flex-shrink-0 items-center justify-center rounded-full border border-[#E5E7EB] bg-[#FFFDF8] transition-all duration-300 group-hover:bg-[#7A1F1F] group-hover:border-[#7A1F1F]">
-                    <Icon
-                      size={24}
-                      className="text-[#7A1F1F] transition-colors duration-300 group-hover:text-white"
-                    />
-                  </div>
-
-                  {/* Content */}
-
-                  <div>
-                    <h3 className="text-base font-bold uppercase tracking-wide text-[#1A1A1A]">
-                      {item.title}
-                    </h3>
-
-                    <p className="mt-1 text-sm leading-6 text-[#6B7280]">
-                      {item.description}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <CategorySection />
-
-      <section className="py-12">
-        <div className="mx-auto max-w-7xl px-5">
-          <div
-            className="relative overflow-hidden rounded-2xl bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/images/banner2.jpg')",
-            }}
-          >
-            {/* Dark Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/50" />
-
-            {/* Decorative Blur */}
-            <div className="absolute right-0 top-0 h-52 w-52 rounded-full bg-[#C9A227]/20 blur-3xl" />
-
-            <div className="relative z-10 flex flex-col items-center justify-center px-8 py-10 text-center lg:px-20">
-              <h3 className="max-w-3xl text-2xl font-bold leading-tight text-white md:text-6xl">
-                Looking for the Perfect
-                <span className="block text-[#C9A227]">
-                  Gemstone or Rudraksha?
-                </span>
-              </h3>
-
-              <p className="mt-3 max-w-2xl text-lg leading-8 text-gray-200">
-                Have questions about our products? Our team is happy to assist
-                you with product information, order details, and general
-                support.
-              </p>
-
-              <div className="mt-10 flex flex-col gap-5 sm:flex-row">
-                {/* Call Button */}
-                <a
-                  href="tel:+919876543210"
-                  className="inline-flex items-center gap-3 rounded-full bg-[#C9A227] px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-[#B8860B] hover:scale-105"
-                >
-                  <PhoneCall size={22} />
-                  Call +91 98765 43210
-                </a>
-
-                {/* Contact Button */}
-                <Link
-                  href="/contact-us"
-                  className="inline-flex items-center gap-2 rounded-full border-2 border-white px-8 py-4 text-lg font-semibold text-white transition-all duration-300 hover:bg-white hover:text-[#7A1F1F]"
-                >
-                  Contact Us
-                  <ArrowRight size={20} />
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <GemCategory />
+      <RudCategory />
+      <BenefitsSection />
 
       <section className="py-10 bg-[#FFFDF8]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
