@@ -126,22 +126,25 @@ export default function WishlistPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#FFFDF8] pt-15 pb-24">
+    <div className="bg-[#FFFDF8] py-15">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
-        >
-          <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
-            Your Personal Collection
-          </span>
-          <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-6">
-            Wishlist
-          </h1>
-          <div className="w-24 h-px bg-[#C9A227] mx-auto"></div>
-        </motion.div>
+        {wishlist.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-center mb-16"
+          >
+            <span className="text-[#7A1F1F] uppercase tracking-widest text-sm font-medium mb-4 block">
+              Your Personal Collection
+            </span>
+            <h1 className="text-4xl md:text-5xl font-serif text-[#1A1A1A] mb-6">
+              Wishlist
+            </h1>
+            <div className="w-24 h-px bg-[#C9A227] mx-auto"></div>
+          </motion.div>
+        )}
+
         <AnimatePresence mode="wait">
           {wishlist.length > 0 ? (
             <motion.div
@@ -269,7 +272,7 @@ export default function WishlistPage() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
               transition={{ duration: 0.5 }}
-              className="flex flex-col items-center justify-center py-32 px-4 text-center max-w-3xl mx-auto"
+              className="flex flex-col items-center justify-center px-4 text-center max-w-3xl mx-auto"
             >
               <motion.div
                 animate={{ scale: [1, 1.1, 1] }}
@@ -293,7 +296,7 @@ export default function WishlistPage() {
 
               <Link
                 href="/collections"
-                className="inline-flex items-center gap-3 bg-[#1A1A1A] text-white px-8 py-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors duration-300 rounded-sm group"
+                className="inline-flex items-center gap-3  bg-[#7A1F1F] text-white px-8 py-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors duration-300 rounded-sm group"
               >
                 Discover Collections
                 <ArrowRight

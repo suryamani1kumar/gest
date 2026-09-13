@@ -180,14 +180,14 @@ export default function Navbar({
   return (
     <>
       <div className="max-w-7xl mx-auto px-4">
-        <div className="h-16 md:h-20 flex items-center justify-between gap-6">
+        <div className="h-16 md:h-18 flex items-center justify-between gap-6">
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <Image
               src={"/images/logo/logo.png"}
               alt="R.K. JEWELLERS & GEMS"
-              width={250}
-              height={100}
+              width={200}
+              height={60}
             />
           </Link>
 
@@ -200,7 +200,7 @@ export default function Navbar({
               />
               <input
                 type="text"
-                placeholder="Search for gold necklace"
+                placeholder="Search for gemstone, rudraksha ..."
                 className="w-full border rounded-lg py-2 pl-12 pr-24 outline-none focus:border-[#7A1F1F]"
               />
             </div>
@@ -331,7 +331,7 @@ export default function Navbar({
 
           {/* Mobile: cart + hamburger */}
           <div className="flex md:hidden items-center gap-3 text-[#7A1F1F]">
-            <button
+            {/* <button
               aria-label="Account"
               className="hover:text-[#B8860B] transition cursor-pointer"
               onClick={() => {
@@ -339,13 +339,13 @@ export default function Navbar({
               }}
             >
               <User size={22} />
-            </button>
-            <button
+            </button> */}
+            {/* <button
               onClick={() => router.push("/wishlist")}
               className="cursor-pointer hover:text-[#B8860B]"
             >
               <Heart size={22} />
-            </button>
+            </button> */}
             <button className="relative hover:text-[#B8860B]" aria-label="Cart">
               <ShoppingBag size={20} />
               <span className="absolute -top-2 -right-2 bg-[#7A1F1F] text-white rounded-full h-4 w-4 flex items-center justify-center text-[10px]">

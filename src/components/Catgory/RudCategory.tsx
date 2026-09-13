@@ -64,22 +64,21 @@ export default function RudCategory() {
       <div className="pointer-events-none absolute bottom-0 right-0 h-72 w-72 rounded-full bg-[#7A1F1F]/5 blur-3xl" />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-
         {/* Header */}
         <div className="mb-5 flex items-end justify-between">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.25em] text-[#C9A227]">
+            <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#7A1F1F]">
               Our Collection
             </p>
 
             <h3 className="mt-1 font-serif text-3xl font-bold text-[#1A1A1A] sm:text-3xl">
-              Choose Your Gemstone
+              Choose Your <span className="text-[#7A1F1F]">Rudraksha</span>
             </h3>
           </div>
 
           <Link
-            href="/gemstones"
-            className="group hidden items-center gap-2 text-sm font-semibold text-[#7A1F1F] sm:flex"
+            href="/rudraksha"
+            className="group hidden w-fit items-center gap-2 border-b border-[#C9A227] pb-1 text-sm font-semibold text-[#7A1F1F] sm:flex"
           >
             View All
             <HiArrowUpRight
@@ -91,17 +90,17 @@ export default function RudCategory() {
 
         {/* Category Cards */}
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
-          {categories.map((gemstone) => (
+          {categories.map((rudraksha) => (
             <Link
-              key={gemstone.link}
-              href={gemstone.link}
+              key={rudraksha.link}
+              href={rudraksha.link}
               className="group relative overflow-hidden rounded-xl bg-white shadow-sm transition duration-500 hover:-translate-y-1 hover:shadow-xl"
             >
               {/* Reduced height */}
               <div className="relative aspect-[4/3] overflow-hidden bg-[#EEEAE1]">
                 <img
-                  src={gemstone.img}
-                  alt={gemstone.name}
+                  src={rudraksha.img}
+                  alt={rudraksha.name}
                   className="h-full w-full object-cover transition duration-700 group-hover:scale-110"
                 />
 
@@ -116,12 +115,12 @@ export default function RudCategory() {
                 {/* Name */}
                 <div className="absolute bottom-0 left-0 right-0 p-3 sm:p-4">
                   <h4 className="font-serif text-base font-bold text-white sm:text-lg">
-                    {gemstone.name}
+                    {rudraksha.name}
                   </h4>
 
-                  {gemstone.hindi && (
+                  {rudraksha.hindi && (
                     <p className="mt-0.5 text-xs text-[#E5C35B]">
-                      {gemstone.hindi}
+                      {rudraksha.hindi}
                     </p>
                   )}
                 </div>
@@ -133,10 +132,10 @@ export default function RudCategory() {
         {/* Mobile View All */}
         <div className="mt-6 flex justify-center sm:hidden">
           <Link
-            href="/gemstones"
+            href="/rudraksha"
             className="flex items-center gap-2 border-b border-[#C9A227] pb-1 text-sm font-semibold text-[#7A1F1F]"
           >
-            View All Gemstones
+            View All Rudrakshas
             <HiArrowUpRight size={16} />
           </Link>
         </div>

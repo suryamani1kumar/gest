@@ -145,7 +145,6 @@ const categories: Category[] = [
       //     },
       //   ],
       // },
-     
     ],
   },
 
@@ -343,8 +342,8 @@ const BottomNav = () => {
                 {activeCategory.submenu.map((group) => (
                   <div key={group.title} className="min-w-0">
                     {/* Group title */}
-                    <h4 className="mb-4 border-b border-gray-100 pb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-400">
-                      {group.title}sss
+                    <h4 className="mb-4 border-b border-gray-300 pb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-gray-600">
+                      {group.title}
                     </h4>
 
                     {/* Items */}
@@ -357,7 +356,7 @@ const BottomNav = () => {
                               group/link
                               flex items-center gap-3
                               rounded-md
-                              text-sm text-gray-700
+                              text-sm text-gray-800
                               transition-colors
                               hover:text-[#B8860B]
                             "
@@ -411,9 +410,9 @@ const BottomNav = () => {
       {/* ================================
           NAVIGATION BAR
       ================================= */}
-      <nav className="hidden border-t border-gray-100 bg-white md:block">
+      <nav className="hidden border-t border-gray-100 md:block bg-[#FAF8F2]">
         <div className="mx-auto max-w-7xl px-4">
-          <div className="flex items-center justify-center gap-5 overflow-x-auto whitespace-nowrap py-2 text-sm text-gray-600">
+          <div className="flex items-center justify-center gap-5 overflow-x-auto whitespace-nowrap py-1 text-sm text-gray-600">
             {categories.map((category, index) => (
               <div
                 key={category.name}
@@ -431,7 +430,7 @@ const BottomNav = () => {
                     ${
                       activeIndex === index
                         ? "text-[#7A1F1F]"
-                        : "text-gray-600 hover:text-[#B8860B]"
+                        : "text-gray-800 hover:text-[#B8860B]"
                     }
                   `}
                 >
@@ -442,7 +441,7 @@ const BottomNav = () => {
                       ${
                         activeIndex === index
                           ? "text-[#7A1F1F]"
-                          : "text-gray-400"
+                          : "text-gray-800"
                       }
                     `}
                   >

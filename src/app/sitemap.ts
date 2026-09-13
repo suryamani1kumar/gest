@@ -1,6 +1,6 @@
 import type { MetadataRoute } from "next";
 
-const BASE_URL = "http://localhost:3000";
+const BASE_URL = process.env.BASE_URL || "http://localhost:3000";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "daily",
       priority: 0.9,
     },
-     {
+    {
       url: `${BASE_URL}/rudraksha`,
       lastModified: new Date(),
       changeFrequency: "daily",
@@ -34,7 +34,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 0.5,
     },
-    
+
     {
       url: `${BASE_URL}/contact-us`,
       lastModified: new Date(),

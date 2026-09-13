@@ -122,7 +122,7 @@ const slides = [
 
 export default function Hero() {
   return (
-    <section className="relative h-[400px] md:h-[calc(100vh-180px)] w-full overflow-hidden">
+    <section className="relative h-[280px] w-full overflow-hidden md:h-[calc(90vh-180px)]">
       <Swiper
         modules={[Autoplay, Pagination, Navigation, EffectFade]}
         effect="fade"
@@ -139,11 +139,11 @@ export default function Hero() {
           prevEl: ".hero-prev",
           nextEl: ".hero-next",
         }}
-        className="h-[400px] md:h-[calc(100vh-180px)] w-full heroSwiper"
+        className="heroSwiper h-[280px] w-full rounded-2xl md:h-[calc(90vh-180px)]"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            <div className="relative h-[400px] md:h-[calc(100vh-180px)] w-full">
+            <div className="relative h-[280px] w-full md:h-[calc(90vh-180px)]">
               {/* Background Image */}
               <Image
                 src={slide.image}
@@ -154,10 +154,11 @@ export default function Hero() {
                 className="absolute inset-0 h-full w-full object-cover"
                 sizes="100vw"
               />
+
               <div className="relative z-10 flex h-full items-center">
                 <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 lg:px-10">
                   <div className="max-w-2xl text-white">
-                    <span className="mb-1.5 block text-xs tracking-[3px] uppercase text-[#C9A227] sm:text-sm md:text-lg md:tracking-[5px]">
+                    <span className="mb-1.5 block text-xs uppercase tracking-[3px] text-[#C9A227] sm:text-sm md:text-lg md:tracking-[5px]">
                       {slide.subtitle}
                     </span>
 
@@ -165,15 +166,15 @@ export default function Hero() {
                       {slide.title}
                     </h1>
 
-                    <div className="my-3 md:my-5 h-px w-32 bg-[#C9A227] sm:w-60" />
+                    <div className="my-3 h-px w-32 bg-[#C9A227] sm:w-60 md:my-5" />
 
-                    <p className="max-w-xl text-xs sm:text-sm leading-6 sm:leading-7 text-neutral-200 md:text-base md:leading-8 line-clamp-3 sm:line-clamp-none">
+                    <p className="max-w-xl text-xs leading-5 text-neutral-200 sm:text-sm sm:leading-7 md:text-base md:leading-8 line-clamp-3 sm:line-clamp-none">
                       {slide.description}
                     </p>
 
-                    <div className="mt-5 md:mt-8">
+                    <div className="mt-4 md:mt-8">
                       <Link href={slide.buttonLink}>
-                        <button className="rounded-lg bg-[#C9A227] px-4 py-2.5 sm:px-5 sm:py-3 text-sm font-semibold text-[#1A1A1A] transition hover:bg-[#B8860B] hover:text-white sm:text-lg cursor-pointer">
+                        <button className="cursor-pointer rounded-lg bg-[#C9A227] px-4 py-2 text-sm font-semibold text-[#1A1A1A] transition hover:bg-[#B8860B] hover:text-white sm:px-5 sm:py-3 sm:text-lg">
                           {slide.buttonText} →
                         </button>
                       </Link>
@@ -184,7 +185,7 @@ export default function Hero() {
                       {slide.features.map((item, index) => (
                         <div
                           key={index}
-                          className="flex flex-col items-center w-fit"
+                          className="flex w-fit flex-col items-center"
                         >
                           <Image
                             src={item.icon}
@@ -208,11 +209,13 @@ export default function Hero() {
           </SwiperSlide>
         ))}
       </Swiper>
-      <button className="hero-prev absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
+
+      {/* Navigation */}
+      <button className="hero-prev absolute left-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
         <ChevronLeft size={24} />
       </button>
 
-      <button className="hero-next absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
+      <button className="hero-next absolute right-3 top-1/2 z-10 hidden h-12 w-12 -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-[#C9A227] bg-black/40 text-[#C9A227] backdrop-blur-md transition hover:bg-[#C9A227] hover:text-black lg:flex">
         <ChevronRight size={24} />
       </button>
     </section>

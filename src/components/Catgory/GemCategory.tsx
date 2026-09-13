@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { GiH2O } from "react-icons/gi";
 import { HiArrowUpRight } from "react-icons/hi2";
 
 const subCategories = [
@@ -57,7 +56,7 @@ export default function GemCategory() {
   const remainingCategories = subCategories.slice(1, 5);
 
   return (
-    <section className="relative overflow-hidden bg-[#FFFDF8] py-16 sm:py-20">
+    <section className="relative overflow-hidden bg-[#FFFDF8] py-10 sm:py-10">
       {/* Decorative background */}
       <div className="pointer-events-none absolute -left-40 top-20 h-96 w-96 rounded-full bg-[#C9A227]/5 blur-3xl" />
 
@@ -65,25 +64,20 @@ export default function GemCategory() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* ================= HEADER ================= */}
-        <div className="mb-10 flex flex-col justify-between gap-6 md:flex-row md:items-end">
+        <div className="mb-5 flex flex-col justify-between gap-6 md:flex-row md:items-end">
           <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.3em] text-[#7A1F1F]">
+            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-[#7A1F1F]">
               The Art of Natural Beauty
             </span>
 
             <h2 className="mt-1 font-serif text-2xl font-bold text-[#1A1A1A] sm:text-3xl">
               Discover Our <span className="text-[#7A1F1F]">Gemstones</span>
             </h2>
-
-            <div className="mt-4 flex items-center gap-2">
-              <span className="h-px w-14 bg-[#C9A227]" />
-              <span className="h-1.5 w-1.5 rounded-full bg-[#C9A227]" />
-            </div>
           </div>
 
           <Link
             href="/gemstones"
-            className="group flex w-fit items-center gap-2 border-b border-[#C9A227] pb-1 text-sm font-semibold text-[#7A1F1F]"
+            className="group hidden w-fit items-center gap-2 border-b border-[#C9A227] pb-1 text-sm font-semibold text-[#7A1F1F] sm:flex"
           >
             Explore Collection
             <HiArrowUpRight
@@ -97,7 +91,7 @@ export default function GemCategory() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:grid-rows-2">
           {/* ================= FEATURED CATEGORY ================= */}
           <Link
-            href={`/gemstones/${featuredCategory.link}`}
+            href={`${featuredCategory.link}`}
             className="group relative min-h-[430px] overflow-hidden rounded-2xl bg-[#EDE8DC] sm:col-span-2 lg:col-span-1 lg:row-span-2"
           >
             {/* Image */}
@@ -193,6 +187,10 @@ export default function GemCategory() {
                 />
 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                {/* Arrow */}
+                <div className="absolute right-3 top-3 flex h-8 w-8 items-center justify-center rounded-full bg-white text-[#7A1F1F] opacity-0 shadow-lg transition-all duration-300 group-hover:opacity-100">
+                  <HiArrowUpRight size={15} />
+                </div>
 
                 <div className="absolute bottom-4 left-4 right-4">
                   <h3 className="font-serif font-bold text-white">
@@ -203,6 +201,17 @@ export default function GemCategory() {
             ))}
           </div>
         )}
+
+        {/* Mobile View All */}
+        <div className="mt-6 flex justify-center sm:hidden">
+          <Link
+            href="/gemstones"
+            className="flex items-center gap-2 border-b border-[#C9A227] pb-1 text-sm font-semibold text-[#7A1F1F]"
+          >
+            View All Gemstones
+            <HiArrowUpRight size={16} />
+          </Link>
+        </div>
       </div>
     </section>
   );

@@ -69,16 +69,19 @@ const GemsStones = () => {
 
   return (
     <main className="min-h-screen bg-[#faf9f6]">
-      <HeroBanner
-        title="Gemstones"
-        description="Discover our carefully selected collection of natural gemstones, sourced for beauty, quality, and authenticity."
-        image="/images/gemstones/gembanner1.png"
-        breadcrumbs={[
-          {
-            label: "Gemstones",
-          },
-        ]}
-      />
+      <div className="m-4">
+        <HeroBanner
+          title="Gemstones"
+          description="Discover our carefully selected collection of natural gemstones, sourced for beauty, quality, and authenticity."
+          image="/images/gemstones/gembanner1.png"
+          breadcrumbs={[
+            {
+              label: "Gemstones",
+            },
+          ]}
+        />
+      </div>
+
       {loading ? (
         <div className="relative">
           <Loader />

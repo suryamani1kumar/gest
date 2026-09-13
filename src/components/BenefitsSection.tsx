@@ -21,19 +21,15 @@ const benefits: Benefit[] = [
     description: "Get 100% Free Shipping",
     icon: <FaTruck />,
   },
+  
   {
-    title: "Easy Exchange",
-    description: "Exchange your old designs anytime",
-    icon: <FaArrowsRotate />,
-  },
-  {
-    title: "Certified Jewellery",
-    description: "100% Certified Jewellery",
+    title: "100% Certified",
+    description: "Authentic & lab-certified gemstones",
     icon: <FaAward />,
   },
   {
-    title: "Lifetime Product Service",
-    description: "keep your jewellery in its best shape",
+    title: "Easy Exchange",
+    description: "Easy exchange on eligible products",
     icon: <FaHandshake />,
   },
   {
@@ -45,7 +41,7 @@ const benefits: Benefit[] = [
 
 const BenefitsSection: React.FC = () => {
   return (
-    <section className="w-full bg-[#fcf8f5]">
+    <section className="w-full bg-white">
       <div className="mx-auto flex max-w-[1920px] flex-col px-5 py-8 sm:px-8 lg:flex-row lg:px-10 lg:py-12">
         {benefits.map((benefit, index) => (
           <React.Fragment key={benefit.title}>
@@ -61,7 +57,7 @@ const BenefitsSection: React.FC = () => {
               <div
                 className="
                   mb-3 flex h-12 w-12 items-center justify-center
-                  text-[38px] font-light text-[#d83f57]
+                  text-[38px] font-light text-[#7a4a4a]
                   sm:h-14 sm:w-14 sm:text-[42px]
                 "
               >

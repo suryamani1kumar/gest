@@ -1,5 +1,4 @@
 import Hero from "@/components/Hero";
-import Craftsmanship from "@/components/Craftsmanship";
 import FAQ from "@/components/Faq/FAQ";
 import { Award, Gem, PackageCheck, Shield } from "lucide-react";
 import Link from "next/link";
@@ -133,8 +132,10 @@ const faqs = [
 ];
 export default function Home() {
   return (
-    <div className="flex flex-col">
-      <Hero />
+    <div>
+      <div className="mx-3 my-4">
+        <Hero />
+      </div>
 
       <GemCategory />
       <RudCategory />
@@ -193,7 +194,7 @@ export default function Home() {
         </div>
       </section>
 
-      <Craftsmanship />
+      {/* <Craftsmanship /> */}
       <section className="bg-[#FFFDF8] py-12">
         <div className="mx-auto max-w-7xl px-5">
           {/* Heading */}

@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
-import Footer from "@/components/Footer";
+import Footer from "@/components/Footer/Footer";
 import Header from "@/components/Header/Header";
 import ReduxProvider from "@/redux/provider";
+import MobileBottomNav from "@/components/Footer/MobileBottomNav";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -34,8 +35,11 @@ export default function RootLayout({
       <ReduxProvider>
         <body className="min-h-full flex flex-col font-sans">
           <Header />
-          <main className="flex-grow mt-[116px] md:mt-[130px]">{children}</main>
+
+          <main className="flex-grow mt-[152px] md:mt-[155px]">{children}</main>
+
           <Footer />
+          <MobileBottomNav/>
         </body>
       </ReduxProvider>
     </html>

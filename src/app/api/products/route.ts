@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
     // Category name -> Category ObjectId
     if (category) {
       const categoryData = await Category.findOne({
-        name: {
+        slug: {
           $regex: `^${escapeRegex(category)}$`,
           $options: "i",
         },

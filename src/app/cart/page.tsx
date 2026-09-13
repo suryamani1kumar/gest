@@ -165,21 +165,6 @@ export default function CartPage() {
     );
   }
 
-  if (!cart.length) {
-    return (
-      <div className="flex min-h-[50vh] flex-col items-center justify-center">
-        <h2 className="text-2xl font-semibold">Your cart is empty</h2>
-
-        <Link
-          href="/collections"
-          className="mt-6 rounded-lg bg-[#7A1F1F] px-6 py-3 text-white"
-        >
-          Continue Shopping
-        </Link>
-      </div>
-    );
-  }
-
   const subtotal = cart.reduce(
     (total, item) => total + (item.pricing?.sellingPrice || 0) * item.quantity,
     0,

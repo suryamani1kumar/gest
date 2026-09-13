@@ -13,7 +13,6 @@ export default function Navbar() {
             </button>
             <div className="hidden md:flex space-x-8">
               <Link href="/collections" className="text-sm font-medium text-gray-900 hover:text-emerald-800 transition-colors uppercase tracking-wider">Collections</Link>
-              <Link href="/bespoke" className="text-sm font-medium text-gray-900 hover:text-emerald-800 transition-colors uppercase tracking-wider">Bespoke</Link>
               <Link href="/story" className="text-sm font-medium text-gray-900 hover:text-emerald-800 transition-colors uppercase tracking-wider">Our Story</Link>
             </div>
           </div>
