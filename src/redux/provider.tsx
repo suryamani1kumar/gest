@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { store } from "./store";
 import { checkAuth } from "./slices/authSlice";
 import type { AppDispatch } from "./store";
-
+import { usePathname } from "next/navigation";
 import { syncCartAsync, fetchUserCart } from "./slices/cartSlice";
 import { syncWishlistAsync, fetchUserWishlist } from "./slices/wishlistSlice";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -69,6 +69,15 @@ export default function ReduxProvider({
 }: {
   children: React.ReactNode;
 }) {
+  const pathname = usePathname();
+  
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  }, [pathname]);
+
   return (
     <Provider store={store}>
       <AuthInitializer />
