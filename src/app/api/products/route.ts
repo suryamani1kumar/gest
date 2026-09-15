@@ -20,6 +20,15 @@ export async function GET(request: NextRequest) {
     const name = searchParams.get("name")?.trim();
     const search = searchParams.get("search")?.trim();
 
+    // Pagination
+    const page = Math.max(Number(searchParams.get("page")) || 1, 1);
+    const limit = Math.min(
+      Math.max(Number(searchParams.get("limit")) || 12, 1),
+      100,
+    );
+
+    const skip = (page - 1) * limit;
+
     const filter: Record<string, any> = {
       status: "Published",
     };
@@ -42,6 +51,10 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({
           success: true,
           count: 0,
+          total: 0,
+          page,
+          limit,
+          totalPages: 0,
           data: [],
         });
       }
@@ -75,17 +88,31 @@ export async function GET(request: NextRequest) {
       ];
     }
 
+    // Get total count
+    const total = await Product.countDocuments(filter);
+
+    // Get paginated products
     const products = await Product.find(filter)
       .select(
         "-astrology -benefits -careInstructions -seo -updatedAt -createdAt -description -__v",
       )
       .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit)
       .lean();
+
+    const totalPages = Math.ceil(total / limit);
 
     return NextResponse.json(
       {
         success: true,
         count: products.length,
+        total,
+        page,
+        limit,
+        totalPages,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1,
         data: products,
       },
       { status: 200 },

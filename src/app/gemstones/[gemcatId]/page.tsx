@@ -1,20 +1,11 @@
 "use client";
 
-import React, { useState, useMemo, useEffect } from "react";
-import { SlidersHorizontal, X, ChevronDown, Heart, Search } from "lucide-react";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "@/redux/store";
+import React, { useEffect, useMemo, useState } from "react";
+import { SlidersHorizontal, X, Search } from "lucide-react";
 import ProductCard from "@/components/Products/ProductCard/ProductCard";
 import Loader from "@/components/Spinloader/Loader";
-import Filter from "@/components/Products/filter/Filter";
+import Filter, { FilterState } from "@/components/Products/filter/Filter";
 import { useParams } from "next/navigation";
-
-const priceRanges = [
-  { label: "Under ₹3,000", min: 0, max: 3000 },
-  { label: "₹3,000 – ₹7,000", min: 3000, max: 7000 },
-  { label: "₹7,000 – ₹15,000", min: 7000, max: 15000 },
-  { label: "Above ₹15,000", min: 15000, max: Infinity },
-];
 
 const sortOptions = [
   { label: "Featured", value: "featured" },
@@ -24,107 +15,270 @@ const sortOptions = [
   { label: "Newest First", value: "newest" },
 ];
 
-/* ─── Main Page ─── */
+const DEFAULT_FILTERS: FilterState = {
+  priceMin: 0,
+  priceMax: 100000,
+
+  caratPriceMin: 0,
+  caratPriceMax: 50000,
+
+  weightMin: 0,
+  weightMax: 20,
+
+  shapes: [],
+  origins: [],
+};
+
 export default function GemsStonesCatPage() {
-  const dispatch = useDispatch();
   const params = useParams<{ gemcatId: string }>();
-  const [selectedOrigin, setSelectedOrigin] = useState("All");
-  const [selectedShapes, setSelectedShapes] = useState<string[]>([]);
-  const [selectedPriceRange, setSelectedPriceRange] = useState<number | null>(
-    null,
-  );
-  const [selectedPricePerCarat, setSelectedPricePerCarat] = useState<
-    number | null
-  >(null);
-  const [selectedWeight, setSelectedWeight] = useState<number | null>(null);
-  const [sortBy, setSortBy] = useState("featured");
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+
   const [products, setProducts] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchProducts = async () => {
-    try {
-      const res = await fetch(
-        `/api/products?productType=gemstone&category=${params.gemcatId}`,
-        {
-          cache: "no-store",
-        },
-      );
+  const [filters, setFilters] = useState<FilterState>(DEFAULT_FILTERS);
 
-      const data = await res.json();
+  const [sortBy, setSortBy] = useState("featured");
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
-      if (data.success) {
-        setProducts(data.data);
-      }
-    } catch (error) {
-      console.error("Failed to fetch products:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  /* ─────────────────────────────
+     Fetch Products
+  ───────────────────────────── */
 
   useEffect(() => {
-    fetchProducts();
-  }, []);
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
 
-  const toggleMaterial = (mat: string) => {
-    setSelectedShapes((prev) =>
-      prev.includes(mat) ? prev.filter((m) => m !== mat) : [...prev, mat],
-    );
+        const res = await fetch(
+          `/api/products?productType=gemstone&category=${params.gemcatId}`,
+          {
+            cache: "no-store",
+          },
+        );
+
+        const data = await res.json();
+
+        if (data.success) {
+          const products = data.data || [];
+          setProducts(products);
+
+          if (products.length > 0) {
+            const prices = products.map(
+              (product: any) => Number(product.pricing.salePrice) || 0,
+            );
+
+            const caratPrices = products.map(
+              (product: any) => Number(product.pricing.sellUnitPrice) || 0,
+            );
+
+            console.log("caratPrices", caratPrices);
+
+            const weights = products.map(
+              (product: any) => Number(product.weight) || 0,
+            );
+
+            const shapes = [
+              ...new Set(
+                products.map((product: any) => product.shape).filter(Boolean),
+              ),
+            ];
+
+            const origins = [
+              ...new Set(
+                products.map((product: any) => product.origin).filter(Boolean),
+              ),
+            ];
+
+            setFilters({
+              priceMin: Math.min(...prices),
+              priceMax: Math.max(...prices),
+
+              caratPriceMin: Math.min(...caratPrices),
+              caratPriceMax: Math.max(...caratPrices),
+
+              weightMin: Math.min(...weights),
+              weightMax: Math.max(...weights),
+
+              shapes: [],
+              origins: [],
+            });
+          }
+        } else {
+          setProducts([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch products:", error);
+        setProducts([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (params.gemcatId) {
+      fetchProducts();
+    }
+  }, [params.gemcatId]);
+
+  /* ─────────────────────────────
+     Toggle Shape
+  ───────────────────────────── */
+
+  const toggleShape = (shape: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      shapes: prev.shapes.includes(shape)
+        ? prev.shapes.filter((item) => item !== shape)
+        : [...prev.shapes, shape],
+    }));
   };
+
+  /* ─────────────────────────────
+     Toggle Origin
+  ───────────────────────────── */
+
+  const toggleOrigin = (origin: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      origins: prev.origins.includes(origin)
+        ? prev.origins.filter((item) => item !== origin)
+        : [...prev.origins, origin],
+    }));
+  };
+
+  /* ─────────────────────────────
+     Clear Filters
+  ───────────────────────────── */
 
   const clearAllFilters = () => {
-    setSelectedOrigin("All");
-    setSelectedShapes([]);
-    setSelectedPriceRange(null);
-    setSortBy("featured");
+    setFilters({
+      ...DEFAULT_FILTERS,
+      shapes: [],
+      origins: [],
+    });
   };
 
-  const activeFilterCount =
-    (selectedOrigin !== "All" ? 1 : 0) +
-    selectedShapes.length +
-    (selectedPriceRange !== null ? 1 : 0);
+  /* ─────────────────────────────
+     Active Filter Count
+  ───────────────────────────── */
 
-  /* ─── Filtered + Sorted Products ─── */
+  const activeFilterCount = useMemo(() => {
+    let count = 0;
+
+    if (
+      filters.priceMin !== DEFAULT_FILTERS.priceMin ||
+      filters.priceMax !== DEFAULT_FILTERS.priceMax
+    ) {
+      count++;
+    }
+
+    if (
+      filters.caratPriceMin !== DEFAULT_FILTERS.caratPriceMin ||
+      filters.caratPriceMax !== DEFAULT_FILTERS.caratPriceMax
+    ) {
+      count++;
+    }
+
+    if (
+      filters.weightMin !== DEFAULT_FILTERS.weightMin ||
+      filters.weightMax !== DEFAULT_FILTERS.weightMax
+    ) {
+      count++;
+    }
+
+    count += filters.shapes.length;
+    count += filters.origins.length;
+
+    return count;
+  }, [filters]);
+
+  /* ─────────────────────────────
+     Filter + Sort Products
+  ───────────────────────────── */
+
   const filteredProducts = useMemo(() => {
-    let result = [...products];
+    const result = products.filter((product) => {
+      console.log("product", product);
+      const price = Number(product.pricing.salePrice) || 0;
+      const caratPrice = Number(product.pricing.sellUnitPrice) || 0;
+      const weight = Number(product.weight) || 0;
 
-    // Category
-    if (selectedOrigin !== "All") {
-      result = result.filter((p) => p.category === selectedOrigin);
-    }
+      /* Price */
+      const priceMatch = price >= filters.priceMin && price <= filters.priceMax;
 
-    // Material
-    if (selectedShapes.length > 0) {
-      result = result.filter((p) => selectedShapes.includes(p.material));
-    }
+      /* Price per Carat */
+      const caratPriceMatch =
+        caratPrice >= filters.caratPriceMin &&
+        caratPrice <= filters.caratPriceMax;
 
-    // Price range
-    if (selectedPriceRange !== null) {
-      const range = priceRanges[selectedPriceRange];
-      result = result.filter(
-        (p) => p.price >= range.min && p.price < range.max,
+      /* Weight */
+      const weightMatch =
+        weight >= filters.weightMin && weight <= filters.weightMax;
+
+      /* Shape */
+      const shapeMatch =
+        filters.shapes.length === 0 || filters.shapes.includes(product.shape);
+
+      /* Origin */
+      const originMatch =
+        filters.origins.length === 0 ||
+        filters.origins.includes(product.origin);
+
+      return (
+        priceMatch &&
+        caratPriceMatch &&
+        weightMatch &&
+        shapeMatch &&
+        originMatch
       );
-    }
+    });
 
-    // Sort
-    switch (sortBy) {
-      case "price-asc":
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case "price-desc":
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case "rating":
-        result.sort((a, b) => b.rating - a.rating);
-        break;
-      case "newest":
-        result.sort((a, b) => b.id - a.id);
-        break;
-    }
+    /* Sorting */
 
-    return result;
-  }, [selectedOrigin, selectedShapes, selectedPriceRange, sortBy]);
+    return [...result].sort((a, b) => {
+      switch (sortBy) {
+        case "price-asc":
+          return (Number(a.price) || 0) - (Number(b.price) || 0);
+
+        case "price-desc":
+          return (Number(b.price) || 0) - (Number(a.price) || 0);
+
+        case "rating":
+          return (Number(b.rating) || 0) - (Number(a.rating) || 0);
+
+        case "newest":
+          return (
+            new Date(b.createdAt || 0).getTime() -
+            new Date(a.createdAt || 0).getTime()
+          );
+
+        case "featured":
+        default:
+          return (Number(b.featured) || 0) - (Number(a.featured) || 0);
+      }
+    });
+  }, [products, filters, sortBy]);
+
+  /* ─────────────────────────────
+     Remove Shape
+  ───────────────────────────── */
+
+  const removeShape = (shape: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      shapes: prev.shapes.filter((item) => item !== shape),
+    }));
+  };
+
+  /* ─────────────────────────────
+     Remove Origin
+  ───────────────────────────── */
+
+  const removeOrigin = (origin: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      origins: prev.origins.filter((item) => item !== origin),
+    }));
+  };
 
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
@@ -133,13 +287,17 @@ export default function GemsStonesCatPage() {
       ) : (
         <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
           <div className="flex gap-15">
-            {/* ─── Desktop Sidebar ─── */}
-            <aside className="hidden lg:block w-[260px] flex-shrink-0">
+            {/* ═══════════════════════════════
+                DESKTOP SIDEBAR
+            ═══════════════════════════════ */}
+
+            <aside className="hidden w-[260px] flex-shrink-0 lg:block">
               <div className="sticky top-[150px]">
-                <div className="flex items-center justify-between mb-2">
-                  <h2 className="text-lg font-serif font-bold text-[#1A1A1A]">
+                <div className="mb-2 flex items-center justify-between">
+                  <h2 className="font-serif text-lg font-bold text-[#1A1A1A]">
                     Filters
                   </h2>
+
                   {activeFilterCount > 0 && (
                     <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#7A1F1F] text-[10px] font-bold text-white">
                       {activeFilterCount}
@@ -148,55 +306,109 @@ export default function GemsStonesCatPage() {
                 </div>
 
                 <Filter
+                  filters={filters}
                   activeFilterCount={activeFilterCount}
-                  toggleMaterial={toggleMaterial}
                   clearAllFilters={clearAllFilters}
-                  selectedShapes={selectedShapes}
+                  toggleShape={toggleShape}
+                  toggleOrigin={toggleOrigin}
+                  onPriceChange={(min, max) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      priceMin: min,
+                      priceMax: max,
+                    }))
+                  }
+                  onCaratPriceChange={(min, max) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      caratPriceMin: min,
+                      caratPriceMax: max,
+                    }))
+                  }
+                  onWeightChange={(min, max) =>
+                    setFilters((prev) => ({
+                      ...prev,
+                      weightMin: min,
+                      weightMax: max,
+                    }))
+                  }
                 />
               </div>
             </aside>
 
-            {/* ─── Mobile Filter Overlay ─── */}
+            {/* ═══════════════════════════════
+                MOBILE FILTER
+            ═══════════════════════════════ */}
+
             {mobileFiltersOpen && (
               <div className="fixed inset-0 z-50 lg:hidden">
                 <div
                   className="absolute inset-0 bg-black/40"
                   onClick={() => setMobileFiltersOpen(false)}
                 />
-                <div className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] bg-white shadow-2xl overflow-y-auto">
+
+                <div className="absolute right-0 top-0 h-full w-[320px] max-w-[85vw] overflow-y-auto bg-white shadow-2xl">
                   <div className="sticky top-0 z-10 flex items-center justify-between border-b border-[#E5E7EB] bg-white px-5 py-4">
-                    <h2 className="text-lg font-serif font-bold text-[#1A1A1A]">
+                    <h2 className="font-serif text-lg font-bold text-[#1A1A1A]">
                       Filters
                     </h2>
+
                     <button
                       onClick={() => setMobileFiltersOpen(false)}
-                      className="flex h-8 w-8 items-center justify-center rounded-full hover:bg-[#FAF0F0] transition cursor-pointer"
+                      className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-full transition hover:bg-[#FAF0F0]"
                     >
                       <X size={18} className="text-[#1A1A1A]" />
                     </button>
                   </div>
+
                   <div className="px-5 pb-8">
-                    {" "}
                     <Filter
+                      filters={filters}
                       activeFilterCount={activeFilterCount}
-                      toggleMaterial={toggleMaterial}
                       clearAllFilters={clearAllFilters}
-                      selectedShapes={selectedShapes}
+                      toggleShape={toggleShape}
+                      toggleOrigin={toggleOrigin}
+                      onPriceChange={(min, max) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          priceMin: min,
+                          priceMax: max,
+                        }))
+                      }
+                      onCaratPriceChange={(min, max) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          caratPriceMin: min,
+                          caratPriceMax: max,
+                        }))
+                      }
+                      onWeightChange={(min, max) =>
+                        setFilters((prev) => ({
+                          ...prev,
+                          weightMin: min,
+                          weightMax: max,
+                        }))
+                      }
                     />
                   </div>
                 </div>
               </div>
             )}
 
-            {/* ─── Products Area ─── */}
-            <div className="flex-1 min-w-0">
+            {/* ═══════════════════════════════
+                PRODUCTS AREA
+            ═══════════════════════════════ */}
+
+            <div className="min-w-0 flex-1">
               {/* Top Bar */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
+
+              <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-center gap-3">
-                  {/* Mobile filter button */}
+                  {/* Mobile Filter Button */}
+
                   <button
                     onClick={() => setMobileFiltersOpen(true)}
-                    className="flex items-center gap-2 rounded-lg border border-[#E5E7EB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] lg:hidden cursor-pointer"
+                    className="flex cursor-pointer items-center gap-2 rounded-lg border border-[#E5E7EB] px-4 py-2.5 text-sm font-medium text-[#1A1A1A] transition hover:border-[#7A1F1F] hover:text-[#7A1F1F] lg:hidden"
                   >
                     <SlidersHorizontal size={16} />
                     Filters
@@ -206,6 +418,7 @@ export default function GemsStonesCatPage() {
                       </span>
                     )}
                   </button>
+
                   <p className="text-sm text-[#6B7280]">
                     Showing{" "}
                     <span className="font-semibold text-[#1A1A1A]">
@@ -216,74 +429,148 @@ export default function GemsStonesCatPage() {
                 </div>
 
                 {/* Sort */}
+
                 <div className="flex items-center gap-2">
-                  <span className="text-xs text-[#6B7280] hidden sm:inline">
+                  <span className="hidden text-xs text-[#6B7280] sm:inline">
                     Sort by:
                   </span>
+
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#1A1A1A] outline-none transition focus:border-[#7A1F1F] cursor-pointer"
+                    className="cursor-pointer rounded-lg border border-[#E5E7EB] bg-white px-3 py-2 text-sm text-[#1A1A1A] outline-none transition focus:border-[#7A1F1F]"
                   >
-                    {sortOptions.map((opt) => (
-                      <option key={opt.value} value={opt.value}>
-                        {opt.label}
+                    {sortOptions.map((option) => (
+                      <option key={option.value} value={option.value}>
+                        {option.label}
                       </option>
                     ))}
                   </select>
                 </div>
               </div>
 
-              {/* Active Filter Tags */}
+              {/* ═══════════════════════════════
+                  ACTIVE FILTER TAGS
+              ═══════════════════════════════ */}
+
               {activeFilterCount > 0 && (
                 <div className="mb-5 flex flex-wrap items-center gap-2">
-                  {selectedOrigin !== "All" && (
+                  {/* Price */}
+
+                  {(filters.priceMin !== DEFAULT_FILTERS.priceMin ||
+                    filters.priceMax !== DEFAULT_FILTERS.priceMax) && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                      {selectedOrigin}
+                      Price: ₹{filters.priceMin.toLocaleString("en-IN")}
+                      {" - "}₹{filters.priceMax.toLocaleString("en-IN")}
                       <X
                         size={12}
-                        className="cursor-pointer hover:text-[#4B1313]"
-                        onClick={() => setSelectedOrigin("All")}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            priceMin: DEFAULT_FILTERS.priceMin,
+                            priceMax: DEFAULT_FILTERS.priceMax,
+                          }))
+                        }
                       />
                     </span>
                   )}
-                  {selectedPriceRange !== null && (
+
+                  {/* Carat Price */}
+
+                  {(filters.caratPriceMin !== DEFAULT_FILTERS.caratPriceMin ||
+                    filters.caratPriceMax !==
+                      DEFAULT_FILTERS.caratPriceMax) && (
                     <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
-                      {priceRanges[selectedPriceRange].label}
+                      Carat Price: ₹
+                      {filters.caratPriceMin.toLocaleString("en-IN")}
+                      {" - "}₹{filters.caratPriceMax.toLocaleString("en-IN")}
                       <X
                         size={12}
-                        className="cursor-pointer hover:text-[#4B1313]"
-                        onClick={() => setSelectedPriceRange(null)}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            caratPriceMin: DEFAULT_FILTERS.caratPriceMin,
+                            caratPriceMax: DEFAULT_FILTERS.caratPriceMax,
+                          }))
+                        }
                       />
                     </span>
                   )}
-                  {selectedShapes.map((mat) => (
+
+                  {/* Weight */}
+
+                  {(filters.weightMin !== DEFAULT_FILTERS.weightMin ||
+                    filters.weightMax !== DEFAULT_FILTERS.weightMax) && (
+                    <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]">
+                      Weight: {filters.weightMin} - {filters.weightMax} ct
+                      <X
+                        size={12}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          setFilters((prev) => ({
+                            ...prev,
+                            weightMin: DEFAULT_FILTERS.weightMin,
+                            weightMax: DEFAULT_FILTERS.weightMax,
+                          }))
+                        }
+                      />
+                    </span>
+                  )}
+
+                  {/* Shapes */}
+
+                  {filters.shapes.map((shape) => (
                     <span
-                      key={mat}
+                      key={shape}
                       className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]"
                     >
-                      {mat}
+                      {shape}
+
                       <X
                         size={12}
-                        className="cursor-pointer hover:text-[#4B1313]"
-                        onClick={() => toggleMaterial(mat)}
+                        className="cursor-pointer"
+                        onClick={() => removeShape(shape)}
                       />
                     </span>
                   ))}
 
+                  {/* Origins */}
+
+                  {filters.origins.map((origin) => (
+                    <span
+                      key={origin}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF0F0] px-3 py-1 text-xs font-medium text-[#7A1F1F]"
+                    >
+                      {origin}
+
+                      <X
+                        size={12}
+                        className="cursor-pointer"
+                        onClick={() => removeOrigin(origin)}
+                      />
+                    </span>
+                  ))}
+
+                  {/* Clear All */}
+
                   <button
                     onClick={clearAllFilters}
-                    className="text-xs font-medium text-[#7A1F1F] underline underline-offset-2 hover:text-[#4B1313] transition cursor-pointer"
+                    className="cursor-pointer text-xs font-medium text-[#7A1F1F] underline underline-offset-2 transition hover:text-[#4B1313]"
                   >
                     Clear all
                   </button>
                 </div>
               )}
 
-              {/* Products Grid */}
-              {products.length > 0 ? (
+              {/* ═══════════════════════════════
+                  PRODUCTS GRID
+              ═══════════════════════════════ */}
+
+              {filteredProducts.length > 0 ? (
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-2 md:grid-cols-3 sm:gap-5">
-                  {products.map((product) => (
+                  {filteredProducts.map((product) => (
                     <ProductCard
                       product={product}
                       key={product._id}
@@ -292,21 +579,27 @@ export default function GemsStonesCatPage() {
                   ))}
                 </div>
               ) : (
-                /* Empty State */
+                /* ═══════════════════════════════
+                   EMPTY STATE
+                ═══════════════════════════════ */
+
                 <div className="flex flex-col items-center justify-center py-20 text-center">
                   <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-[#FAF0F0]">
                     <Search size={32} className="text-[#7A1F1F]" />
                   </div>
-                  <h3 className="text-xl font-serif font-bold text-[#1A1A1A] mb-2">
+
+                  <h3 className="mb-2 font-serif text-xl font-bold text-[#1A1A1A]">
                     No products found
                   </h3>
-                  <p className="text-sm text-[#6B7280] max-w-md mb-6">
+
+                  <p className="mb-6 max-w-md text-sm text-[#6B7280]">
                     We couldn&apos;t find any products matching your filters.
                     Try adjusting your selection or clear all filters.
                   </p>
+
                   <button
                     onClick={clearAllFilters}
-                    className="rounded-full bg-[#7A1F1F] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5A1717] cursor-pointer"
+                    className="cursor-pointer rounded-full bg-[#7A1F1F] px-6 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5A1717]"
                   >
                     Clear All Filters
                   </button>

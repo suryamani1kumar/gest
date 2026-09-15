@@ -1,49 +1,223 @@
-import mongoose, { Schema, Document, Model } from "mongoose";
+import mongoose, { Document, Schema, Types } from "mongoose";
+import { AddressSchema, IAddress } from "./User";
 
 export interface IOrderItem {
-  product: mongoose.Types.ObjectId;
+  product: Types.ObjectId;
+
   name: string;
-  image: string;
+  sku: string;
+  slug: string;
+  image?: string;
+
   quantity: number;
-  price: number;
-  subtotal: number;
+
+  unitPrice: number;
+  discount: number;
+  tax: number;
+  totalPrice: number;
+
+  weight?: number;
+  weightUnit?: string;
+  size?: string;
+
+  metalType?: string;
+  purity?: string;
 }
 
-export interface IShippingAddress {
-  firstName: string;
-  lastName: string;
-  address: string;
-  apartment?: string;
-  city: string;
-  postalCode: string;
-  phone?: string;
+// ==========================================
+// PRICING
+// ==========================================
+
+export interface IOrderPricing {
+  subtotal: number;
+
+  itemDiscount: number;
+  couponDiscount: number;
+
+  taxAmount: number;
+
+  shippingCharge: number;
+
+  giftWrapCharge: number;
+
+  platformFee: number;
+
+  grandTotal: number;
+
+  currency: string;
 }
+
+// ==========================================
+// PAYMENT
+// ==========================================
+
+export interface IOrderPayment {
+  method: string;
+  // stripe | razorpay | cod | bank_transfer
+
+  status: string;
+  // Pending | Paid | Failed | Refunded | PartiallyRefunded
+
+  paymentGateway?: string;
+
+  paymentId?: string;
+
+  transactionId?: string;
+
+  paymentGatewayOrderId?: string;
+
+  paymentGatewayPaymentId?: string;
+
+  paymentGatewaySignature?: string;
+
+  paidAt?: Date;
+}
+
+// ==========================================
+// SHIPPING
+// ==========================================
+
+export interface IOrderShipping {
+  method?: string;
+
+  courierName?: string;
+
+  trackingNumber?: string;
+
+  trackingUrl?: string;
+
+  estimatedDeliveryDate?: Date;
+
+  shippedAt?: Date;
+
+  deliveredAt?: Date;
+}
+
+// ==========================================
+// CANCELLATION
+// ==========================================
+
+export interface IOrderCancellation {
+  reason?: string;
+
+  cancelledBy?: Types.ObjectId;
+
+  note?: string;
+
+  cancelledAt?: Date;
+}
+
+// ==========================================
+// RETURN
+// ==========================================
+
+export interface IOrderReturn {
+  requested: boolean;
+
+  reason?: string;
+
+  requestedAt?: Date;
+
+  approvedAt?: Date;
+
+  receivedAt?: Date;
+}
+
+// ==========================================
+// REFUND
+// ==========================================
+
+export interface IOrderRefund {
+  status: string;
+  // NotRequested | Pending | Processing | Refunded | Failed
+
+  amount?: number;
+
+  refundId?: string;
+
+  reason?: string;
+
+  refundedAt?: Date;
+}
+
+// ==========================================
+// ORDER DOCUMENT
+// ==========================================
 
 export interface IOrder extends Document {
-  customer: mongoose.Types.ObjectId;
   orderNumber: string;
+
+  customer: Types.ObjectId;
+
   items: IOrderItem[];
-  shippingAddress: IShippingAddress;
-  paymentMethod: "COD" | "CARD" | "UPI" | "PAYPAL";
-  paymentStatus: "pending" | "paid" | "failed" | "refunded";
-  orderStatus:
-    | "pending"
-    | "confirmed"
-    | "processing"
-    | "shipped"
-    | "delivered"
-    | "cancelled";
-  subtotal: number;
-  shippingCharge: number;
-  tax: number;
-  discount: number;
-  total: number;
-  notes?: string;
-  razorpayOrderId?: string;
-  razorpayPaymentId?: string;
+
+  pricing: IOrderPricing;
+
+  coupon?: Types.ObjectId;
+
+  couponCode?: string;
+
+  shippingAddress: IAddress;
+
+  payment: IOrderPayment;
+
+  orderStatus: string;
+  // Pending | Confirmed | Processing | Shipped |
+  // Delivered | Cancelled | Returned | Refunded
+
+  confirmedAt?: Date;
+
+  processingAt?: Date;
+
+  shippedAt?: Date;
+
+  deliveredAt?: Date;
+
+  cancelledAt?: Date;
+
+  returnedAt?: Date;
+
+  refundedAt?: Date;
+
+  shipping: IOrderShipping;
+
+  cancellation?: IOrderCancellation;
+
+  return: IOrderReturn;
+
+  refund: IOrderRefund;
+
+  invoiceNumber?: string;
+
+  invoiceUrl?: string;
+
+  invoiceGeneratedAt?: Date;
+
+  customerNote?: string;
+
+  adminNote?: string;
+
+  isGift: boolean;
+
+  giftMessage?: string;
+
+  giftWrap: boolean;
+
+  source: string;
+  // Website | Admin | WhatsApp | Phone
+
+  createdBy?: Types.ObjectId;
+
+  updatedBy?: Types.ObjectId;
+
   createdAt: Date;
+
   updatedAt: Date;
 }
+
+// ==========================================
+// ORDER ITEM SCHEMA
+// ==========================================
 
 const OrderItemSchema = new Schema<IOrderItem>(
   {
@@ -52,130 +226,578 @@ const OrderItemSchema = new Schema<IOrderItem>(
       ref: "Product",
       required: true,
     },
+
     name: {
       type: String,
       required: true,
+      trim: true,
     },
-    image: {
+
+    sku: {
       type: String,
       required: true,
+      trim: true,
     },
+
+    slug: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+
+    image: {
+      type: String,
+      trim: true,
+    },
+
     quantity: {
       type: Number,
       required: true,
       min: 1,
     },
-    price: {
+
+    unitPrice: {
       type: Number,
       required: true,
+      min: 0,
     },
+
+    discount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    tax: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    totalPrice: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    weight: {
+      type: Number,
+      min: 0,
+    },
+
+    weightUnit: {
+      type: String,
+      trim: true,
+    },
+
+    size: {
+      type: String,
+      trim: true,
+    },
+
+    metalType: {
+      type: String,
+      trim: true,
+    },
+
+    purity: {
+      type: String,
+      trim: true,
+    },
+  },
+  { _id: false },
+);
+
+// ==========================================
+// PRICING SCHEMA
+// ==========================================
+
+const OrderPricingSchema = new Schema<IOrderPricing>(
+  {
     subtotal: {
       type: Number,
       required: true,
+      min: 0,
+    },
+
+    itemDiscount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    couponDiscount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    taxAmount: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    shippingCharge: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    giftWrapCharge: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    platformFee: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    grandTotal: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+
+    currency: {
+      type: String,
+      default: "INR",
+      uppercase: true,
+      trim: true,
     },
   },
   { _id: false },
 );
 
-const ShippingAddressSchema = new Schema<IShippingAddress>(
+// ==========================================
+// PAYMENT SCHEMA
+// ==========================================
+
+const OrderPaymentSchema = new Schema<IOrderPayment>(
   {
-    firstName: { type: String, required: true, trim: true },
-    lastName: { type: String, required: true, trim: true },
-    address: { type: String, required: true, trim: true },
-    apartment: { type: String, trim: true },
-    city: { type: String, required: true, trim: true },
-    postalCode: { type: String, required: true, trim: true },
-    phone: { type: String, trim: true },
+    method: {
+      type: String,
+      required: true,
+      enum: ["stripe", "razorpay", "cod", "bank_transfer"],
+    },
+
+    status: {
+      type: String,
+      required: true,
+      enum: ["Pending", "Paid", "Failed", "Refunded", "PartiallyRefunded"],
+      default: "Pending",
+    },
+
+    paymentGateway: {
+      type: String,
+      trim: true,
+    },
+
+    paymentId: {
+      type: String,
+      trim: true,
+    },
+
+    transactionId: {
+      type: String,
+      trim: true,
+    },
+
+    paymentGatewayOrderId: {
+      type: String,
+      trim: true,
+    },
+
+    paymentGatewayPaymentId: {
+      type: String,
+      trim: true,
+    },
+
+    paymentGatewaySignature: {
+      type: String,
+      trim: true,
+    },
+
+    paidAt: {
+      type: Date,
+    },
   },
   { _id: false },
 );
 
+// ==========================================
+// SHIPPING SCHEMA
+// ==========================================
+
+const OrderShippingSchema = new Schema<IOrderShipping>(
+  {
+    method: {
+      type: String,
+      trim: true,
+    },
+
+    courierName: {
+      type: String,
+      trim: true,
+    },
+
+    trackingNumber: {
+      type: String,
+      trim: true,
+    },
+
+    trackingUrl: {
+      type: String,
+      trim: true,
+    },
+
+    estimatedDeliveryDate: {
+      type: Date,
+    },
+
+    shippedAt: {
+      type: Date,
+    },
+
+    deliveredAt: {
+      type: Date,
+    },
+  },
+  { _id: false },
+);
+
+// ==========================================
+// CANCELLATION SCHEMA
+// ==========================================
+
+const OrderCancellationSchema = new Schema<IOrderCancellation>(
+  {
+    reason: {
+      type: String,
+      trim: true,
+    },
+
+    cancelledBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    note: {
+      type: String,
+      trim: true,
+    },
+
+    cancelledAt: {
+      type: Date,
+    },
+  },
+  { _id: false },
+);
+
+// ==========================================
+// RETURN SCHEMA
+// ==========================================
+
+const OrderReturnSchema = new Schema<IOrderReturn>(
+  {
+    requested: {
+      type: Boolean,
+      default: false,
+    },
+
+    reason: {
+      type: String,
+      trim: true,
+    },
+
+    requestedAt: {
+      type: Date,
+    },
+
+    approvedAt: {
+      type: Date,
+    },
+
+    receivedAt: {
+      type: Date,
+    },
+  },
+  { _id: false },
+);
+
+// ==========================================
+// REFUND SCHEMA
+// ==========================================
+
+const OrderRefundSchema = new Schema<IOrderRefund>(
+  {
+    status: {
+      type: String,
+      enum: ["NotRequested", "Pending", "Processing", "Refunded", "Failed"],
+      default: "NotRequested",
+    },
+
+    amount: {
+      type: Number,
+      min: 0,
+    },
+
+    refundId: {
+      type: String,
+      trim: true,
+    },
+
+    reason: {
+      type: String,
+      trim: true,
+    },
+
+    refundedAt: {
+      type: Date,
+    },
+  },
+  { _id: false },
+);
+
+// ==========================================
+// MAIN ORDER SCHEMA
+// ==========================================
+
 const OrderSchema = new Schema<IOrder>(
   {
+    // -------------------------------
+    // ORDER IDENTIFICATION
+    // -------------------------------
+
+    orderNumber: {
+      type: String,
+      required: true,
+      unique: true,
+      index: true,
+      trim: true,
+    },
+
     customer: {
       type: Schema.Types.ObjectId,
       ref: "Customer",
       required: true,
       index: true,
     },
-    orderNumber: {
-      type: String,
-      required: true,
-      unique: true,
-    },
+
+    // -------------------------------
+    // ITEMS
+    // -------------------------------
+
     items: {
       type: [OrderItemSchema],
       required: true,
+      validate: {
+        validator: function (items: IOrderItem[]) {
+          return items.length > 0;
+        },
+        message: "Order must contain at least one item.",
+      },
     },
+
+    // -------------------------------
+    // PRICING
+    // -------------------------------
+
+    pricing: {
+      type: OrderPricingSchema,
+      required: true,
+    },
+
+    // -------------------------------
+    // COUPON
+    // -------------------------------
+
+    coupon: {
+      type: Schema.Types.ObjectId,
+      ref: "Coupon",
+    },
+
+    couponCode: {
+      type: String,
+      trim: true,
+      uppercase: true,
+    },
+
+    // -------------------------------
+    // ADDRESSES
+    // -------------------------------
+
     shippingAddress: {
-      type: ShippingAddressSchema,
+      type: AddressSchema,
       required: true,
     },
-    paymentMethod: {
-      type: String,
-      enum: ["COD", "CARD", "UPI", "PAYPAL"],
+
+    // -------------------------------
+    // PAYMENT
+    // -------------------------------
+
+    payment: {
+      type: OrderPaymentSchema,
       required: true,
     },
-    paymentStatus: {
-      type: String,
-      enum: ["pending", "paid", "failed", "refunded"],
-      default: "pending",
-    },
+
+    // -------------------------------
+    // ORDER STATUS
+    // -------------------------------
+
     orderStatus: {
       type: String,
       enum: [
-        "pending",
-        "confirmed",
-        "processing",
-        "shipped",
-        "delivered",
-        "cancelled",
+        "Pending",
+        "Confirmed",
+        "Processing",
+        "Shipped",
+        "Delivered",
+        "Cancelled",
+        "Returned",
+        "Refunded",
       ],
-      default: "pending",
+      default: "Pending",
+      index: true,
     },
-    subtotal: {
-      type: Number,
-      required: true,
+
+    confirmedAt: Date,
+
+    processingAt: Date,
+
+    shippedAt: Date,
+
+    deliveredAt: Date,
+
+    cancelledAt: Date,
+
+    returnedAt: Date,
+
+    refundedAt: Date,
+
+    // -------------------------------
+    // SHIPPING
+    // -------------------------------
+
+    shipping: {
+      type: OrderShippingSchema,
+      default: {},
     },
-    shippingCharge: {
-      type: Number,
-      default: 0,
+
+    // -------------------------------
+    // CANCELLATION
+    // -------------------------------
+
+    cancellation: {
+      type: OrderCancellationSchema,
     },
-    tax: {
-      type: Number,
-      default: 0,
+
+    // -------------------------------
+    // RETURN
+    // -------------------------------
+
+    return: {
+      type: OrderReturnSchema,
+      default: {
+        requested: false,
+      },
     },
-    discount: {
-      type: Number,
-      default: 0,
+
+    // -------------------------------
+    // REFUND
+    // -------------------------------
+
+    refund: {
+      type: OrderRefundSchema,
+      default: {
+        status: "NotRequested",
+      },
     },
-    total: {
-      type: Number,
-      required: true,
-    },
-    notes: {
+
+    // -------------------------------
+    // INVOICE
+    // -------------------------------
+
+    invoiceNumber: {
       type: String,
-      default: "",
+      trim: true,
     },
-    razorpayOrderId: {
+
+    invoiceUrl: {
       type: String,
-      default: null,
+      trim: true,
     },
-    razorpayPaymentId: {
+
+    invoiceGeneratedAt: {
+      type: Date,
+    },
+
+    // -------------------------------
+    // NOTES
+    // -------------------------------
+
+    customerNote: {
       type: String,
-      default: null,
+      trim: true,
+    },
+
+    adminNote: {
+      type: String,
+      trim: true,
+    },
+
+    // -------------------------------
+    // GIFT
+    // -------------------------------
+
+    isGift: {
+      type: Boolean,
+      default: false,
+    },
+
+    giftMessage: {
+      type: String,
+      trim: true,
+    },
+
+    giftWrap: {
+      type: Boolean,
+      default: false,
+    },
+
+    // -------------------------------
+    // ORDER SOURCE
+    // -------------------------------
+
+    source: {
+      type: String,
+      enum: ["Website", "Admin", "WhatsApp", "Phone"],
+      default: "Website",
+    },
+
+    // -------------------------------
+    // AUDIT
+    // -------------------------------
+
+    createdBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+
+    updatedBy: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
     },
   },
   {
     timestamps: true,
-    versionKey: false,
   },
 );
 
-OrderSchema.index({ orderNumber: 1 });
-OrderSchema.index({ customer: 1, createdAt: -1 });
-
-const Order: Model<IOrder> =
+const Order =
   mongoose.models.Order || mongoose.model<IOrder>("Order", OrderSchema);
 
 export default Order;

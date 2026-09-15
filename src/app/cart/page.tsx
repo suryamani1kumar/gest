@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   ArrowRight,
   ShoppingBag,
+  Heart,
 } from "lucide-react";
 
 import { motion, AnimatePresence } from "framer-motion";
@@ -171,234 +172,239 @@ export default function CartPage() {
   );
 
   return (
-    <>
-      <div className="pt-10 pb-24 bg-[#FFFDF8] min-h-screen">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Header */}
+    <div className="py-6 bg-[#FFFDF8]">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header */}
+        {cart.length > 0 && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-10"
+            className="mb-5"
           >
-            <span className="text-[#7A1F1F] tracking-widest text-sm font-medium mb-2 block">
-              Review Your Selection
-            </span>
-            <h1 className="text-2xl md:text-3xl font-serif text-[#1A1A1A] mb-3">
+            <h3 className="text-xl md:text-2xl text-[#1A1A1A]">
               Your Shopping Bag
-            </h1>
-            <div className="w-24 h-px bg-[#C9A227]"></div>
+            </h3>
           </motion.div>
+        )}
 
-          <AnimatePresence mode="wait">
-            {cart.length > 0 ? (
-              <motion.div
-                key="cart-content"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="flex flex-col lg:flex-row gap-12"
-              >
-                <div className="lg:w-2/3">
-                  <AnimatePresence>
-                    {cart.map((item, index) => (
-                      <motion.div
-                        key={item._id}
-                        layout
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        exit={{
-                          opacity: 0,
-                          x: -20,
-                          transition: { duration: 0.2 },
-                        }}
-                        transition={{ duration: 0.4, delay: index * 0.1 }}
-                        className="p-4 mb-5 border border-[#E5E7EB] rounded-md flex flex-col sm:flex-row items-start sm:items-center gap-6 group"
+        <AnimatePresence mode="wait">
+          {cart.length > 0 ? (
+            <motion.div
+              key="cart-content"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="flex flex-col lg:flex-row gap-12"
+            >
+              <div className="lg:w-2/3">
+                <AnimatePresence>
+                  {cart.map((item, index) => (
+                    <motion.div
+                      key={item._id}
+                      layout
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      exit={{
+                        opacity: 0,
+                        x: -20,
+                        transition: { duration: 0.2 },
+                      }}
+                      transition={{ duration: 0.4, delay: index * 0.1 }}
+                      className="p-4 mb-5 border border-[#E5E7EB] rounded-md flex flex-col sm:flex-row items-start sm:items-center gap-6 group"
+                    >
+                      <Link
+                        href={`/collections/gemstones/${item._id}`}
+                        className="relative w-50 h-35 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
                       >
-                        <Link
-                          href={`/collections/gemstones/${item._id}`}
-                          className="relative w-50 h-35 bg-neutral-100 flex-shrink-0 overflow-hidden rounded-md"
-                        >
-                          {item.gallery?.[0]?.url && (
-                            <Image
-                              src={item.gallery[0].url}
-                              alt={item.name}
-                              fill
-                              sizes="112px"
-                              className="object-cover"
-                            />
-                          )}
-                        </Link>
+                        {item.gallery?.[0]?.url && (
+                          <Image
+                            src={item.gallery[0].url}
+                            alt={item.name}
+                            fill
+                            sizes="112px"
+                            className="object-cover"
+                          />
+                        )}
+                      </Link>
 
-                        <div className="flex-grow flex flex-col justify-between h-full sm:h-40 py-1 w-full">
-                          <div className="flex justify-between items-start w-full">
-                            <div>
-                              <Link href={`/collections/gemstones/${item._id}`}>
-                                <h3 className="text-xl text-[#1A1A1A] group-hover:text-[#7A1F1F] transition-colors">
-                                  {item.name} ({item.indianName}) -{" "}
-                                  {item.specifications.weight.value}{" "}
-                                  {item.specifications.weight.unit}
-                                </h3>
-                              </Link>
-                              <p className="my-1 text-xs text-[#9CA3AF]">
-                                SKU : {item.sku}
-                              </p>
-                              <p className="mb-1 text-xs text-[#9CA3AF]">
-                                Origin : {item.specifications.origin}
-                              </p>
-                            </div>
-                            <p className="text-lg font-bold text-[#1A1A1A]">
-                              ₹
-                              {(
-                                item.pricing?.sellingPrice ?? 0 * item.quantity
-                              ).toLocaleString("en-IN")}
+                      <div className="flex-grow flex flex-col justify-between h-full sm:h-40 py-1 w-full">
+                        <div className="flex justify-between items-start w-full">
+                          <div>
+                            <Link href={`/collections/gemstones/${item._id}`}>
+                              <h3 className="text-xl text-[#1A1A1A] group-hover:text-[#7A1F1F] transition-colors">
+                                {item.name} ({item?.indianName}) -{" "}
+                                {item?.specifications?.weight?.value}{" "}
+                                {item?.specifications?.weight?.unit}
+                              </h3>
+                            </Link>
+                            <p className="my-1 text-xs text-[#9CA3AF]">
+                              SKU : {item.sku}
+                            </p>
+                            <p className="mb-1 text-xs text-[#9CA3AF]">
+                              Origin : {item?.specifications?.origin}
                             </p>
                           </div>
+                          <p className="text-lg font-bold text-[#1A1A1A]">
+                            ₹
+                            {(
+                              item.pricing?.sellingPrice ?? 0 * item.quantity
+                            ).toLocaleString("en-IN")}
+                          </p>
+                        </div>
 
-                          <div className="flex items-center justify-between mt-6 sm:mt-0 w-full">
-                            <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
-                              <button
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item._id,
-                                    item.quantity - 1,
-                                  )
-                                }
-                                className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
-                              >
-                                <Minus size={16} />
-                              </button>
-                              <span className="flex h-10 w-10 items-center justify-center border-x border-[#E5E7EB] text-sm font-semibold text-[#1A1A1A]">
-                                {item.quantity}
-                              </span>
-                              <button
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item._id,
-                                    item.quantity + 1,
-                                  )
-                                }
-                                className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
-                              >
-                                <Plus size={16} />
-                              </button>
-                            </div>
-
+                        <div className="flex items-center justify-between mt-6 sm:mt-0 w-full">
+                          <div className="inline-flex items-center rounded-lg border border-[#E5E7EB] overflow-hidden">
                             <button
-                              onClick={() => handleRemoveFromCart(item._id)}
-                              className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item._id,
+                                  item.quantity - 1,
+                                )
+                              }
+                              className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
                             >
-                              <Trash2 size={16} />
-                              <span className="hidden sm:inline">Remove</span>
+                              <Minus size={16} />
+                            </button>
+                            <span className="flex h-10 w-10 items-center justify-center border-x border-[#E5E7EB] text-sm font-semibold text-[#1A1A1A]">
+                              {item.quantity}
+                            </span>
+                            <button
+                              onClick={() =>
+                                handleUpdateQuantity(
+                                  item._id,
+                                  item.quantity + 1,
+                                )
+                              }
+                              className="flex h-10 w-10 items-center justify-center text-[#6B7280] transition hover:bg-[#FAF0F0] hover:text-[#7A1F1F] cursor-pointer"
+                            >
+                              <Plus size={16} />
                             </button>
                           </div>
+
+                          <button
+                            onClick={() => console.log("Hello")}
+                            className="flex items-center gap-2 text-xs tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
+                          >
+                            <Heart size={16} />
+                            <span className="hidden sm:inline">
+                              Move to Wishlist
+                            </span>
+                          </button>
+                          <button
+                            onClick={() => handleRemoveFromCart(item._id)}
+                            className="flex items-center gap-2 text-xs uppercase tracking-widest text-[#6B7280] hover:text-[#7A1F1F] transition-colors cursor-pointer"
+                          >
+                            <Trash2 size={16} />
+                            <span className="hidden sm:inline">Remove</span>
+                          </button>
                         </div>
-                      </motion.div>
-                    ))}
-                  </AnimatePresence>
-                </div>
-
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: 0.3 }}
-                  className="lg:w-1/3"
-                >
-                  <div className="bg-white p-8 border border-[#E5E7EB] sticky top-32 rounded-2xl shadow-lg hover:border-[#C9A227]/30 transition-colors">
-                    <h3 className="text-2xl font-serif text-[#1A1A1A] mb-8">
-                      Order Summary
-                    </h3>
-
-                    <div className="space-y-4 mb-6 text-sm text-[#4B5563] border-b border-[#E5E7EB] pb-6">
-                      <div className="flex justify-between items-center">
-                        <span>
-                          Subtotal (
-                          {cart.reduce((acc, item) => acc + item.quantity, 0)}{" "}
-                          items)
-                        </span>
-                        <span className="font-medium text-[#1A1A1A]">
-                          ₹{subtotal.toLocaleString("en-IN")}
-                        </span>
                       </div>
-                      <div className="flex justify-between items-center">
-                        <span>Shipping (Insured)</span>
-                        <span className="uppercase text-[10px] font-bold tracking-widest text-[#7A1F1F] bg-[#FAF0F0] px-2 py-1 rounded">
-                          Complimentary
-                        </span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span>Estimated Taxes</span>
-                        <span className="text-xs">Calculated at checkout</span>
-                      </div>
-                    </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
 
-                    <div className="flex justify-between items-center text-xl font-serif font-bold text-[#1A1A1A] mb-8">
-                      <span>Total</span>
-                      <span>₹{subtotal.toLocaleString("en-IN")}</span>
-                    </div>
-
-                    <Link
-                      href="/checkout"
-                      className="flex items-center justify-center gap-2 w-full bg-[#1A1A1A] text-white p-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors rounded-sm group"
-                    >
-                      Proceed to Checkout
-                      <ArrowRight
-                        size={16}
-                        className="group-hover:translate-x-1 transition-transform"
-                      />
-                    </Link>
-
-                    <div className="mt-6 flex items-center justify-center gap-2 text-[#6B7280]">
-                      <ShieldCheck size={16} className="text-[#C9A227]" />
-                      <span className="text-xs uppercase tracking-widest font-medium">
-                        Secure Checkout
-                      </span>
-                    </div>
-                  </div>
-                </motion.div>
-              </motion.div>
-            ) : (
               <motion.div
-                key="empty-cart"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="flex flex-col items-center justify-center py-32 px-4 text-center bg-white border border-[#E5E7EB] rounded-2xl border-dashed max-w-3xl mx-auto"
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="lg:w-1/3"
               >
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{
-                    repeat: Infinity,
-                    duration: 3,
-                    ease: "easeInOut",
-                  }}
-                  className="w-24 h-24 bg-[#FAF0F0] rounded-full flex items-center justify-center mb-8"
-                >
-                  <ShoppingBag size={40} className="text-[#7A1F1F]" />
-                </motion.div>
-                <h2 className="text-3xl font-serif text-[#1A1A1A] mb-4">
-                  Your shopping bag is empty
-                </h2>
-                <p className="text-[#6B7280] max-w-md mx-auto mb-10 text-lg">
-                  Explore our collections to discover extraordinary pieces
-                  crafted with passion and precision.
-                </p>
-                <Link
-                  href="/collections"
-                  className="inline-flex items-center gap-3 bg-[#1A1A1A] text-white px-8 py-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors duration-300 rounded-sm group"
-                >
-                  Discover Collections
-                  <ArrowRight
-                    size={16}
-                    className="group-hover:translate-x-1 transition-transform"
-                  />
-                </Link>
+                <div className="bg-white p-8 border border-[#E5E7EB] sticky top-32 rounded-2xl shadow-lg hover:border-[#C9A227]/30 transition-colors">
+                  <h3 className="text-2xl font-serif text-[#1A1A1A] mb-8">
+                    Order Summary
+                  </h3>
+
+                  <div className="space-y-4 mb-6 text-sm text-[#4B5563] border-b border-[#E5E7EB] pb-6">
+                    <div className="flex justify-between items-center">
+                      <span>
+                        Subtotal (
+                        {cart.reduce((acc, item) => acc + item.quantity, 0)}{" "}
+                        items)
+                      </span>
+                      <span className="font-medium text-[#1A1A1A]">
+                        ₹{subtotal.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Shipping (Insured)</span>
+                      <span className="uppercase text-[10px] font-bold tracking-widest text-[#7A1F1F] bg-[#FAF0F0] px-2 py-1 rounded">
+                        Complimentary
+                      </span>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <span>Estimated Taxes</span>
+                      <span className="text-xs">Calculated at checkout</span>
+                    </div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-xl font-serif font-bold text-[#1A1A1A] mb-8">
+                    <span>Total</span>
+                    <span>₹{subtotal.toLocaleString("en-IN")}</span>
+                  </div>
+
+                  <Link
+                    href="/checkout"
+                    className="flex items-center justify-center gap-2 w-full bg-[#1A1A1A] text-white p-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors rounded-sm group"
+                  >
+                    Proceed to Checkout
+                    <ArrowRight
+                      size={16}
+                      className="group-hover:translate-x-1 transition-transform"
+                    />
+                  </Link>
+
+                  <div className="mt-6 flex items-center justify-center gap-2 text-[#6B7280]">
+                    <ShieldCheck size={16} className="text-[#C9A227]" />
+                    <span className="text-xs uppercase tracking-widest font-medium">
+                      Secure Checkout
+                    </span>
+                  </div>
+                </div>
               </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
+            </motion.div>
+          ) : (
+            <motion.div
+              key="empty-cart"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.5 }}
+              className="flex flex-col items-center justify-center text-center"
+            >
+              <motion.div
+                animate={{ y: [0, -10, 0] }}
+                transition={{
+                  repeat: Infinity,
+                  duration: 3,
+                  ease: "easeInOut",
+                }}
+                className="w-24 h-24 bg-[#FAF0F0] rounded-full flex items-center justify-center mb-8"
+              >
+                <ShoppingBag size={40} className="text-[#7A1F1F]" />
+              </motion.div>
+              <h2 className="text-3xl font-serif text-[#1A1A1A] mb-4">
+                Your shopping bag is empty
+              </h2>
+              <p className="text-[#6B7280] max-w-md mx-auto mb-10 text-lg">
+                Explore our collections to discover extraordinary pieces crafted
+                with passion and precision.
+              </p>
+              <Link
+                href="/collections"
+                className="inline-flex items-center gap-3 bg-[#7A1F1F] text-white px-8 py-4 uppercase tracking-widest text-sm font-bold hover:bg-[#7A1F1F] transition-colors duration-300 rounded-sm group"
+              >
+                Discover Collections
+                <ArrowRight
+                  size={16}
+                  className="group-hover:translate-x-1 transition-transform"
+                />
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </>
+    </div>
   );
 }

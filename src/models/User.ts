@@ -2,7 +2,7 @@ import mongoose, { Document, Model, Schema, Types } from "mongoose";
 
 export type CustomerStatus = "pending" | "active" | "inactive" | "blocked";
 
-export type AddressType = "billing" | "shipping";
+export type AddressType = "work" | "home";
 
 export type Gender = "male" | "female" | "other" | "prefer_not_to_say";
 
@@ -23,7 +23,6 @@ export interface IAddress {
 
   city: string;
   state: string;
-  country: string;
   postalCode: string;
 
   isDefault: boolean;
@@ -98,11 +97,11 @@ export interface ICustomer extends Document {
   updatedAt: Date;
 }
 
-const AddressSchema = new Schema<IAddress>(
+export const AddressSchema = new Schema<IAddress>(
   {
     type: {
       type: String,
-      enum: ["billing", "shipping"],
+      enum: ["work", "home"],
       required: true,
     },
 
@@ -153,14 +152,6 @@ const AddressSchema = new Schema<IAddress>(
       type: String,
       required: true,
       trim: true,
-      maxlength: 100,
-    },
-
-    country: {
-      type: String,
-      required: true,
-      trim: true,
-      default: "India",
       maxlength: 100,
     },
 

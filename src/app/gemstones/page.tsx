@@ -87,7 +87,7 @@ const GemsStones = () => {
           <Loader />
         </div>
       ) : (
-        <div className="mx-auto max-w-7xl px-6 py-16">
+        <div className="mx-auto max-w-7xl px-6 py-8">
           {/* Gemstone Cards */}
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 sm:gap-6">
             {subCategories.map((gemstone) => (

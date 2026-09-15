@@ -21,7 +21,7 @@ export default function HeroBanner({
   breadcrumbs = [],
 }: HeroBannerProps) {
   return (
-    <section className="relative min-h-[420px] w-full overflow-hidden">
+    <section className="relative md:h-[400px] h-[280px] w-full overflow-hidden">
       {/* Background Image */}
       <Image
         src={image}
@@ -36,7 +36,7 @@ export default function HeroBanner({
       <div className="absolute inset-0 bg-black/55 rounded-2xl" />
 
       {/* Content */}
-      <div className="relative z-10 mx-auto flex min-h-[420px] max-w-7xl flex-col items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-8">
+      <div className="relative z-10 mx-auto flex md:h-[400px] h-[280px] max-w-7xl flex-col items-center justify-center px-4 py-10 text-center sm:px-6 lg:px-8">
         {/* Title */}
         <h1 className="text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-lg sm:text-4xl md:text-5xl">
           {title}

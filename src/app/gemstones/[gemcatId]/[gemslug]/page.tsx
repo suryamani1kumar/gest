@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import {
@@ -23,38 +22,7 @@ import Loader from "@/components/Spinloader/Loader";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState, AppDispatch } from "@/redux/store";
 import { addToCartAsync } from "@/redux/slices/cartSlice";
-import Login from "@/components/Account/Login";
-
-const relatedProducts = [
-  {
-    id: 4,
-    name: "Golden Solitaire Ring",
-    price: 3800,
-    image: "/images/ring.png",
-    category: "Rings",
-  },
-  {
-    id: 7,
-    name: "Ruby Eternity Band",
-    price: 6800,
-    image: "/images/ring.png",
-    category: "Rings",
-  },
-  {
-    id: 10,
-    name: "Manik (Ruby) Stone",
-    price: 7500,
-    image: "/images/gemstones/manik.png",
-    category: "Gemstones",
-  },
-  {
-    id: 6,
-    name: "Sapphire Halo Pendant",
-    price: 5400,
-    image: "/images/hero.png",
-    category: "Necklaces",
-  },
-];
+import ProductCard from "@/components/Products/ProductCard/ProductCard";
 
 /* ─── Tabs ─── */
 const tabs = ["Details", "Shipping"];
@@ -64,10 +32,11 @@ export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.gemslug as string;
   const productCatgory = params.gemcatId as string;
+
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
 
+  const [relatedProducts, setRelatedProduct] = useState<any[]>([]);
   const [product, setProduct] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -75,8 +44,6 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState("Details");
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [addedToCart, setAddedToCart] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
-  console.log("product", product);
 
   useEffect(() => {
     if (!productId) return;
@@ -101,6 +68,25 @@ export default function ProductDetailPage() {
       }
     };
 
+    const fetchrelatedProducts = async () => {
+      try {
+        const response = await fetch(
+          `/api/products?category=${productCatgory}&page=1&limit=12`,
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          throw new Error(result.message || "Product not found");
+        }
+        setRelatedProduct(result.data);
+      } catch (error: any) {
+        setError(error.message);
+      } finally {
+      }
+    };
+    fetchrelatedProducts();
+
     fetchProduct();
   }, [productId]);
 
@@ -116,29 +102,12 @@ export default function ProductDetailPage() {
     if (!product) return;
     // Always add/sync item to cart first
     await dispatch(addToCartAsync({ productId: product._id, quantity }));
-    // if (!isAuthenticated) {
-    //   // Show login modal; after login navigate to checkout
-    //   setShowLoginModal(true);
-    //   return;
-    // }
-    router.push("/checkout");
-  };
 
-  /** Called by Login modal after successful auth */
-  const handleLoginSuccess = () => {
-    setShowLoginModal(false);
     router.push("/checkout");
   };
 
   return (
     <div className="min-h-screen bg-[#FFFDF8]">
-      {/* Login Modal for Buy Now */}
-      {showLoginModal && (
-        <Login
-          setAccountOpen={setShowLoginModal}
-          onSuccess={handleLoginSuccess}
-        />
-      )}
       {loading ? (
         <Loader />
       ) : (
@@ -284,18 +253,18 @@ export default function ProductDetailPage() {
                   </button>
 
                   {/* Buy Now */}
-                   <Link
+                  {/* <Link
                     href={`tel:${Tfn1}`}
                     className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
                   >
                     Call Now
-                  </Link>
-                  {/* <button
+                  </Link> */}
+                  <button
                     onClick={handleBuyNow}
                     className="flex flex-1 items-center cursor-pointer justify-center rounded-lg border-2 border-[#C9A227] bg-[#C9A227] py-3.5 text-sm font-semibold uppercase tracking-wider text-[#1A1A1A] transition-all hover:border-[#B8860B] hover:bg-[#B8860B] hover:text-white"
                   >
                     Buy Now
-                  </button> */}
+                  </button>
                 </div>
                 <div className="rounded-lg border border-[#E5E7EB] bg-white p-3">
                   <p className="text-sm">
@@ -583,45 +552,23 @@ export default function ProductDetailPage() {
           <div className="bg-[#FFFDF8] py-12 border-t border-[#E5E7EB]">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
               <div className="text-center mb-8">
-                <span className="text-[#7A1F1F] uppercase tracking-[3px] text-xs font-semibold block mb-2">
-                  You May Also Like
-                </span>
                 <h2 className="text-2xl md:text-3xl font-serif text-[#1A1A1A]">
-                  Related Products
+                  Similar Products
                 </h2>
-                <div className="w-16 h-0.5 bg-[#C9A227] mx-auto mt-3 rounded-full" />
               </div>
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
-                {relatedProducts.map((item) => (
-                  <Link
-                    key={item.id}
-                    href={`/collections/${item.id}`}
-                    className="group overflow-hidden rounded-xl border border-[#E5E7EB] bg-white transition-all duration-300 hover:shadow-lg hover:border-[#C9A227]/40"
-                  >
-                    <div className="aspect-square relative overflow-hidden bg-neutral-50">
-                      <Image
-                        src={item.image}
-                        alt={item.name}
-                        fill
-                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                        sizes="(max-width: 640px) 50vw, 25vw"
+              {relatedProducts.length > 0 && (
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-5">
+                  {relatedProducts
+                    .filter((ite) => ite.slug !== productId)
+                    .map((product) => (
+                      <ProductCard
+                        product={product}
+                        key={product._id}
+                        gemcat={productCatgory}
                       />
-                    </div>
-                    <div className="p-3 sm:p-4 text-center">
-                      <span className="text-[#6B7280] uppercase tracking-widest text-[10px] font-semibold block mb-1">
-                        {item.category}
-                      </span>
-                      <h3 className="text-sm font-serif text-[#1A1A1A] mb-1 line-clamp-1 group-hover:text-[#7A1F1F] transition-colors">
-                        {item.name}
-                      </h3>
-                      <p className="text-[#7A1F1F] font-bold text-sm">
-                        ₹{item.price.toLocaleString("en-IN")}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+                    ))}
+                </div>
+              )}
             </div>
           </div>
         </>

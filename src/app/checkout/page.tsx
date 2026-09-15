@@ -9,6 +9,8 @@ import { checkAuth } from "@/redux/slices/authSlice";
 import { clearCart, fetchUserCart } from "@/redux/slices/cartSlice";
 import Login from "@/components/Account/Login";
 import { useRouter } from "next/navigation";
+import { AddressType } from "@/models/User";
+import Address from "@/components/Address/Address";
 
 export {};
 
@@ -17,8 +19,6 @@ declare global {
     Razorpay: any;
   }
 }
-
-// ─── Types ───────────────────────────────────────────────────────────────────
 
 interface ProductDetail {
   _id: string;
@@ -37,16 +37,17 @@ interface CartDisplayItem {
   product: ProductDetail | null;
 }
 
-interface ShippingForm {
-  email: string;
-  firstName: string;
-  lastName: string;
-  address: string;
-  apartment: string;
+export interface ShippingForm {
+  type: AddressType;
+  firstName?: string;
+  lastName?: string;
+  phone?: string;
+  addressLine1: string;
+  addressLine2: string;
+  landmark: string;
   city: string;
+  state: string;
   postalCode: string;
-  phone: string;
-  newsletter: boolean;
 }
 
 // ─── Component ───────────────────────────────────────────────────────────────
@@ -60,6 +61,9 @@ export default function CheckoutPage() {
     customer,
     loading: authLoading,
   } = useSelector((state: RootState) => state.auth);
+
+  console.log("customer", customer);
+
   const cartItems = useSelector((state: RootState) => state.cart.items);
 
   // UI state
@@ -70,32 +74,47 @@ export default function CheckoutPage() {
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const [successOrderNumber, setSuccessOrderNumber] = useState("");
   const [formError, setFormError] = useState("");
-
-  // Shipping form
   const [form, setForm] = useState<ShippingForm>({
-    email: "",
+    type: "home",
     firstName: "",
     lastName: "",
-    address: "",
-    apartment: "",
-    city: "",
-    postalCode: "",
     phone: "",
-    newsletter: false,
+    addressLine1: "",
+    addressLine2: "",
+    landmark: "",
+    city: "",
+    state: "",
+    postalCode: "",
   });
+
+  const [addresses, setAddresses] = useState<any[]>([]);
+  const [selectedAddressId, setSelectedAddressId] = useState<string | null>(
+    null,
+  );
 
   // Pre-fill email from auth
   useEffect(() => {
     if (customer?.email) {
-      setForm((prev) => ({ ...prev, email: customer.email }));
+      setForm((prev) => ({
+        ...prev,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        phone: customer.phone,
+      }));
     }
   }, [customer]);
+
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
 
   // Ensure cart is loaded from server when user is authenticated but Redux cart
   // is still empty (e.g. navigated directly to /checkout without visiting /cart)
   useEffect(() => {
     if (isAuthenticated && cartItems.length === 0 && !authLoading) {
       dispatch(fetchUserCart());
+    } else {
+      setShowLoginModal(true);
     }
   }, [isAuthenticated, authLoading, cartItems.length, dispatch]);
 
@@ -144,35 +163,10 @@ export default function CheckoutPage() {
   const tax = Math.round(subtotal * 0.03 * 100) / 100;
   const total = subtotal + tax;
 
-  // ── Form helpers ─────────────────────────────────────────────────────────
-
-  const handleFormChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value, type, checked } = e.target;
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  };
-
   const validateForm = (): boolean => {
     setFormError("");
-    if (!form.email.trim()) {
-      setFormError("Email address is required.");
-      return false;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      setFormError("Please enter a valid email address.");
-      return false;
-    }
-    if (!form.firstName.trim()) {
-      setFormError("First name is required.");
-      return false;
-    }
-    if (!form.lastName.trim()) {
-      setFormError("Last name is required.");
-      return false;
-    }
-    if (!form.address.trim()) {
+
+    if (!form.addressLine1.trim()) {
       setFormError("Address is required.");
       return false;
     }
@@ -191,6 +185,34 @@ export default function CheckoutPage() {
     return true;
   };
 
+  const fetchAddresses = async () => {
+    try {
+      const response = await fetch("/api/addresses");
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.message || "Failed to fetch addresses");
+      }
+
+      const data = result.data.addresses || [];
+      console.log("data", data);
+
+      setAddresses(data);
+
+      // Automatically select default address
+      const defaultAddress = data.find((address: any) => address.isDefault);
+
+      if (defaultAddress) {
+        setSelectedAddressId(defaultAddress._id);
+      } else if (data.length > 0) {
+        setSelectedAddressId(data[0]._id);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   // ── Payment flow ─────────────────────────────────────────────────────────
 
   const initiatePayment = useCallback(async () => {
@@ -207,13 +229,9 @@ export default function CheckoutPage() {
         credentials: "include",
         body: JSON.stringify({
           shippingAddress: {
-            firstName: form.firstName,
-            lastName: form.lastName,
-            address: form.address,
-            apartment: form.apartment,
+            address: form.addressLine1,
             city: form.city,
             postalCode: form.postalCode,
-            phone: form.phone,
           },
         }),
       });
@@ -293,9 +311,9 @@ export default function CheckoutPage() {
         },
 
         prefill: {
-          name: `${form.firstName} ${form.lastName}`,
-          email: form.email,
-          contact: form.phone,
+          name: "Suryamani Kumar",
+          email: "suryamani@gmail.com",
+          contact: "9822222222",
         },
 
         theme: {
@@ -378,7 +396,7 @@ export default function CheckoutPage() {
   // ── Main render ──────────────────────────────────────────────────────────
 
   return (
-    <div className="pt-15 pb-24 bg-[#FFFDF8] min-h-screen">
+    <div className="py-8 bg-[#FFFDF8]">
       <Script
         src="https://checkout.razorpay.com/v1/checkout.js"
         strategy="afterInteractive"
@@ -408,232 +426,15 @@ export default function CheckoutPage() {
         <div className="flex flex-col-reverse lg:flex-row gap-12">
           {/* ── Left — Form ── */}
           <div className="lg:w-2/3 space-y-10">
-            {/* Auth notice */}
-            {!isAuthenticated && !authLoading && (
-              <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
-                <svg
-                  className="w-5 h-5 text-amber-500 mt-0.5 flex-shrink-0"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <div className="flex-1 text-sm text-amber-800">
-                  <span>You are not logged in. </span>
-                  <button
-                    onClick={() => setShowLoginModal(true)}
-                    className="font-semibold underline hover:text-[#7A1F1F] cursor-pointer"
-                  >
-                    Login or create an account
-                  </button>
-                  <span> to complete your order.</span>
-                </div>
-              </div>
+            {isAuthenticated && (
+              <Address
+                form={form}
+                setForm={setForm}
+                formError={formError}
+                addresses={addresses}
+                selectedAddressId={selectedAddressId}
+              />
             )}
-
-            {/* Contact Info */}
-            <section>
-              <h2 className="text-xl font-serif text-[#1A1A1A] mb-6">
-                Contact Information
-              </h2>
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Email address <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={form.email}
-                    onChange={handleFormChange}
-                    placeholder="your@email.com"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    id="newsletter"
-                    name="newsletter"
-                    checked={form.newsletter}
-                    onChange={handleFormChange}
-                    className="w-4 h-4 text-[#7A1F1F] border-gray-300 focus:ring-[#7A1F1F] rounded"
-                  />
-                  <label
-                    htmlFor="newsletter"
-                    className="text-sm font-light text-[#6B7280]"
-                  >
-                    Email me with news and exclusive offers
-                  </label>
-                </div>
-              </div>
-            </section>
-
-            {/* Shipping Info */}
-            <section>
-              <h2 className="text-xl font-serif text-[#1A1A1A] mb-6">
-                Shipping Address
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    First name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="firstName"
-                    value={form.firstName}
-                    onChange={handleFormChange}
-                    placeholder="First name"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Last name <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    value={form.lastName}
-                    onChange={handleFormChange}
-                    placeholder="Last name"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Address <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="address"
-                    value={form.address}
-                    onChange={handleFormChange}
-                    placeholder="Street address"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Apartment, suite, etc. (optional)
-                  </label>
-                  <input
-                    type="text"
-                    name="apartment"
-                    value={form.apartment}
-                    onChange={handleFormChange}
-                    placeholder="Apartment, suite, etc."
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    City <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="city"
-                    value={form.city}
-                    onChange={handleFormChange}
-                    placeholder="City"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Postal code <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    name="postalCode"
-                    value={form.postalCode}
-                    onChange={handleFormChange}
-                    placeholder="Postal code"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-                <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Phone number
-                  </label>
-                  <input
-                    type="tel"
-                    name="phone"
-                    value={form.phone}
-                    onChange={handleFormChange}
-                    placeholder="Phone (optional)"
-                    className="w-full border-gray-300 border p-3 text-sm focus:outline-none focus:border-[#7A1F1F] rounded-lg transition-colors"
-                  />
-                </div>
-              </div>
-            </section>
-
-            {/* Form error */}
-            {formError && (
-              <div className="bg-red-50 border border-red-200 rounded-xl p-4 text-sm text-red-700">
-                {formError}
-              </div>
-            )}
-
-            {/* Pay Button */}
-            <button
-              type="button"
-              disabled={paying || authLoading || fetchingProducts}
-              onClick={handlePayNow}
-              className="w-full bg-[#7A1F1F] text-white p-5 uppercase tracking-widest text-sm font-medium hover:bg-[#B8860B] transition-colors mt-2 rounded-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
-            >
-              {paying ? (
-                <>
-                  <svg
-                    className="animate-spin w-4 h-4"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8v8H4z"
-                    />
-                  </svg>
-                  Processing…
-                </>
-              ) : (
-                `Pay ₹${total.toLocaleString("en-IN")}`
-              )}
-            </button>
-
-            {/* Security note */}
-            <p className="text-center text-xs text-gray-400 flex items-center justify-center gap-1.5">
-              <svg
-                className="w-3.5 h-3.5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m0 0v2m0-2h2m-2 0H10m2-9a3 3 0 100-6 3 3 0 000 6z"
-                />
-              </svg>
-              Secured by Razorpay · 256-bit SSL Encryption
-            </p>
           </div>
 
           {/* ── Right — Order Summary ── */}
@@ -729,6 +530,39 @@ export default function CheckoutPage() {
                 <span>Total</span>
                 <span>₹{total.toLocaleString("en-IN")}</span>
               </div>
+              <button
+                type="button"
+                disabled={paying || authLoading || fetchingProducts}
+                onClick={handlePayNow}
+                className="w-full bg-[#7A1F1F] text-white p-5 uppercase tracking-widest text-sm font-medium hover:bg-[#B8860B] transition-colors mt-2 rounded-lg cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed flex items-center justify-center gap-3"
+              >
+                {paying ? (
+                  <>
+                    <svg
+                      className="animate-spin w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8v8H4z"
+                      />
+                    </svg>
+                    Processing…
+                  </>
+                ) : (
+                  `Pay ₹${total.toLocaleString("en-IN")}`
+                )}
+              </button>
 
               {/* Razorpay badge */}
               <div className="mt-4 pt-4 border-t border-gray-100 flex items-center justify-center gap-2 text-xs text-gray-400">

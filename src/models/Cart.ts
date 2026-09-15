@@ -33,7 +33,7 @@ const CartSchema = new Schema<ICart>(
   {
     customer: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Customer",
       required: true,
       unique: true,
       index: true,

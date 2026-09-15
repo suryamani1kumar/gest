@@ -1,55 +1,84 @@
 "use client";
 
-import { useState } from "react";
+interface PriceRangeProps {
+  min: number;
+  max: number;
+  step?: number;
 
-export default function PriceRange() {
-  const MIN = 1000;
-  const MAX = 100000;
+  valueMin: number;
+  valueMax: number;
 
-  const [minPrice, setMinPrice] = useState(1000);
-  const [maxPrice, setMaxPrice] = useState(100000);
+  onChange: (min: number, max: number) => void;
+
+  prefix?: string;
+  suffix?: string;
+}
+
+export default function PriceRange({
+  min,
+  max,
+  step = 500,
+  valueMin,
+  valueMax,
+  onChange,
+  prefix = "₹",
+  suffix = "",
+}: PriceRangeProps) {
+  const formatValue = (value: number) => {
+    return `${prefix}${value.toLocaleString("en-IN")}${suffix}`;
+  };
+
+  const minPercent = ((valueMin - min) / (max - min)) * 100;
+  const maxPercent = ((valueMax - min) / (max - min)) * 100;
+
+  const handleMinChange = (value: number) => {
+    if (value < valueMax) {
+      onChange(value, valueMax);
+    }
+  };
+
+  const handleMaxChange = (value: number) => {
+    if (value > valueMin) {
+      onChange(valueMin, value);
+    }
+  };
 
   return (
     <>
-      {/* Price labels */}
+      {/* Labels */}
       <div className="my-1 flex items-center justify-between text-sm">
         <span className="font-medium text-gray-700">
-          ₹{minPrice.toLocaleString("en-IN")}
+          {formatValue(valueMin)}
         </span>
 
         <span className="font-medium text-gray-700">
-          ₹{maxPrice.toLocaleString("en-IN")}
+          {formatValue(valueMax)}
         </span>
       </div>
 
-      {/* Range */}
+      {/* Slider */}
       <div className="relative h-6">
+        {/* Background */}
         <div className="absolute top-2.5 h-1 w-full rounded bg-gray-200" />
 
         {/* Active range */}
         <div
           className="absolute top-2.5 h-1 rounded bg-[#7A1F1F]"
           style={{
-            left: `${(minPrice / MAX) * 100}%`,
-            right: `${100 - (maxPrice / MAX) * 100}%`,
+            left: `${minPercent}%`,
+            right: `${100 - maxPercent}%`,
           }}
         />
 
-        {/* Minimum slider */}
+        {/* Minimum */}
         <input
           type="range"
-          min={MIN}
-          max={MAX}
-          step={500}
-          value={minPrice}
-          onChange={(e) => {
-            const value = Number(e.target.value);
-
-            if (value < maxPrice) {
-              setMinPrice(value);
-            }
-          }}
-          className="pointer-events-none cursor-pointer absolute top-0 h-6 w-full appearance-none bg-transparent
+          min={min}
+          max={max}
+          step={step}
+          value={valueMin}
+          onChange={(e) => handleMinChange(Number(e.target.value))}
+          className="pointer-events-none absolute top-0 h-6 w-full cursor-pointer appearance-none bg-transparent
           [&::-webkit-slider-thumb]:pointer-events-auto
           [&::-webkit-slider-thumb]:h-4
           [&::-webkit-slider-thumb]:w-4
@@ -58,21 +87,15 @@ export default function PriceRange() {
           [&::-webkit-slider-thumb]:bg-[#7A1F1F]"
         />
 
-        {/* Maximum slider */}
+        {/* Maximum */}
         <input
           type="range"
-          min={MIN}
-          max={MAX}
-          step={500}
-          value={maxPrice}
-          onChange={(e) => {
-            const value = Number(e.target.value);
-
-            if (value > minPrice) {
-              setMaxPrice(value);
-            }
-          }}
-          className="pointer-events-none cursor-pointer absolute top-0 h-6 w-full appearance-none bg-transparent
+          min={min}
+          max={max}
+          step={step}
+          value={valueMax}
+          onChange={(e) => handleMaxChange(Number(e.target.value))}
+          className="pointer-events-none absolute top-0 h-6 w-full cursor-pointer appearance-none bg-transparent
           [&::-webkit-slider-thumb]:pointer-events-auto
           [&::-webkit-slider-thumb]:h-4
           [&::-webkit-slider-thumb]:w-4
@@ -85,28 +108,46 @@ export default function PriceRange() {
       {/* Inputs */}
       <div className="mt-2 grid grid-cols-2 gap-3">
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Min Price</label>
+          <label className="mb-1 block text-xs text-gray-500">
+            Min
+          </label>
 
           <input
             type="number"
-            value={minPrice}
-            min={MIN}
-            max={maxPrice}
-            onChange={(e) => setMinPrice(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-black"
+            value={valueMin}
+            min={min}
+            max={valueMax - step}
+            step={step}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+
+              if (value >= min && value < valueMax) {
+                handleMinChange(value);
+              }
+            }}
+            className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-[#7A1F1F]"
           />
         </div>
 
         <div>
-          <label className="mb-1 block text-xs text-gray-500">Max Price</label>
+          <label className="mb-1 block text-xs text-gray-500">
+            Max
+          </label>
 
           <input
             type="number"
-            value={maxPrice}
-            min={minPrice}
-            max={MAX}
-            onChange={(e) => setMaxPrice(Number(e.target.value))}
-            className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-black"
+            value={valueMax}
+            min={valueMin + step}
+            max={max}
+            step={step}
+            onChange={(e) => {
+              const value = Number(e.target.value);
+
+              if (value > valueMin && value <= max) {
+                handleMaxChange(value);
+              }
+            }}
+            className="w-full rounded-md border px-3 py-2 text-sm outline-none focus:border-[#7A1F1F]"
           />
         </div>
       </div>

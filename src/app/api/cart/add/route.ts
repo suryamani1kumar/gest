@@ -14,7 +14,7 @@ export async function POST(req: NextRequest) {
 
     // Get user ID from session cookie
     const token = req.cookies.get("s_token")?.value;
-    
+
     if (!token) {
       return NextResponse.json(
         {
@@ -24,9 +24,9 @@ export async function POST(req: NextRequest) {
         { status: 401 },
       );
     }
-    
+
     const session = await verifySession(token);
-    
+
     if (!session || !session.userId) {
       return NextResponse.json(
         {
@@ -38,6 +38,7 @@ export async function POST(req: NextRequest) {
     }
 
     const userId = session.userId;
+  
     if (!mongoose.Types.ObjectId.isValid(userId)) {
       return NextResponse.json(
         {
